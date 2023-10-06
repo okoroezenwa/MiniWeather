@@ -8,21 +8,35 @@
 
 /* Begin PBXBuildFile section */
 		BE71B80F2ACE9F2B003AA99C /* MiniWeatherApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE71B80E2ACE9F2B003AA99C /* MiniWeatherApp.swift */; };
-		BE71B8112ACE9F2B003AA99C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE71B8102ACE9F2B003AA99C /* ContentView.swift */; };
-		BE71B8132ACE9F2B003AA99C /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE71B8122ACE9F2B003AA99C /* Item.swift */; };
+		BE71B8112ACE9F2B003AA99C /* LocationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE71B8102ACE9F2B003AA99C /* LocationsView.swift */; };
+		BE71B8132ACE9F2B003AA99C /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE71B8122ACE9F2B003AA99C /* Location.swift */; };
 		BE71B8152ACE9F2C003AA99C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BE71B8142ACE9F2C003AA99C /* Assets.xcassets */; };
 		BE71B8182ACE9F2C003AA99C /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BE71B8172ACE9F2C003AA99C /* Preview Assets.xcassets */; };
+		BE9F20F22AD002AF00CDC9F4 /* MainGeocodeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9F20F12AD002AF00CDC9F4 /* MainGeocodeService.swift */; };
+		BE9F20F42AD006C500CDC9F4 /* LocationsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9F20F32AD006C500CDC9F4 /* LocationsRepository.swift */; };
+		BE9F20F62AD04B3800CDC9F4 /* LocationsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9F20F52AD04B3800CDC9F4 /* LocationsViewModel.swift */; };
+		BE9F20F82AD0624A00CDC9F4 /* MainLocationsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9F20F72AD0624A00CDC9F4 /* MainLocationsRepository.swift */; };
+		BEF4E7DA2ACF32FE0043BE93 /* AddLocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF4E7D92ACF32FE0043BE93 /* AddLocationView.swift */; };
+		BEF4E7DF2ACF3D890043BE93 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF4E7DE2ACF3D890043BE93 /* ViewModel.swift */; };
+		BEF4E7E62ACFFB4E0043BE93 /* GeocoderService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF4E7E52ACFFB4E0043BE93 /* GeocoderService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		BE71B80B2ACE9F2B003AA99C /* MiniWeather.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MiniWeather.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE71B80E2ACE9F2B003AA99C /* MiniWeatherApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiniWeatherApp.swift; sourceTree = "<group>"; };
-		BE71B8102ACE9F2B003AA99C /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		BE71B8122ACE9F2B003AA99C /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
+		BE71B8102ACE9F2B003AA99C /* LocationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationsView.swift; sourceTree = "<group>"; };
+		BE71B8122ACE9F2B003AA99C /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 		BE71B8142ACE9F2C003AA99C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BE71B8172ACE9F2C003AA99C /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		BE71B8192ACE9F2C003AA99C /* MiniWeather.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MiniWeather.entitlements; sourceTree = "<group>"; };
 		BE71B81A2ACE9F2C003AA99C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BE9F20F12AD002AF00CDC9F4 /* MainGeocodeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainGeocodeService.swift; sourceTree = SOURCE_ROOT; };
+		BE9F20F32AD006C500CDC9F4 /* LocationsRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationsRepository.swift; sourceTree = SOURCE_ROOT; };
+		BE9F20F52AD04B3800CDC9F4 /* LocationsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationsViewModel.swift; sourceTree = "<group>"; };
+		BE9F20F72AD0624A00CDC9F4 /* MainLocationsRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainLocationsRepository.swift; sourceTree = "<group>"; };
+		BEF4E7D92ACF32FE0043BE93 /* AddLocationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddLocationView.swift; sourceTree = "<group>"; };
+		BEF4E7DE2ACF3D890043BE93 /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
+		BEF4E7E52ACFFB4E0043BE93 /* GeocoderService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = GeocoderService.swift; path = "Add Location/Views/GeocoderService.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,9 +69,12 @@
 		BE71B80D2ACE9F2B003AA99C /* MiniWeather */ = {
 			isa = PBXGroup;
 			children = (
+				BE9F20F32AD006C500CDC9F4 /* LocationsRepository.swift */,
+				BE9F20F12AD002AF00CDC9F4 /* MainGeocodeService.swift */,
+				BEF4E7E52ACFFB4E0043BE93 /* GeocoderService.swift */,
 				BE71B80E2ACE9F2B003AA99C /* MiniWeatherApp.swift */,
-				BE71B8102ACE9F2B003AA99C /* ContentView.swift */,
-				BE71B8122ACE9F2B003AA99C /* Item.swift */,
+				BEF4E7E02ACF41A10043BE93 /* Locations */,
+				BEF4E7DD2ACF3D770043BE93 /* Add Location */,
 				BE71B8142ACE9F2C003AA99C /* Assets.xcassets */,
 				BE71B8192ACE9F2C003AA99C /* MiniWeather.entitlements */,
 				BE71B81A2ACE9F2C003AA99C /* Info.plist */,
@@ -72,6 +89,58 @@
 				BE71B8172ACE9F2C003AA99C /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		BEF4E7DD2ACF3D770043BE93 /* Add Location */ = {
+			isa = PBXGroup;
+			children = (
+				BEF4E7E22ACF41BA0043BE93 /* Views */,
+				BEF4E7E32ACF41C50043BE93 /* Models */,
+			);
+			path = "Add Location";
+			sourceTree = "<group>";
+		};
+		BEF4E7E02ACF41A10043BE93 /* Locations */ = {
+			isa = PBXGroup;
+			children = (
+				BEF4E7E42ACF41D90043BE93 /* Views */,
+				BEF4E7E12ACF41AE0043BE93 /* Models */,
+			);
+			path = Locations;
+			sourceTree = "<group>";
+		};
+		BEF4E7E12ACF41AE0043BE93 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				BE71B8122ACE9F2B003AA99C /* Location.swift */,
+				BE9F20F52AD04B3800CDC9F4 /* LocationsViewModel.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		BEF4E7E22ACF41BA0043BE93 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				BEF4E7D92ACF32FE0043BE93 /* AddLocationView.swift */,
+				BE9F20F72AD0624A00CDC9F4 /* MainLocationsRepository.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		BEF4E7E32ACF41C50043BE93 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				BEF4E7DE2ACF3D890043BE93 /* ViewModel.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		BEF4E7E42ACF41D90043BE93 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				BE71B8102ACE9F2B003AA99C /* LocationsView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -144,9 +213,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BE71B8112ACE9F2B003AA99C /* ContentView.swift in Sources */,
-				BE71B8132ACE9F2B003AA99C /* Item.swift in Sources */,
+				BE9F20F42AD006C500CDC9F4 /* LocationsRepository.swift in Sources */,
+				BEF4E7DF2ACF3D890043BE93 /* ViewModel.swift in Sources */,
+				BE71B8112ACE9F2B003AA99C /* LocationsView.swift in Sources */,
+				BEF4E7DA2ACF32FE0043BE93 /* AddLocationView.swift in Sources */,
+				BE9F20F62AD04B3800CDC9F4 /* LocationsViewModel.swift in Sources */,
+				BEF4E7E62ACFFB4E0043BE93 /* GeocoderService.swift in Sources */,
+				BE9F20F22AD002AF00CDC9F4 /* MainGeocodeService.swift in Sources */,
+				BE71B8132ACE9F2B003AA99C /* Location.swift in Sources */,
 				BE71B80F2ACE9F2B003AA99C /* MiniWeatherApp.swift in Sources */,
+				BE9F20F82AD0624A00CDC9F4 /* MainLocationsRepository.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

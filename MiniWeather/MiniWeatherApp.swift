@@ -12,7 +12,7 @@ import SwiftData
 struct MiniWeatherApp: App {
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
-            Item.self,
+            Location.self,
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 
@@ -25,7 +25,7 @@ struct MiniWeatherApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            LocationsView()
         }
         .modelContainer(sharedModelContainer)
     }
