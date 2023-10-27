@@ -44,7 +44,7 @@ final class Location: Identifiable {
         let city = locationObject.city
         self.city = city
         self.nickname = city
-        self.state = locationObject.state
+        self.state = locationObject.state ?? "Unknown State"
         self.country = locationObject.countryName
         self.latitude = locationObject.latitude
         self.longitude = locationObject.longitude
@@ -54,7 +54,7 @@ final class Location: Identifiable {
 
 protocol LocationProtocol {
     var city: String { get }
-    var state: String { get }
+    var state: String? { get }
     var countryName: String { get }
     var latitude: Double { get }
     var longitude: Double { get }

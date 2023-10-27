@@ -27,7 +27,8 @@ struct AddLocationView: View {
                 List {
                     ForEach(adder.locations) { location in
                         HStack {
-                            Text(location.city)
+                            Text("\(location.city), \(location.state), \(location.country)")
+                                .lineLimit(1)
                             
                             Spacer()
                         }
@@ -58,7 +59,10 @@ struct AddLocationView: View {
     AddLocationView(
         adder: .init(
             locationsRepository: MainLocationsRepository(
-                geocodeService: AppleGeocoderService()
+                geocodeService: APINinjasGeodecoderService(
+                    networkService: StandardNetworkService(urlSession: .shared),
+                    parser: StandardDataParser(decoder: JSONDecoder())
+                )
             )
         )
     )

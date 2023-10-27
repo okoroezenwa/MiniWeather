@@ -7,9 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		BE4FE4932AEC08D100A381FD /* APINinjaLocationsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE4FE4922AEC08D100A381FD /* APINinjaLocationsRequest.swift */; };
-		BE4FE4952AEC08FB00A381FD /* APINinjaTimeZoneRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE4FE4942AEC08FB00A381FD /* APINinjaTimeZoneRequest.swift */; };
-		BE4FE4972AEC098300A381FD /* APINinjaLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE4FE4962AEC098300A381FD /* APINinjaLocation.swift */; };
+		BE4FE4932AEC08D100A381FD /* APINinjasLocationsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE4FE4922AEC08D100A381FD /* APINinjasLocationsRequest.swift */; };
+		BE4FE4952AEC08FB00A381FD /* APINinjasTimeZoneRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE4FE4942AEC08FB00A381FD /* APINinjasTimeZoneRequest.swift */; };
+		BE4FE4972AEC098300A381FD /* APINinjasLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE4FE4962AEC098300A381FD /* APINinjasLocation.swift */; };
 		BE4FE49A2AEC0FEA00A381FD /* TimeZoneService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE4FE4992AEC0FEA00A381FD /* TimeZoneService.swift */; };
 		BE4FE49D2AEC187000A381FD /* TimeZoneRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE4FE49C2AEC187000A381FD /* TimeZoneRepository.swift */; };
 		BE4FE49F2AEC1A0C00A381FD /* GeocoderService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE4FE49E2AEC1A0C00A381FD /* GeocoderService.swift */; };
@@ -22,12 +22,14 @@
 		BE4FE4B52AEC22D800A381FD /* TimeZoneIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE4FE4B42AEC22D800A381FD /* TimeZoneIdentifier.swift */; };
 		BE4FE4B82AEC242F00A381FD /* StandardDataParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE4FE4B72AEC242F00A381FD /* StandardDataParser.swift */; };
 		BE4FE4BC2AEC399E00A381FD /* CLPlacemark+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE4FE4BB2AEC399E00A381FD /* CLPlacemark+Extensions.swift */; };
+		BE4FE4BF2AEC4A4300A381FD /* CountryCodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE4FE4BE2AEC4A4300A381FD /* CountryCodes.swift */; };
+		BE4FE4C12AEC4DE900A381FD /* APINinjasTimeZoneService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE4FE4C02AEC4DE900A381FD /* APINinjasTimeZoneService.swift */; };
 		BE71B80F2ACE9F2B003AA99C /* MiniWeatherApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE71B80E2ACE9F2B003AA99C /* MiniWeatherApp.swift */; };
 		BE71B8112ACE9F2B003AA99C /* LocationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE71B8102ACE9F2B003AA99C /* LocationsView.swift */; };
 		BE71B8132ACE9F2B003AA99C /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE71B8122ACE9F2B003AA99C /* Location.swift */; };
 		BE71B8152ACE9F2C003AA99C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BE71B8142ACE9F2C003AA99C /* Assets.xcassets */; };
 		BE71B8182ACE9F2C003AA99C /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BE71B8172ACE9F2C003AA99C /* Preview Assets.xcassets */; };
-		BE7DA77B2AE69EDE0016047C /* APINinjaGeodecoderService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE7DA77A2AE69EDE0016047C /* APINinjaGeodecoderService.swift */; };
+		BE7DA77B2AE69EDE0016047C /* APINinjasGeodecoderService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE7DA77A2AE69EDE0016047C /* APINinjasGeodecoderService.swift */; };
 		BE7DA77D2AE6B42A0016047C /* StandardNetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE7DA77C2AE6B42A0016047C /* StandardNetworkService.swift */; };
 		BE7DA7852AE99D800016047C /* DataParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE7DA7842AE99D800016047C /* DataParser.swift */; };
 		BE7DA7872AEA6E550016047C /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE7DA7862AEA6E540016047C /* Request.swift */; };
@@ -38,9 +40,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		BE4FE4922AEC08D100A381FD /* APINinjaLocationsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APINinjaLocationsRequest.swift; sourceTree = "<group>"; };
-		BE4FE4942AEC08FB00A381FD /* APINinjaTimeZoneRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APINinjaTimeZoneRequest.swift; sourceTree = "<group>"; };
-		BE4FE4962AEC098300A381FD /* APINinjaLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APINinjaLocation.swift; sourceTree = "<group>"; };
+		BE4FE4922AEC08D100A381FD /* APINinjasLocationsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APINinjasLocationsRequest.swift; sourceTree = "<group>"; };
+		BE4FE4942AEC08FB00A381FD /* APINinjasTimeZoneRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APINinjasTimeZoneRequest.swift; sourceTree = "<group>"; };
+		BE4FE4962AEC098300A381FD /* APINinjasLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APINinjasLocation.swift; sourceTree = "<group>"; };
 		BE4FE4992AEC0FEA00A381FD /* TimeZoneService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeZoneService.swift; sourceTree = "<group>"; };
 		BE4FE49C2AEC187000A381FD /* TimeZoneRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeZoneRepository.swift; sourceTree = "<group>"; };
 		BE4FE49E2AEC1A0C00A381FD /* GeocoderService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeocoderService.swift; sourceTree = "<group>"; };
@@ -53,6 +55,8 @@
 		BE4FE4B42AEC22D800A381FD /* TimeZoneIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeZoneIdentifier.swift; sourceTree = "<group>"; };
 		BE4FE4B72AEC242F00A381FD /* StandardDataParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandardDataParser.swift; sourceTree = "<group>"; };
 		BE4FE4BB2AEC399E00A381FD /* CLPlacemark+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CLPlacemark+Extensions.swift"; sourceTree = "<group>"; };
+		BE4FE4BE2AEC4A4300A381FD /* CountryCodes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CountryCodes.swift; sourceTree = "<group>"; };
+		BE4FE4C02AEC4DE900A381FD /* APINinjasTimeZoneService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APINinjasTimeZoneService.swift; sourceTree = "<group>"; };
 		BE71B80B2ACE9F2B003AA99C /* MiniWeather.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MiniWeather.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE71B80E2ACE9F2B003AA99C /* MiniWeatherApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiniWeatherApp.swift; sourceTree = "<group>"; };
 		BE71B8102ACE9F2B003AA99C /* LocationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationsView.swift; sourceTree = "<group>"; };
@@ -61,7 +65,7 @@
 		BE71B8172ACE9F2C003AA99C /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		BE71B8192ACE9F2C003AA99C /* MiniWeather.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MiniWeather.entitlements; sourceTree = "<group>"; };
 		BE71B81A2ACE9F2C003AA99C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		BE7DA77A2AE69EDE0016047C /* APINinjaGeodecoderService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APINinjaGeodecoderService.swift; sourceTree = "<group>"; };
+		BE7DA77A2AE69EDE0016047C /* APINinjasGeodecoderService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APINinjasGeodecoderService.swift; sourceTree = "<group>"; };
 		BE7DA77C2AE6B42A0016047C /* StandardNetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandardNetworkService.swift; sourceTree = "<group>"; };
 		BE7DA7842AE99D800016047C /* DataParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataParser.swift; sourceTree = "<group>"; };
 		BE7DA7862AEA6E540016047C /* Request.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
@@ -86,8 +90,8 @@
 			isa = PBXGroup;
 			children = (
 				BE7DA7862AEA6E540016047C /* Request.swift */,
-				BE4FE4922AEC08D100A381FD /* APINinjaLocationsRequest.swift */,
-				BE4FE4942AEC08FB00A381FD /* APINinjaTimeZoneRequest.swift */,
+				BE4FE4922AEC08D100A381FD /* APINinjasLocationsRequest.swift */,
+				BE4FE4942AEC08FB00A381FD /* APINinjasTimeZoneRequest.swift */,
 			);
 			path = Requests;
 			sourceTree = "<group>";
@@ -137,7 +141,7 @@
 			children = (
 				BE4FE49E2AEC1A0C00A381FD /* GeocoderService.swift */,
 				BE4FE4AC2AEC21F700A381FD /* AppleGeocoderService.swift */,
-				BE7DA77A2AE69EDE0016047C /* APINinjaGeodecoderService.swift */,
+				BE7DA77A2AE69EDE0016047C /* APINinjasGeodecoderService.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -146,7 +150,7 @@
 			isa = PBXGroup;
 			children = (
 				BE71B8122ACE9F2B003AA99C /* Location.swift */,
-				BE4FE4962AEC098300A381FD /* APINinjaLocation.swift */,
+				BE4FE4962AEC098300A381FD /* APINinjasLocation.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -164,6 +168,7 @@
 			isa = PBXGroup;
 			children = (
 				BE4FE4992AEC0FEA00A381FD /* TimeZoneService.swift */,
+				BE4FE4C02AEC4DE900A381FD /* APINinjasTimeZoneService.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -202,6 +207,14 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		BE4FE4BD2AEC4A3B00A381FD /* Other */ = {
+			isa = PBXGroup;
+			children = (
+				BE4FE4BE2AEC4A4300A381FD /* CountryCodes.swift */,
+			);
+			path = Other;
+			sourceTree = "<group>";
+		};
 		BE71B8022ACE9F2B003AA99C = {
 			isa = PBXGroup;
 			children = (
@@ -221,6 +234,7 @@
 		BE71B80D2ACE9F2B003AA99C /* MiniWeather */ = {
 			isa = PBXGroup;
 			children = (
+				BE4FE4BD2AEC4A3B00A381FD /* Other */,
 				BE4FE4BA2AEC397000A381FD /* Extensions */,
 				BE4FE49B2AEC12EB00A381FD /* UI */,
 				BE4FE4A12AEC1AB500A381FD /* TimeZone */,
@@ -369,23 +383,25 @@
 				BE4FE49F2AEC1A0C00A381FD /* GeocoderService.swift in Sources */,
 				BEF4E7DF2ACF3D890043BE93 /* ViewModel.swift in Sources */,
 				BE4FE4A82AEC1EC900A381FD /* HTTPMethod.swift in Sources */,
-				BE4FE4932AEC08D100A381FD /* APINinjaLocationsRequest.swift in Sources */,
-				BE7DA77B2AE69EDE0016047C /* APINinjaGeodecoderService.swift in Sources */,
+				BE4FE4932AEC08D100A381FD /* APINinjasLocationsRequest.swift in Sources */,
+				BE4FE4BF2AEC4A4300A381FD /* CountryCodes.swift in Sources */,
+				BE7DA77B2AE69EDE0016047C /* APINinjasGeodecoderService.swift in Sources */,
 				BE71B8112ACE9F2B003AA99C /* LocationsView.swift in Sources */,
 				BEF4E7DA2ACF32FE0043BE93 /* AddLocationView.swift in Sources */,
 				BE4FE4B12AEC228200A381FD /* MainTimeZoneRepository.swift in Sources */,
-				BE4FE4952AEC08FB00A381FD /* APINinjaTimeZoneRequest.swift in Sources */,
+				BE4FE4952AEC08FB00A381FD /* APINinjasTimeZoneRequest.swift in Sources */,
 				BE4FE4B52AEC22D800A381FD /* TimeZoneIdentifier.swift in Sources */,
 				BE9F20F62AD04B3800CDC9F4 /* LocationsViewModel.swift in Sources */,
 				BE4FE4AD2AEC21F700A381FD /* AppleGeocoderService.swift in Sources */,
 				BE4FE4AA2AEC1F1000A381FD /* NetworkError.swift in Sources */,
 				BE7DA7872AEA6E550016047C /* Request.swift in Sources */,
-				BE4FE4972AEC098300A381FD /* APINinjaLocation.swift in Sources */,
+				BE4FE4972AEC098300A381FD /* APINinjasLocation.swift in Sources */,
 				BE4FE4A62AEC1E2500A381FD /* NetworkService.swift in Sources */,
 				BE4FE4BC2AEC399E00A381FD /* CLPlacemark+Extensions.swift in Sources */,
 				BE4FE49A2AEC0FEA00A381FD /* TimeZoneService.swift in Sources */,
 				BE4FE49D2AEC187000A381FD /* TimeZoneRepository.swift in Sources */,
 				BE71B8132ACE9F2B003AA99C /* Location.swift in Sources */,
+				BE4FE4C12AEC4DE900A381FD /* APINinjasTimeZoneService.swift in Sources */,
 				BE71B80F2ACE9F2B003AA99C /* MiniWeatherApp.swift in Sources */,
 				BE4FE4A32AEC1D2500A381FD /* LocationsRepository.swift in Sources */,
 				BE7DA77D2AE6B42A0016047C /* StandardNetworkService.swift in Sources */,

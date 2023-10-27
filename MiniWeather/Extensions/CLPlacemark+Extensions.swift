@@ -13,8 +13,8 @@ extension CLPlacemark: LocationProtocol {
         name ?? "Unknown City"
     }
     
-    var state: String {
-        administrativeArea ?? "Unknown State"
+    var state: String? {
+        administrativeArea
     }
     
     var countryName: String {

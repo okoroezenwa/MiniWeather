@@ -18,7 +18,7 @@ struct LocationsView: View {
             List {
                 ForEach(locations) { location in
                     HStack {
-                        Text("\(location.city), \(location.country)")
+                        Text("\(location.city), \(location.state), \(location.country)")
                         
                         Spacer()
                     }
@@ -39,7 +39,7 @@ struct LocationsView: View {
             }
             .overlay {
                 if locations.isEmpty {
-                    ContentUnavailableView("No Cities Added", systemImage: "text.magnifyingglass.rtl", description: Text("Searched cities you add will appear here."))
+                    ContentUnavailableView("No Cities Added", systemImage: "line.horizontal.3.circle", description: Text("Searched cities you add will appear here."))
                 }
             }
         } detail: {
@@ -50,7 +50,10 @@ struct LocationsView: View {
                 adder: .init(
                     locationsRepository: 
                         MainLocationsRepository(
-                            geocodeService: AppleGeocoderService()
+                            geocodeService: APINinjasGeodecoderService(
+                                networkService: StandardNetworkService(urlSession: .shared),
+                                parser: StandardDataParser(decoder: JSONDecoder())
+                            )
                         )
                 )
             )
