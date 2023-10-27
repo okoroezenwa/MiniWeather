@@ -7,10 +7,10 @@
 
 import Foundation
 
-struct MainLocationsRepository: LocationsRepository {
-    private var geocodeService: GeocodeService
+class MainLocationsRepository: LocationsRepository {
+    private var geocodeService: GeocoderService
     
-    init(geocodeService: GeocodeService) {
+    init(geocodeService: GeocoderService) {
         self.geocodeService = geocodeService
     }
     

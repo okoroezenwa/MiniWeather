@@ -7,6 +7,6 @@
 
 import Foundation
 
-protocol GeocodeService {
+protocol GeocoderService {
     func retrieveLocations(named searchText: String) async throws -> [Location]
 }

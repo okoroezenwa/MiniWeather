@@ -7,21 +7,50 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BE4FE4932AEC08D100A381FD /* APINinjaLocationsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE4FE4922AEC08D100A381FD /* APINinjaLocationsRequest.swift */; };
+		BE4FE4952AEC08FB00A381FD /* APINinjaTimeZoneRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE4FE4942AEC08FB00A381FD /* APINinjaTimeZoneRequest.swift */; };
+		BE4FE4972AEC098300A381FD /* APINinjaLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE4FE4962AEC098300A381FD /* APINinjaLocation.swift */; };
+		BE4FE49A2AEC0FEA00A381FD /* TimeZoneService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE4FE4992AEC0FEA00A381FD /* TimeZoneService.swift */; };
+		BE4FE49D2AEC187000A381FD /* TimeZoneRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE4FE49C2AEC187000A381FD /* TimeZoneRepository.swift */; };
+		BE4FE49F2AEC1A0C00A381FD /* GeocoderService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE4FE49E2AEC1A0C00A381FD /* GeocoderService.swift */; };
+		BE4FE4A32AEC1D2500A381FD /* LocationsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE4FE4A22AEC1D2500A381FD /* LocationsRepository.swift */; };
+		BE4FE4A62AEC1E2500A381FD /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE4FE4A52AEC1E2500A381FD /* NetworkService.swift */; };
+		BE4FE4A82AEC1EC900A381FD /* HTTPMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE4FE4A72AEC1EC900A381FD /* HTTPMethod.swift */; };
+		BE4FE4AA2AEC1F1000A381FD /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE4FE4A92AEC1F1000A381FD /* NetworkError.swift */; };
+		BE4FE4AD2AEC21F700A381FD /* AppleGeocoderService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE4FE4AC2AEC21F700A381FD /* AppleGeocoderService.swift */; };
+		BE4FE4B12AEC228200A381FD /* MainTimeZoneRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE4FE4B02AEC228200A381FD /* MainTimeZoneRepository.swift */; };
+		BE4FE4B52AEC22D800A381FD /* TimeZoneIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE4FE4B42AEC22D800A381FD /* TimeZoneIdentifier.swift */; };
+		BE4FE4B82AEC242F00A381FD /* StandardDataParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE4FE4B72AEC242F00A381FD /* StandardDataParser.swift */; };
 		BE71B80F2ACE9F2B003AA99C /* MiniWeatherApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE71B80E2ACE9F2B003AA99C /* MiniWeatherApp.swift */; };
 		BE71B8112ACE9F2B003AA99C /* LocationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE71B8102ACE9F2B003AA99C /* LocationsView.swift */; };
 		BE71B8132ACE9F2B003AA99C /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE71B8122ACE9F2B003AA99C /* Location.swift */; };
 		BE71B8152ACE9F2C003AA99C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BE71B8142ACE9F2C003AA99C /* Assets.xcassets */; };
 		BE71B8182ACE9F2C003AA99C /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BE71B8172ACE9F2C003AA99C /* Preview Assets.xcassets */; };
-		BE9F20F22AD002AF00CDC9F4 /* MainGeocodeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9F20F12AD002AF00CDC9F4 /* MainGeocodeService.swift */; };
-		BE9F20F42AD006C500CDC9F4 /* LocationsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9F20F32AD006C500CDC9F4 /* LocationsRepository.swift */; };
+		BE7DA77B2AE69EDE0016047C /* APINinjaGeodecoderService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE7DA77A2AE69EDE0016047C /* APINinjaGeodecoderService.swift */; };
+		BE7DA77D2AE6B42A0016047C /* StandardNetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE7DA77C2AE6B42A0016047C /* StandardNetworkService.swift */; };
+		BE7DA7852AE99D800016047C /* DataParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE7DA7842AE99D800016047C /* DataParser.swift */; };
+		BE7DA7872AEA6E550016047C /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE7DA7862AEA6E540016047C /* Request.swift */; };
 		BE9F20F62AD04B3800CDC9F4 /* LocationsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9F20F52AD04B3800CDC9F4 /* LocationsViewModel.swift */; };
 		BE9F20F82AD0624A00CDC9F4 /* MainLocationsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9F20F72AD0624A00CDC9F4 /* MainLocationsRepository.swift */; };
 		BEF4E7DA2ACF32FE0043BE93 /* AddLocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF4E7D92ACF32FE0043BE93 /* AddLocationView.swift */; };
 		BEF4E7DF2ACF3D890043BE93 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF4E7DE2ACF3D890043BE93 /* ViewModel.swift */; };
-		BEF4E7E62ACFFB4E0043BE93 /* GeocoderService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF4E7E52ACFFB4E0043BE93 /* GeocoderService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		BE4FE4922AEC08D100A381FD /* APINinjaLocationsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APINinjaLocationsRequest.swift; sourceTree = "<group>"; };
+		BE4FE4942AEC08FB00A381FD /* APINinjaTimeZoneRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APINinjaTimeZoneRequest.swift; sourceTree = "<group>"; };
+		BE4FE4962AEC098300A381FD /* APINinjaLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APINinjaLocation.swift; sourceTree = "<group>"; };
+		BE4FE4992AEC0FEA00A381FD /* TimeZoneService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeZoneService.swift; sourceTree = "<group>"; };
+		BE4FE49C2AEC187000A381FD /* TimeZoneRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeZoneRepository.swift; sourceTree = "<group>"; };
+		BE4FE49E2AEC1A0C00A381FD /* GeocoderService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeocoderService.swift; sourceTree = "<group>"; };
+		BE4FE4A22AEC1D2500A381FD /* LocationsRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationsRepository.swift; sourceTree = "<group>"; };
+		BE4FE4A52AEC1E2500A381FD /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
+		BE4FE4A72AEC1EC900A381FD /* HTTPMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPMethod.swift; sourceTree = "<group>"; };
+		BE4FE4A92AEC1F1000A381FD /* NetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
+		BE4FE4AC2AEC21F700A381FD /* AppleGeocoderService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppleGeocoderService.swift; sourceTree = "<group>"; };
+		BE4FE4B02AEC228200A381FD /* MainTimeZoneRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTimeZoneRepository.swift; sourceTree = "<group>"; };
+		BE4FE4B42AEC22D800A381FD /* TimeZoneIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeZoneIdentifier.swift; sourceTree = "<group>"; };
+		BE4FE4B72AEC242F00A381FD /* StandardDataParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandardDataParser.swift; sourceTree = "<group>"; };
 		BE71B80B2ACE9F2B003AA99C /* MiniWeather.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MiniWeather.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE71B80E2ACE9F2B003AA99C /* MiniWeatherApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiniWeatherApp.swift; sourceTree = "<group>"; };
 		BE71B8102ACE9F2B003AA99C /* LocationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationsView.swift; sourceTree = "<group>"; };
@@ -30,13 +59,14 @@
 		BE71B8172ACE9F2C003AA99C /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		BE71B8192ACE9F2C003AA99C /* MiniWeather.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MiniWeather.entitlements; sourceTree = "<group>"; };
 		BE71B81A2ACE9F2C003AA99C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		BE9F20F12AD002AF00CDC9F4 /* MainGeocodeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainGeocodeService.swift; sourceTree = SOURCE_ROOT; };
-		BE9F20F32AD006C500CDC9F4 /* LocationsRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationsRepository.swift; sourceTree = SOURCE_ROOT; };
+		BE7DA77A2AE69EDE0016047C /* APINinjaGeodecoderService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APINinjaGeodecoderService.swift; sourceTree = "<group>"; };
+		BE7DA77C2AE6B42A0016047C /* StandardNetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandardNetworkService.swift; sourceTree = "<group>"; };
+		BE7DA7842AE99D800016047C /* DataParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataParser.swift; sourceTree = "<group>"; };
+		BE7DA7862AEA6E540016047C /* Request.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
 		BE9F20F52AD04B3800CDC9F4 /* LocationsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationsViewModel.swift; sourceTree = "<group>"; };
 		BE9F20F72AD0624A00CDC9F4 /* MainLocationsRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainLocationsRepository.swift; sourceTree = "<group>"; };
 		BEF4E7D92ACF32FE0043BE93 /* AddLocationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddLocationView.swift; sourceTree = "<group>"; };
 		BEF4E7DE2ACF3D890043BE93 /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
-		BEF4E7E52ACFFB4E0043BE93 /* GeocoderService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = GeocoderService.swift; path = "Add Location/Views/GeocoderService.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -50,6 +80,118 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		BE4FE4982AEC0C3C00A381FD /* Requests */ = {
+			isa = PBXGroup;
+			children = (
+				BE7DA7862AEA6E540016047C /* Request.swift */,
+				BE4FE4922AEC08D100A381FD /* APINinjaLocationsRequest.swift */,
+				BE4FE4942AEC08FB00A381FD /* APINinjaTimeZoneRequest.swift */,
+			);
+			path = Requests;
+			sourceTree = "<group>";
+		};
+		BE4FE49B2AEC12EB00A381FD /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				BEF4E7DD2ACF3D770043BE93 /* Add Location */,
+				BEF4E7E02ACF41A10043BE93 /* Locations */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		BE4FE4A02AEC1AA800A381FD /* Location & Geocoding */ = {
+			isa = PBXGroup;
+			children = (
+				BE4FE4AE2AEC220F00A381FD /* Models */,
+				BE4FE4AF2AEC221F00A381FD /* Repository */,
+				BE4FE4AB2AEC21CF00A381FD /* Service */,
+			);
+			path = "Location & Geocoding";
+			sourceTree = "<group>";
+		};
+		BE4FE4A12AEC1AB500A381FD /* TimeZone */ = {
+			isa = PBXGroup;
+			children = (
+				BE4FE4B62AEC22F300A381FD /* Models */,
+				BE4FE4B32AEC22B900A381FD /* Repository */,
+				BE4FE4B22AEC22AB00A381FD /* Service */,
+			);
+			path = TimeZone;
+			sourceTree = "<group>";
+		};
+		BE4FE4A42AEC1E1200A381FD /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				BE4FE4A72AEC1EC900A381FD /* HTTPMethod.swift */,
+				BE4FE4A92AEC1F1000A381FD /* NetworkError.swift */,
+				BE4FE4A52AEC1E2500A381FD /* NetworkService.swift */,
+				BE7DA77C2AE6B42A0016047C /* StandardNetworkService.swift */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		BE4FE4AB2AEC21CF00A381FD /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				BE4FE49E2AEC1A0C00A381FD /* GeocoderService.swift */,
+				BE4FE4AC2AEC21F700A381FD /* AppleGeocoderService.swift */,
+				BE7DA77A2AE69EDE0016047C /* APINinjaGeodecoderService.swift */,
+			);
+			path = Service;
+			sourceTree = "<group>";
+		};
+		BE4FE4AE2AEC220F00A381FD /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				BE71B8122ACE9F2B003AA99C /* Location.swift */,
+				BE4FE4962AEC098300A381FD /* APINinjaLocation.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		BE4FE4AF2AEC221F00A381FD /* Repository */ = {
+			isa = PBXGroup;
+			children = (
+				BE4FE4A22AEC1D2500A381FD /* LocationsRepository.swift */,
+				BE9F20F72AD0624A00CDC9F4 /* MainLocationsRepository.swift */,
+			);
+			path = Repository;
+			sourceTree = "<group>";
+		};
+		BE4FE4B22AEC22AB00A381FD /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				BE4FE4992AEC0FEA00A381FD /* TimeZoneService.swift */,
+			);
+			path = Service;
+			sourceTree = "<group>";
+		};
+		BE4FE4B32AEC22B900A381FD /* Repository */ = {
+			isa = PBXGroup;
+			children = (
+				BE4FE49C2AEC187000A381FD /* TimeZoneRepository.swift */,
+				BE4FE4B02AEC228200A381FD /* MainTimeZoneRepository.swift */,
+			);
+			path = Repository;
+			sourceTree = "<group>";
+		};
+		BE4FE4B62AEC22F300A381FD /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				BE4FE4B42AEC22D800A381FD /* TimeZoneIdentifier.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		BE4FE4B92AEC249200A381FD /* Parser */ = {
+			isa = PBXGroup;
+			children = (
+				BE7DA7842AE99D800016047C /* DataParser.swift */,
+				BE4FE4B72AEC242F00A381FD /* StandardDataParser.swift */,
+			);
+			path = Parser;
+			sourceTree = "<group>";
+		};
 		BE71B8022ACE9F2B003AA99C = {
 			isa = PBXGroup;
 			children = (
@@ -69,12 +211,13 @@
 		BE71B80D2ACE9F2B003AA99C /* MiniWeather */ = {
 			isa = PBXGroup;
 			children = (
-				BE9F20F32AD006C500CDC9F4 /* LocationsRepository.swift */,
-				BE9F20F12AD002AF00CDC9F4 /* MainGeocodeService.swift */,
-				BEF4E7E52ACFFB4E0043BE93 /* GeocoderService.swift */,
+				BE4FE49B2AEC12EB00A381FD /* UI */,
+				BE4FE4A12AEC1AB500A381FD /* TimeZone */,
+				BE4FE4A02AEC1AA800A381FD /* Location & Geocoding */,
+				BE4FE4A42AEC1E1200A381FD /* Network */,
+				BE4FE4982AEC0C3C00A381FD /* Requests */,
+				BE4FE4B92AEC249200A381FD /* Parser */,
 				BE71B80E2ACE9F2B003AA99C /* MiniWeatherApp.swift */,
-				BEF4E7E02ACF41A10043BE93 /* Locations */,
-				BEF4E7DD2ACF3D770043BE93 /* Add Location */,
 				BE71B8142ACE9F2C003AA99C /* Assets.xcassets */,
 				BE71B8192ACE9F2C003AA99C /* MiniWeather.entitlements */,
 				BE71B81A2ACE9F2C003AA99C /* Info.plist */,
@@ -112,7 +255,6 @@
 		BEF4E7E12ACF41AE0043BE93 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				BE71B8122ACE9F2B003AA99C /* Location.swift */,
 				BE9F20F52AD04B3800CDC9F4 /* LocationsViewModel.swift */,
 			);
 			path = Models;
@@ -122,7 +264,6 @@
 			isa = PBXGroup;
 			children = (
 				BEF4E7D92ACF32FE0043BE93 /* AddLocationView.swift */,
-				BE9F20F72AD0624A00CDC9F4 /* MainLocationsRepository.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -213,15 +354,30 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BE9F20F42AD006C500CDC9F4 /* LocationsRepository.swift in Sources */,
+				BE4FE4B82AEC242F00A381FD /* StandardDataParser.swift in Sources */,
+				BE4FE49F2AEC1A0C00A381FD /* GeocoderService.swift in Sources */,
 				BEF4E7DF2ACF3D890043BE93 /* ViewModel.swift in Sources */,
+				BE4FE4A82AEC1EC900A381FD /* HTTPMethod.swift in Sources */,
+				BE4FE4932AEC08D100A381FD /* APINinjaLocationsRequest.swift in Sources */,
+				BE7DA77B2AE69EDE0016047C /* APINinjaGeodecoderService.swift in Sources */,
 				BE71B8112ACE9F2B003AA99C /* LocationsView.swift in Sources */,
 				BEF4E7DA2ACF32FE0043BE93 /* AddLocationView.swift in Sources */,
+				BE4FE4B12AEC228200A381FD /* MainTimeZoneRepository.swift in Sources */,
+				BE4FE4952AEC08FB00A381FD /* APINinjaTimeZoneRequest.swift in Sources */,
+				BE4FE4B52AEC22D800A381FD /* TimeZoneIdentifier.swift in Sources */,
 				BE9F20F62AD04B3800CDC9F4 /* LocationsViewModel.swift in Sources */,
-				BEF4E7E62ACFFB4E0043BE93 /* GeocoderService.swift in Sources */,
-				BE9F20F22AD002AF00CDC9F4 /* MainGeocodeService.swift in Sources */,
+				BE4FE4AD2AEC21F700A381FD /* AppleGeocoderService.swift in Sources */,
+				BE4FE4AA2AEC1F1000A381FD /* NetworkError.swift in Sources */,
+				BE7DA7872AEA6E550016047C /* Request.swift in Sources */,
+				BE4FE4972AEC098300A381FD /* APINinjaLocation.swift in Sources */,
+				BE4FE4A62AEC1E2500A381FD /* NetworkService.swift in Sources */,
+				BE4FE49A2AEC0FEA00A381FD /* TimeZoneService.swift in Sources */,
+				BE4FE49D2AEC187000A381FD /* TimeZoneRepository.swift in Sources */,
 				BE71B8132ACE9F2B003AA99C /* Location.swift in Sources */,
 				BE71B80F2ACE9F2B003AA99C /* MiniWeatherApp.swift in Sources */,
+				BE4FE4A32AEC1D2500A381FD /* LocationsRepository.swift in Sources */,
+				BE7DA77D2AE6B42A0016047C /* StandardNetworkService.swift in Sources */,
+				BE7DA7852AE99D800016047C /* DataParser.swift in Sources */,
 				BE9F20F82AD0624A00CDC9F4 /* MainLocationsRepository.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -354,6 +510,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = MiniWeather/MiniWeather.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"MiniWeather/Preview Content\"";
@@ -373,6 +530,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.okoroezenwa.MiniWeather;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -385,6 +543,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = MiniWeather/MiniWeather.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"MiniWeather/Preview Content\"";
@@ -404,6 +563,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.okoroezenwa.MiniWeather;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

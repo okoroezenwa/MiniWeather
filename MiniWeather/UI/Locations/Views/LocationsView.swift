@@ -37,6 +37,11 @@ struct LocationsView: View {
                     EditButton()
                 }
             }
+            .overlay {
+                if locations.isEmpty {
+                    ContentUnavailableView("No Cities Added", systemImage: "text.magnifyingglass.rtl", description: Text("Searched cities you add will appear here."))
+                }
+            }
         } detail: {
             
         }
@@ -45,7 +50,7 @@ struct LocationsView: View {
                 adder: .init(
                     locationsRepository: 
                         MainLocationsRepository(
-                            geocodeService: MainGeocodeService()
+                            geocodeService: AppleGeocoderService()
                         )
                 )
             )

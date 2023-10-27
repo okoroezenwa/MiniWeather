@@ -58,7 +58,7 @@ struct AddLocationView: View {
     AddLocationView(
         adder: .init(
             locationsRepository: MainLocationsRepository(
-                geocodeService: MainGeocodeService()
+                geocodeService: AppleGeocoderService()
             )
         )
     )
