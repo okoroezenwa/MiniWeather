@@ -15,7 +15,6 @@ protocol Request {
     var queryItems: [String: String] { get }
 }
 
-// 4
 extension Request {
     var headers: [String: String] {
         [:]

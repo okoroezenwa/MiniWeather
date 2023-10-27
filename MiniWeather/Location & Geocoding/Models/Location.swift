@@ -7,7 +7,6 @@
 
 import Foundation
 import SwiftData
-import CoreLocation
 
 @Model
 final class Location: Identifiable {
@@ -59,26 +58,4 @@ protocol LocationProtocol {
     var countryName: String { get }
     var latitude: Double { get }
     var longitude: Double { get }
-}
-
-extension CLPlacemark: LocationProtocol {
-    var city: String {
-        name ?? "Unknown City"
-    }
-    
-    var state: String {
-        administrativeArea ?? "Unknown State"
-    }
-    
-    var countryName: String {
-        country ?? "Unknown Country"
-    }
-    
-    var latitude: Double {
-        location?.coordinate.latitude ?? 0
-    }
-    
-    var longitude: Double {
-        location?.coordinate.longitude ?? 0
-    }
 }

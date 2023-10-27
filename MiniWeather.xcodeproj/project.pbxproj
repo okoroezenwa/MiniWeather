@@ -21,6 +21,7 @@
 		BE4FE4B12AEC228200A381FD /* MainTimeZoneRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE4FE4B02AEC228200A381FD /* MainTimeZoneRepository.swift */; };
 		BE4FE4B52AEC22D800A381FD /* TimeZoneIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE4FE4B42AEC22D800A381FD /* TimeZoneIdentifier.swift */; };
 		BE4FE4B82AEC242F00A381FD /* StandardDataParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE4FE4B72AEC242F00A381FD /* StandardDataParser.swift */; };
+		BE4FE4BC2AEC399E00A381FD /* CLPlacemark+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE4FE4BB2AEC399E00A381FD /* CLPlacemark+Extensions.swift */; };
 		BE71B80F2ACE9F2B003AA99C /* MiniWeatherApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE71B80E2ACE9F2B003AA99C /* MiniWeatherApp.swift */; };
 		BE71B8112ACE9F2B003AA99C /* LocationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE71B8102ACE9F2B003AA99C /* LocationsView.swift */; };
 		BE71B8132ACE9F2B003AA99C /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE71B8122ACE9F2B003AA99C /* Location.swift */; };
@@ -51,6 +52,7 @@
 		BE4FE4B02AEC228200A381FD /* MainTimeZoneRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTimeZoneRepository.swift; sourceTree = "<group>"; };
 		BE4FE4B42AEC22D800A381FD /* TimeZoneIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeZoneIdentifier.swift; sourceTree = "<group>"; };
 		BE4FE4B72AEC242F00A381FD /* StandardDataParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandardDataParser.swift; sourceTree = "<group>"; };
+		BE4FE4BB2AEC399E00A381FD /* CLPlacemark+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CLPlacemark+Extensions.swift"; sourceTree = "<group>"; };
 		BE71B80B2ACE9F2B003AA99C /* MiniWeather.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MiniWeather.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE71B80E2ACE9F2B003AA99C /* MiniWeatherApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiniWeatherApp.swift; sourceTree = "<group>"; };
 		BE71B8102ACE9F2B003AA99C /* LocationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationsView.swift; sourceTree = "<group>"; };
@@ -192,6 +194,14 @@
 			path = Parser;
 			sourceTree = "<group>";
 		};
+		BE4FE4BA2AEC397000A381FD /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				BE4FE4BB2AEC399E00A381FD /* CLPlacemark+Extensions.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		BE71B8022ACE9F2B003AA99C = {
 			isa = PBXGroup;
 			children = (
@@ -211,6 +221,7 @@
 		BE71B80D2ACE9F2B003AA99C /* MiniWeather */ = {
 			isa = PBXGroup;
 			children = (
+				BE4FE4BA2AEC397000A381FD /* Extensions */,
 				BE4FE49B2AEC12EB00A381FD /* UI */,
 				BE4FE4A12AEC1AB500A381FD /* TimeZone */,
 				BE4FE4A02AEC1AA800A381FD /* Location & Geocoding */,
@@ -371,6 +382,7 @@
 				BE7DA7872AEA6E550016047C /* Request.swift in Sources */,
 				BE4FE4972AEC098300A381FD /* APINinjaLocation.swift in Sources */,
 				BE4FE4A62AEC1E2500A381FD /* NetworkService.swift in Sources */,
+				BE4FE4BC2AEC399E00A381FD /* CLPlacemark+Extensions.swift in Sources */,
 				BE4FE49A2AEC0FEA00A381FD /* TimeZoneService.swift in Sources */,
 				BE4FE49D2AEC187000A381FD /* TimeZoneRepository.swift in Sources */,
 				BE71B8132ACE9F2B003AA99C /* Location.swift in Sources */,

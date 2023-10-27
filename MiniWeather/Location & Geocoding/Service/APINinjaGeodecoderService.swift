@@ -16,7 +16,7 @@ struct APINinjaGeodecoderService: GeocoderService {
             queryItems: ["city": searchText],
             headers: ["X-Api-Key": "S7/jrjbcI+0knImPq9dH9Q==lNZI74iBzjtGlZjR"]
         )
-                
+        
         do {
             let data = try await networkService.getData(from: locationsRequest)
             let locations: [APINinjaLocation] = try parser.decode(data)
