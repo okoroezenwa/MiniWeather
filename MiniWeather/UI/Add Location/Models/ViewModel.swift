@@ -13,11 +13,15 @@ import Combine
 @Observable class LocationsAdder {
     var searchString = ""
     var locations = [Location]()
-    var locationsRepository: LocationsRepository
+    var locationsRepositoryFactory: () -> LocationsRepository
+    var timeZoneRepositoryFactory: () -> TimeZoneRepository
     private var searchCancellable: AnyCancellable?
     
-    init(locationsRepository: LocationsRepository) {
-        self.locationsRepository = locationsRepository
+    init(locationsRepositoryFactory: @escaping () -> LocationsRepository,
+         timeZoneRepositoryFactory: @escaping () -> TimeZoneRepository
+    ) {
+        self.locationsRepositoryFactory = locationsRepositoryFactory
+        self.timeZoneRepositoryFactory = timeZoneRepositoryFactory
     }
     
     func add(_ location: Location, to modelContext: ModelContext) {
@@ -31,6 +35,7 @@ import Combine
         }
         
         Task {
+            let locationsRepository = locationsRepositoryFactory()
             let locations = try await locationsRepository.getLocations(named: query)
             
             await MainActor.run {
@@ -42,9 +47,21 @@ import Combine
     private func performSearch(for query: String) {
         searchCancellable?.cancel()
         searchCancellable = Just(query)
-            .debounce(for: .milliseconds(500), scheduler: DispatchQueue.main)
+            .debounce(for: .milliseconds(500), 
+                      scheduler: DispatchQueue.main
+            )
             .sink { searchQuery in
                 self.search(for: searchQuery)
             }
+    }
+    
+    func getNewLocationWithUpdatedTimeZone(for location: Location) async throws -> Location {
+        let timeZoneRepository = timeZoneRepositoryFactory()
+        let coordinates = CLLocationCoordinate2D(
+            latitude: location.latitude,
+            longitude: location.longitude
+        )
+        let identifier = try await timeZoneRepository.getTimeZone(at: coordinates)
+        return Location(city: location.city, state: location.state, country: location.country, nickname: location.nickname, note: location.note, timeZone: identifier.name, latitide: location.latitude, longitude: location.longitude)
     }
 }

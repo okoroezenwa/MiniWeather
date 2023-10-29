@@ -48,7 +48,8 @@ struct LocationsView: View {
         .sheet(isPresented: $isAddLocationViewVisible) {
             AddLocationView(
                 adder: .init(
-                    locationsRepository: DependencyFactory.shared.makeLocationsRepository()
+                    locationsRepositoryFactory: DependencyFactory.shared.makeLocationsRepository,
+                    timeZoneRepositoryFactory: DependencyFactory.shared.makeTimeZoneRepository
                 )
             )
         }

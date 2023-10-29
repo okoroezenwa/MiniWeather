@@ -13,7 +13,7 @@ struct AppleGeocoderService: GeocoderService {
         let geocoder = CLGeocoder()
         do {
             let placemarks = try await geocoder.geocodeAddressString(searchText)
-            return placemarks.map { Location(locationObject: $0, timeZoneIdentifier: $0.timeZone?.identifier ?? TimeZone.autoupdatingCurrent.identifier) }
+            return placemarks.map { Location(locationObject: $0, timeZoneIdentifier: $0.timeZone?.identifier ?? "") }
         } catch let error {
             throw error
         }

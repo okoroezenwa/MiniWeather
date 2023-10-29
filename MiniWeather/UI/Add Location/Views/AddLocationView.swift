@@ -34,8 +34,17 @@ struct AddLocationView: View {
                         }
                         .contentShape(Rectangle())
                         .onTapGesture {
-                            adder.add(location, to: modelContext)
-                            dismiss()
+                            Task {
+                                var newLocation = location
+                                if location.timeZone.isEmpty {
+                                    newLocation = try await adder.getNewLocationWithUpdatedTimeZone(for: location)
+                                }
+                                
+                                await MainActor.run {
+                                    adder.add(newLocation, to: modelContext)
+                                    dismiss()
+                                }
+                            }
                         }
                         .listRowInsets(EdgeInsets(top: 0, leading: 4, bottom: 0, trailing: 4))
                     }
@@ -58,7 +67,8 @@ struct AddLocationView: View {
 #Preview {
     AddLocationView(
         adder: .init(
-            locationsRepository: DependencyFactory.shared.makeLocationsRepository()
+            locationsRepositoryFactory: DependencyFactory.shared.makeLocationsRepository,
+            timeZoneRepositoryFactory: DependencyFactory.shared.makeTimeZoneRepository
         )
     )
 }

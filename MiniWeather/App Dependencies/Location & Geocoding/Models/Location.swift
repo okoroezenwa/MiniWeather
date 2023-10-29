@@ -17,7 +17,7 @@ final class Location: Identifiable {
     let country: String
     var nickname: String
     var note: String?
-    let timeZone: String
+    var timeZone: String
     let longitude: Double
     let latitude: Double
     
