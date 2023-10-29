@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CoreLocation
 
 protocol TimeZoneService {
     func getTimeZone(at coordinates: CLLocationCoordinate2D) async throws -> TimeZoneIdentifier

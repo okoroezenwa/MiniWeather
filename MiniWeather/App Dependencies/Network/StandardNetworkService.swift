@@ -8,7 +8,7 @@
 import Foundation
 
 class StandardNetworkService: NetworkService {
-    let urlSession: URLSession
+    private let urlSession: URLSession
     
     init(urlSession: URLSession) {
         self.urlSession = urlSession

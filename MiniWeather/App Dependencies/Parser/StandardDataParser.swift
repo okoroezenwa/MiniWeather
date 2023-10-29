@@ -8,7 +8,7 @@
 import Foundation
 
 class StandardDataParser: DataParser {
-    let decoder: JSONDecoder
+    private let decoder: JSONDecoder
     
     init(decoder: JSONDecoder) {
         self.decoder = decoder

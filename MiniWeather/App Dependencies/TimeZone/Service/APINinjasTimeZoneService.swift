@@ -9,8 +9,8 @@ import Foundation
 import CoreLocation
 
 class APINinjasTimeZoneService: TimeZoneService {
-    let networkService: NetworkService
-    let parser: DataParser
+    private let networkService: NetworkService
+    private let parser: DataParser
     
     init(networkService: NetworkService, parser: DataParser) {
         self.networkService = networkService

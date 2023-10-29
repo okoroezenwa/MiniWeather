@@ -9,7 +9,7 @@ import Foundation
 import CoreLocation
 
 class MainTimeZoneRepository: TimeZoneRepository {
-    let service: TimeZoneService
+    private let service: TimeZoneService
     
     init(service: TimeZoneService) {
         self.service = service

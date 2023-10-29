@@ -48,13 +48,7 @@ struct LocationsView: View {
         .sheet(isPresented: $isAddLocationViewVisible) {
             AddLocationView(
                 adder: .init(
-                    locationsRepository: 
-                        MainLocationsRepository(
-                            geocodeService: APINinjasGeodecoderService(
-                                networkService: StandardNetworkService(urlSession: .shared),
-                                parser: StandardDataParser(decoder: JSONDecoder())
-                            )
-                        )
+                    locationsRepository: DependencyFactory.shared.makeLocationsRepository()
                 )
             )
         }
