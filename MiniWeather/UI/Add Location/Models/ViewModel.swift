@@ -13,15 +13,18 @@ import Combine
 @Observable class LocationsAdder {
     var searchString = ""
     var locations = [Location]()
-    var locationsRepositoryFactory: () -> LocationsRepository
-    var timeZoneRepositoryFactory: () -> TimeZoneRepository
+    private let locationsRepositoryFactory: () -> LocationsRepository
+    private let timeZoneRepositoryFactory: () -> TimeZoneRepository
+    private let weatherRepositoryFactory: () -> WeatherRepository
     private var searchCancellable: AnyCancellable?
     
     init(locationsRepositoryFactory: @escaping () -> LocationsRepository,
-         timeZoneRepositoryFactory: @escaping () -> TimeZoneRepository
+         timeZoneRepositoryFactory: @escaping () -> TimeZoneRepository,
+         weatherRepositoryFactory: @escaping () -> WeatherRepository
     ) {
         self.locationsRepositoryFactory = locationsRepositoryFactory
         self.timeZoneRepositoryFactory = timeZoneRepositoryFactory
+        self.weatherRepositoryFactory = weatherRepositoryFactory
     }
     
     func add(_ location: Location, to modelContext: ModelContext) {
@@ -62,6 +65,16 @@ import Combine
             longitude: location.longitude
         )
         let identifier = try await timeZoneRepository.getTimeZone(at: coordinates)
-        return Location(city: location.city, state: location.state, country: location.country, nickname: location.nickname, note: location.note, timeZone: identifier.name, latitide: location.latitude, longitude: location.longitude)
+        return Location(locationObject: location, timeZoneIdentifier: identifier.name)
+    }
+    
+    func getWeather(for location: Location) async throws -> Weather {
+        let weatherRepository = weatherRepositoryFactory()
+        let coordinates = CLLocationCoordinate2D(
+            latitude: location.latitude,
+            longitude: location.longitude
+        )
+        
+        return try await weatherRepository.getWeather(for: coordinates)
     }
 }

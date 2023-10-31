@@ -34,6 +34,10 @@ class DependencyFactory {
         MainTimeZoneRepository(service: makeAPINinjasTimeZoneService())
     }
     
+    public func makeWeatherRepository() -> WeatherRepository {
+        MainWeatherRepository(weatherService: makeAPINinjasWeatherService())
+    }
+    
     private func makeAppleGeocoderService() -> GeocoderService {
         AppleGeocoderService()
     }
@@ -47,6 +51,13 @@ class DependencyFactory {
     
     private func makeAPINinjasTimeZoneService() -> TimeZoneService {
         APINinjasTimeZoneService(
+            networkService: networkService,
+            parser: parser
+        )
+    }
+    
+    private func makeAPINinjasWeatherService() -> WeatherService {
+        APINinjasWeatherService(
             networkService: networkService,
             parser: parser
         )

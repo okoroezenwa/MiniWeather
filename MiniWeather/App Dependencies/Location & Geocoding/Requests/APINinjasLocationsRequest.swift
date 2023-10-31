@@ -11,5 +11,5 @@ struct APINinjasLocationsRequest: Request {
     var host = "api.api-ninjas.com"
     var path = "/v1/geocoding"
     var queryItems: [String: String]
-    var headers: [String : String]
+    var headers: [String: String]
 }

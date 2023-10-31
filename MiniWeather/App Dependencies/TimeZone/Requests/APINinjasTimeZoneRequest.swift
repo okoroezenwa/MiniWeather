@@ -10,6 +10,6 @@ import Foundation
 struct APINinjasTimeZoneRequest: Request {
     var host = "api.api-ninjas.com"
     var path = "/v1/timezone"
-    var queryItems: [String: Any]
-    var headers: [String : String]
+    var queryItems: [String: String]
+    var headers: [String: String]
 }

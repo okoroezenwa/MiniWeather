@@ -11,6 +11,8 @@ struct AddLocationView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
     @Bindable var adder: LocationsAdder
+    @Binding var addedLocation: [(location: Location, weather: Weather)]
+    @FocusState private var isFocused
     
     var body: some View {
         NavigationStack {
@@ -23,11 +25,15 @@ struct AddLocationView: View {
                 .onChange(of: adder.searchString) { oldValue, newValue in
                     adder.search(for: newValue)
                 }
+                .focused($isFocused)
+                .onAppear {
+                    isFocused = true
+                }
                 
                 List {
                     ForEach(adder.locations) { location in
                         HStack {
-                            Text("\(location.city), \(location.state), \(location.country)")
+                            Text(location.fullName)
                                 .lineLimit(1)
                             
                             Spacer()
@@ -39,6 +45,9 @@ struct AddLocationView: View {
                                 if location.timeZone.isEmpty {
                                     newLocation = try await adder.getNewLocationWithUpdatedTimeZone(for: location)
                                 }
+                                
+                                let weather = try await adder.getWeather(for: location)
+                                addedLocation.append((newLocation, weather))
                                 
                                 await MainActor.run {
                                     adder.add(newLocation, to: modelContext)
@@ -68,7 +77,12 @@ struct AddLocationView: View {
     AddLocationView(
         adder: .init(
             locationsRepositoryFactory: DependencyFactory.shared.makeLocationsRepository,
-            timeZoneRepositoryFactory: DependencyFactory.shared.makeTimeZoneRepository
+            timeZoneRepositoryFactory: DependencyFactory.shared.makeTimeZoneRepository,
+            weatherRepositoryFactory: DependencyFactory.shared.makeWeatherRepository
+        ), 
+        addedLocation: Binding(
+            get: { [] },
+            set: { _ in }
         )
     )
 }

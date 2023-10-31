@@ -22,11 +22,32 @@ struct MiniWeatherApp: App {
             fatalError("Could not create ModelContainer: \(error)")
         }
     }()
+    let timeFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.amSymbol = "am"
+        formatter.pmSymbol = "pm"
+        formatter.dateFormat = "H:mm a"
+        
+        return formatter
+    }()
 
     var body: some Scene {
         WindowGroup {
             LocationsView()
+                .environment(\.timeFormatter, timeFormatter)
         }
         .modelContainer(sharedModelContainer)
+    }
+}
+
+
+private struct TimeFormatterKey: EnvironmentKey {
+    static let defaultValue: DateFormatter = DateFormatter()
+}
+
+extension EnvironmentValues {
+    var timeFormatter: DateFormatter {
+        get { self[TimeFormatterKey.self] }
+        set { self[TimeFormatterKey.self] = newValue }
     }
 }

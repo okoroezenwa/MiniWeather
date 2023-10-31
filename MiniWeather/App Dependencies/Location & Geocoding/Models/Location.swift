@@ -8,12 +8,20 @@
 import Foundation
 import SwiftData
 
+protocol LocationProtocol {
+    var city: String { get }
+    var state: String? { get }
+    var countryName: String { get }
+    var latitude: Double { get }
+    var longitude: Double { get }
+}
+
 @Model
-final class Location: Identifiable {
+final class Location: Identifiable, LocationProtocol {
     let id = UUID()
     let timestamp = Date.now
     let city: String
-    let state: String
+    let state: String?
     let country: String
     var nickname: String
     var note: String?
@@ -22,7 +30,7 @@ final class Location: Identifiable {
     let latitude: Double
     
     init(city: String,
-         state: String,
+         state: String?,
          country: String,
          nickname: String,
          note: String?,
@@ -44,7 +52,7 @@ final class Location: Identifiable {
         let city = locationObject.city
         self.city = city
         self.nickname = city
-        self.state = locationObject.state ?? "Unknown State"
+        self.state = locationObject.state
         self.country = locationObject.countryName
         self.latitude = locationObject.latitude
         self.longitude = locationObject.longitude
@@ -52,10 +60,29 @@ final class Location: Identifiable {
     }
 }
 
-protocol LocationProtocol {
-    var city: String { get }
-    var state: String? { get }
-    var countryName: String { get }
-    var latitude: Double { get }
-    var longitude: Double { get }
+extension Location {
+    var countryName: String {
+        country
+    }
+    
+    var fullName: String {
+        var name = city
+        
+        if let state {
+            name += ", \(state)"
+        }
+        
+        name += ", \(country)"
+        
+        return name
+    }
+    
+    var actualTimeZone: TimeZone {
+        return TimeZone(identifier: timeZone) ?? .gmt
+    }
+    
+    func currentDateString(with formatter: DateFormatter) -> String {
+        formatter.timeZone = actualTimeZone
+        return formatter.string(from: Date.now)
+    }
 }

@@ -3,4 +3,54 @@
    uuid = "775C7973-F08D-4A46-9CA3-21DF13833361"
    type = "1"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "0637043C-D3C5-4E51-A36C-9BD4B188AFE7"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MiniWeather/App Dependencies/Parser/StandardDataParser.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "21"
+            endingLineNumber = "21"
+            landmarkName = "decode(_:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "0637043C-D3C5-4E51-A36C-9BD4B188AFE7 - e6615f8091b281b2"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "MiniWeather.StandardDataParser.decode&lt;&#x3c4;_0_0 where &#x3c4;_0_0: Swift.Decodable&gt;(Foundation.Data) throws -&gt; &#x3c4;_0_0"
+                  moduleName = "MiniWeather"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/okoroezenwa/repos/MiniWeather/MiniWeather/App%20Dependencies/Parser/StandardDataParser.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "21"
+                  endingLineNumber = "21"
+                  offsetFromSymbolStart = "204">
+               </Location>
+               <Location
+                  uuid = "0637043C-D3C5-4E51-A36C-9BD4B188AFE7 - e6615f8091b281b2"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "MiniWeather.StandardDataParser.decode&lt;&#x3c4;_0_0 where &#x3c4;_0_0: Swift.Decodable&gt;(Foundation.Data) throws -&gt; &#x3c4;_0_0"
+                  moduleName = "MiniWeather"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/okoroezenwa/repos/MiniWeather/MiniWeather/App%20Dependencies/Parser/StandardDataParser.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "21"
+                  endingLineNumber = "21"
+                  offsetFromSymbolStart = "260">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>

@@ -1,14 +1,14 @@
 //
-//  APINinjasTimeZoneService.swift
+//  APINinjasWeatherService.swift
 //  MiniWeather
 //
-//  Created by Ezenwa Okoro on 27/10/2023.
+//  Created by Ezenwa Okoro on 31/10/2023.
 //
 
 import Foundation
 import CoreLocation
 
-class APINinjasTimeZoneService: TimeZoneService {
+class APINinjasWeatherService: WeatherService {
     private let networkService: NetworkService
     private let parser: DataParser
     
@@ -17,8 +17,8 @@ class APINinjasTimeZoneService: TimeZoneService {
         self.parser = parser
     }
     
-    func getTimeZone(at coordinates: CLLocationCoordinate2D) async throws -> TimeZoneIdentifier {
-        let timeZoneRequest = APINinjasTimeZoneRequest(
+    func getWeather(at coordinates: CLLocationCoordinate2D) async throws -> Weather {
+        let weatherRequest = APINinjasWeatherRequest(
             queryItems: [
                 "lat": String(coordinates.latitude),
                 "lon": String(coordinates.longitude)
@@ -27,9 +27,9 @@ class APINinjasTimeZoneService: TimeZoneService {
         )
         
         do {
-            let data = try await networkService.getData(from: timeZoneRequest)
-            let timeZone: TimeZoneIdentifier = try parser.decode(data)
-            return timeZone
+            let data = try await networkService.getData(from: weatherRequest)
+            let weather: Weather = try parser.decode(data)
+            return weather
         } catch {
             throw error
         }
