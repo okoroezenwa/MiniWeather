@@ -10,6 +10,7 @@ import SwiftUI
 struct AddLocationView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.colorScheme) private var colorScheme
     @Bindable var adder: LocationsAdder
     @Binding var addedLocation: [(location: Location, weather: Weather)]
     @FocusState private var isFocused
@@ -69,6 +70,11 @@ struct AddLocationView: View {
                 }
             }
             .padding(16)
+            .background {
+                Image(colorScheme == .light ? .lightBackground : .darkBackground)
+                    .resizable()
+                    .ignoresSafeArea(.all)
+            }
         }
     }
 }
