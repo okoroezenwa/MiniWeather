@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CoreLocation
 
 class DependencyFactory {
     public static let shared = DependencyFactory(
@@ -16,14 +17,17 @@ class DependencyFactory {
         networkService:
             StandardNetworkService(
                 urlSession: .shared
-            )
+            ), 
+        locationManager: CLLocationManager()
     )
     private let parser: DataParser
     private let networkService: NetworkService
+    private let locationManager: CLLocationManager
     
-    private init(parser: DataParser, networkService: NetworkService) {
+    private init(parser: DataParser, networkService: NetworkService, locationManager: CLLocationManager) {
         self.parser = parser
         self.networkService = networkService
+        self.locationManager = locationManager
     }
     
     public func makeLocationsRepository() -> LocationsRepository {
@@ -36,6 +40,10 @@ class DependencyFactory {
     
     public func makeWeatherRepository() -> WeatherRepository {
         MainWeatherRepository(weatherService: makeAPINinjasWeatherService())
+    }
+    
+    public func makeUserLocationAuthorisationBroadcaster() -> any Broadcaster<CLAuthorizationStatus> {
+        UserLocationAuthorisationBroadcaster(locationManager: locationManager)
     }
     
     private func makeAppleGeocoderService() -> GeocoderService {
