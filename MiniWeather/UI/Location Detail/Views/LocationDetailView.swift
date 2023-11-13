@@ -22,6 +22,7 @@ struct LocationDetailView: View {
             
                 Text(location.city)
         }
+        .navigationBarTitleDisplayMode(.inline)
         .navigationTitle(location.nickname)
     }
 }

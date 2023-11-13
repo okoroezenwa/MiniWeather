@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BE4675182AFE8EEE00E9FAA3 /* View+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE4675172AFE8EEE00E9FAA3 /* View+Extensions.swift */; };
+		BE46751A2AFFB38400E9FAA3 /* LocationManagerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE4675192AFFB38400E9FAA3 /* LocationManagerDelegate.swift */; };
 		BE4E41B22AFA42D0008B07D5 /* UserLocationAuthorisationBroadcaster.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE4E41B12AFA42D0008B07D5 /* UserLocationAuthorisationBroadcaster.swift */; };
 		BE4E41B42AFA45A2008B07D5 /* Listener.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE4E41B32AFA45A2008B07D5 /* Listener.swift */; };
 		BE4E41B92AFBE61C008B07D5 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE4E41B82AFBE61C008B07D5 /* ViewModel.swift */; };
@@ -52,6 +54,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		BE4675172AFE8EEE00E9FAA3 /* View+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extensions.swift"; sourceTree = "<group>"; };
+		BE4675192AFFB38400E9FAA3 /* LocationManagerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManagerDelegate.swift; sourceTree = "<group>"; };
 		BE4E41B12AFA42D0008B07D5 /* UserLocationAuthorisationBroadcaster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserLocationAuthorisationBroadcaster.swift; sourceTree = "<group>"; };
 		BE4E41B32AFA45A2008B07D5 /* Listener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Listener.swift; sourceTree = "<group>"; };
 		BE4E41B82AFBE61C008B07D5 /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
@@ -115,6 +119,7 @@
 			children = (
 				BE4E41B32AFA45A2008B07D5 /* Listener.swift */,
 				BE4E41B12AFA42D0008B07D5 /* UserLocationAuthorisationBroadcaster.swift */,
+				BE4675192AFFB38400E9FAA3 /* LocationManagerDelegate.swift */,
 			);
 			path = "User Location Authorisation";
 			sourceTree = "<group>";
@@ -246,6 +251,7 @@
 			isa = PBXGroup;
 			children = (
 				BE4FE4BB2AEC399E00A381FD /* CLPlacemark+Extensions.swift */,
+				BE4675172AFE8EEE00E9FAA3 /* View+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -500,11 +506,13 @@
 				BE62AF2F2AFA26D600BEEBFA /* LocationDetailView.swift in Sources */,
 				BE4FE49F2AEC1A0C00A381FD /* GeocoderService.swift in Sources */,
 				BEF4E7DF2ACF3D890043BE93 /* LocationsAdder.swift in Sources */,
+				BE46751A2AFFB38400E9FAA3 /* LocationManagerDelegate.swift in Sources */,
 				BE4FE4CA2AEF947200A381FD /* Weather.swift in Sources */,
 				BE4FE4A82AEC1EC900A381FD /* HTTPMethod.swift in Sources */,
 				BE4E41B42AFA45A2008B07D5 /* Listener.swift in Sources */,
 				BE4FE4932AEC08D100A381FD /* APINinjasLocationsRequest.swift in Sources */,
 				BE4FE4BF2AEC4A4300A381FD /* CountryCodes.swift in Sources */,
+				BE4675182AFE8EEE00E9FAA3 /* View+Extensions.swift in Sources */,
 				BE7DA77B2AE69EDE0016047C /* APINinjasGeodecoderService.swift in Sources */,
 				BE71B8112ACE9F2B003AA99C /* LocationsView.swift in Sources */,
 				BE4FE4D62AF1346000A381FD /* APINinjasWeatherService.swift in Sources */,

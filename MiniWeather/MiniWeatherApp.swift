@@ -39,6 +39,7 @@ struct MiniWeatherApp: App {
                 )
             )
             .environment(\.timeFormatter, timeFormatter)
+            .tint(.primary)
         }
         .modelContainer(sharedModelContainer)
     }

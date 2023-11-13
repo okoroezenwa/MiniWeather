@@ -38,6 +38,7 @@ struct LocationsView: View {
                                 NavigationLink(value: location) {
                                     locationCell(for: location, isCurrentLocation: false)
                                 }
+                                .buttonStyle(.plain)
                             }
                         } header: {
                             Text("Saved Locations")
@@ -78,6 +79,7 @@ struct LocationsView: View {
                 .background {
                     background(for: colorScheme)
                 }
+                .ignoresSafeArea(.keyboard)
         }
         .sheet(isPresented: $isAddLocationViewVisible) {
             addLocationView()
@@ -102,7 +104,8 @@ struct LocationsView: View {
     private func locationCell(for location: Location, isCurrentLocation: Bool) -> some View {
         LocationCell(
             location: location,
-            weather: addedLocations.first { $0.location == location }?.weather
+            weather: addedLocations.first { $0.location == location }?.weather, 
+            isCurrentLocation: isCurrentLocation
         )
         .contentShape(.contextMenuPreview, RoundedRectangle(cornerRadius: 16))
         .contextMenu {

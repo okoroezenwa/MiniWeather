@@ -10,6 +10,7 @@ import SwiftUI
 struct LocationCell: View {
     let location: Location
     let weather: Weather?
+    let isCurrentLocation: Bool
     @Environment(\.timeFormatter) var timeFormatter
     @Environment(\.colorScheme) var colorScheme
     
@@ -17,11 +18,11 @@ struct LocationCell: View {
         VStack(spacing: 12) {
             HStack(spacing: 0) {
                 VStack(alignment: .leading, spacing: 4) {
-                    HStack(spacing: 4) {
-                        Image(systemName: "mappin")
+                    HStack(spacing: 8) {
+                        locationImage()
                             .resizable()
                             .aspectRatio(contentMode: .fit)
-                            .frame(width: 14, height: 14)
+                            .frame(square: 15)
                         
                         Text(location.nickname)
                             .font(.system(size: 20, weight: .light))
@@ -31,6 +32,7 @@ struct LocationCell: View {
                     Text(location.fullName)
                         .lineLimit(1)
                         .font(.system(size: 12))
+                        .foregroundStyle(.secondary)
                 }
                 
                 Spacer(minLength: 8)
@@ -41,18 +43,22 @@ struct LocationCell: View {
             
             Rectangle()
                 .frame(height: 1)
+                .foregroundStyle(.tertiary)
             
             HStack {
                 Text(location.currentDateString(with: timeFormatter))
+                    .foregroundStyle(.secondary)
                 
                 Spacer()
                 
                 Text(weather?.getMinMaxTempString() ?? "-- • --")
                     .font(.system(size: 12))
+                    .foregroundStyle(.secondary)
                 
                 Spacer()
                 
                 Label("1d", systemImage: "arrow.triangle.2.circlepath")
+                    .foregroundStyle(.secondary)
             }
             .font(.system(size: 12))
         }
@@ -62,6 +68,14 @@ struct LocationCell: View {
             .white.opacity(0.3)
         )
         .clipShape(.rect(cornerRadius: 16))
+    }
+    
+    private func locationImage() -> Image {
+        if isCurrentLocation {
+            return Image(systemName: "location")
+        } else {
+            return Image(.currentLocation)
+        }
     }
 }
 
@@ -88,6 +102,7 @@ struct LocationCell: View {
             sunrise: 1615616341,
             sunset: 1615658463,
             cloudPercentage: 75
-        )
+        ),
+        isCurrentLocation: true
     )
 }
