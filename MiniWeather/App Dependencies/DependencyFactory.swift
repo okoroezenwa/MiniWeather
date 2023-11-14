@@ -18,16 +18,19 @@ class DependencyFactory {
             StandardNetworkService(
                 urlSession: .shared
             ), 
-        locationManager: CLLocationManager()
+        locationManagerDelegate:
+            MainLocationManagerDelegate(
+                locationManager: CLLocationManager()
+            )
     )
     private let parser: DataParser
     private let networkService: NetworkService
-    private let locationManager: CLLocationManager
+    private let locationManagerDelegate: LocationManagerDelegate
     
-    private init(parser: DataParser, networkService: NetworkService, locationManager: CLLocationManager) {
+    private init(parser: DataParser, networkService: NetworkService, locationManagerDelegate: LocationManagerDelegate) {
         self.parser = parser
         self.networkService = networkService
-        self.locationManager = locationManager
+        self.locationManagerDelegate = locationManagerDelegate
     }
     
     public func makeLocationsRepository() -> LocationsRepository {
@@ -43,7 +46,7 @@ class DependencyFactory {
     }
     
     public func makeUserLocationAuthorisationBroadcaster() -> any Broadcaster<CLAuthorizationStatus> {
-        UserLocationAuthorisationBroadcaster(locationManager: locationManager)
+        UserLocationAuthorisationBroadcaster(locationManagerDelegate: locationManagerDelegate)
     }
     
     private func makeAppleGeocoderService() -> GeocoderService {

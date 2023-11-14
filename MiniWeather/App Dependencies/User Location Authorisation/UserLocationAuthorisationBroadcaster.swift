@@ -8,32 +8,25 @@
 import Foundation
 import CoreLocation
 
-class UserLocationAuthorisationBroadcaster: NSObject, CLLocationManagerDelegate, Broadcaster {
-    private let locationManager: CLLocationManager
-    private var state: CLAuthorizationStatus
+protocol LocationManagerDelegateResponder: AnyObject {
+    func locationAuthorisationChanged(to status: CLAuthorizationStatus)
+}
+
+class UserLocationAuthorisationBroadcaster: NSObject, CLLocationManagerDelegate, Broadcaster, LocationManagerDelegateResponder {
+    private let locationManagerDelegate: LocationManagerDelegate
     private var observers = [Listener]()
     
-    init(locationManager: CLLocationManager) {
-        self.locationManager = locationManager
-        self.state = locationManager.authorizationStatus
+    init(locationManagerDelegate: LocationManagerDelegate) {
+        self.locationManagerDelegate = locationManagerDelegate
         super.init()
-        self.locationManager.delegate = self
-        requestAuthorisation()
-    }
-    
-    private func requestAuthorisation() {
-        if state == .notDetermined {
-            locationManager.requestWhenInUseAuthorization()
-        }
+        self.locationManagerDelegate.responder = self
     }
     
     func getState() -> CLAuthorizationStatus {
-        state
+        locationManagerDelegate.getAuthorisationStatus()
     }
     
-    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
-        guard case let status = manager.authorizationStatus, status != .notDetermined else { return }
-        state = status
+    func locationAuthorisationChanged(to status: CLAuthorizationStatus) {
         notifyObservers()
     }
     
