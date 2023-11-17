@@ -34,19 +34,33 @@ class DependencyFactory {
     }
     
     public func makeLocationsRepository() -> LocationsRepository {
-        MainLocationsRepository(geocodeService: makeAPINinjasGeocoderService())
+        MainLocationsRepository(
+            geocodeService: makeAPINinjasGeocoderService()
+        )
     }
     
     public func makeTimeZoneRepository() -> TimeZoneRepository {
-        MainTimeZoneRepository(service: makeAPINinjasTimeZoneService())
+        MainTimeZoneRepository(
+            service: makeAPINinjasTimeZoneService()
+        )
     }
     
     public func makeWeatherRepository() -> WeatherRepository {
-        MainWeatherRepository(weatherService: makeAPINinjasWeatherService())
+        MainWeatherRepository(
+            weatherService: makeAPINinjasWeatherService()
+        )
     }
     
-    public func makeUserLocationAuthorisationBroadcaster() -> any Broadcaster<CLAuthorizationStatus> {
-        UserLocationAuthorisationBroadcaster(locationManagerDelegate: locationManagerDelegate)
+    public func makeUserLocationAuthorisationRepository() -> UserLocationAuthorisationRepository {
+        MainUserLocationAuthorisationRepository(
+            userLocationAuthorisationProvider: makeUserLocationAuthorisationProvider()
+        )
+    }
+    
+    public func makeUserLocationRepository() -> UserLocationRepository {
+        MainUserLocationRepository(
+            userLocationProvider: makeUserLocationProvider()
+        )
     }
     
     private func makeAppleGeocoderService() -> GeocoderService {
@@ -72,5 +86,13 @@ class DependencyFactory {
             networkService: networkService,
             parser: parser
         )
+    }
+    
+    private func makeUserLocationProvider() -> UserLocationProvider {
+        locationManagerDelegate
+    }
+    
+    private func makeUserLocationAuthorisationProvider() -> UserLocationAuthorisationProvider {
+        locationManagerDelegate
     }
 }

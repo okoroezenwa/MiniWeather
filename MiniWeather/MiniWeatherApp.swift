@@ -34,9 +34,7 @@ struct MiniWeatherApp: App {
     var body: some Scene {
         WindowGroup {
             LocationsView(
-                viewModel: .init(
-                    broadcaster: DependencyFactory.shared.makeUserLocationAuthorisationBroadcaster()
-                )
+                viewModel: .shared
             )
             .environment(\.timeFormatter, timeFormatter)
             .tint(.primary)

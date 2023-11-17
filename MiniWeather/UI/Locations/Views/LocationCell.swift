@@ -65,7 +65,7 @@ struct LocationCell: View {
         .padding([.horizontal, .top], 16)
         .padding(.bottom, 12)
         .background(
-            .white.opacity(0.3)
+            .cellBackgroundColour(for: colorScheme)
         )
         .clipShape(.rect(cornerRadius: 16))
     }

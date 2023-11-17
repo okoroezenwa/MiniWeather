@@ -1,8 +1,8 @@
 //
-//  Listener.swift
+//  Broadcaster.swift
 //  MiniWeather
 //
-//  Created by Ezenwa Okoro on 07/11/2023.
+//  Created by Ezenwa Okoro on 16/11/2023.
 //
 
 import Foundation
@@ -14,9 +14,4 @@ protocol Broadcaster<Property> {
     func register(_ observer: any Listener)
     func unregister(_ observer: any Listener)
     func notifyObservers()
-}
-
-protocol Listener {
-    var id: UUID { get }
-    func update()
 }

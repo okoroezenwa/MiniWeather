@@ -10,42 +10,27 @@ import SwiftData
 
 struct LocationsView: View {
     @Environment(\.modelContext) private var modelContext
-    @Environment(\.colorScheme) var colorScheme
+    @Environment(\.colorScheme) private var colorScheme
+    @Environment(\.openURL) private var openURL
+    @Environment(\.scenePhase) private var scenePhase
     @Query private var locations: [Location]
     @State private var isAddLocationViewVisible = false
     @State var addedLocations = [(location: Location, weather: Weather)]()
     @State var selectedLocation: Location?
-    @Bindable var viewModel: ViewModel
+    @State var viewModel: ViewModel
 
     var body: some View {
         NavigationSplitView {
             ScrollView {
-                LazyVGrid(columns: [GridItem(.flexible())], alignment: .leading, spacing: 12) {
-                    if let location = viewModel.currentLocation {
-                        Section {
-                            locationCell(for: location, isCurrentLocation: true)
-                        } header: {
-                            Text("Current Location")
-                                .font(
-                                    .system(size: 20, weight: .semibold)
-                                )
-                        }
-                    }
+                LazyVGrid(
+                    columns: [GridItem(.flexible())],
+                    alignment: .leading,
+                    spacing: 12
+                ) {
+                    currentLocationSection()
                     
                     if !locations.isEmpty {
-                        Section {
-                            ForEach(locations) { location in
-                                NavigationLink(value: location) {
-                                    locationCell(for: location, isCurrentLocation: false)
-                                }
-                                .buttonStyle(.plain)
-                            }
-                        } header: {
-                            Text("Saved Locations")
-                                .font(
-                                    .system(size: 20, weight: .semibold)
-                                )
-                        }
+                        savedLocationsSection()
                     }
                 }
                 .padding(.horizontal, 16)
@@ -59,19 +44,20 @@ struct LocationsView: View {
             }
             .toolbarBackground(.thinMaterial, for: .automatic)
             .toolbar {
-                Button {
-                    isAddLocationViewVisible.toggle()
-                } label: {
-                    Image(systemName: "plus")
+                ToolbarItem(placement: .topBarLeading) {
+                    Button {
+                        
+                    } label: {
+                        Image(systemName: "gearshape")
+                    }
                 }
-            }
-            .overlay {
-                if locations.isEmpty {
-                    ContentUnavailableView(
-                        "No Cities Added",
-                        systemImage: "line.horizontal.3.circle",
-                        description: Text("Searched cities you add will appear here.")
-                    )
+                
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        isAddLocationViewVisible.toggle()
+                    } label: {
+                        Image(systemName: "plus")
+                    }
                 }
             }
         } detail: {
@@ -83,6 +69,11 @@ struct LocationsView: View {
         }
         .sheet(isPresented: $isAddLocationViewVisible) {
             addLocationView()
+        }
+        .onChange(of: scenePhase) { oldValue, _ in
+            if oldValue == .background {
+                viewModel.refreshStatus()
+            }
         }
     }
     
@@ -146,12 +137,56 @@ struct LocationsView: View {
             )
         )
     }
+    
+    private func currentLocationSection() -> some View {
+        Section {
+            if let location = viewModel.getCurrentLocation() {
+                locationCell(for: location, isCurrentLocation: true)
+                    .padding(.bottom, 16)
+            } else if !viewModel.getStatus().isAuthorised() {
+                LocationAuthorisationCell(status: viewModel.getStatus())
+                    .padding(.bottom, 16)
+                    .onTapGesture {
+                        let status = viewModel.getStatus()
+                        if status.isDisallowed(),
+                            let url = URL(string: UIApplication.openSettingsURLString) {
+                            openURL(url)
+                        } else if status == .notDetermined {
+                            viewModel.refreshCurrentLocation(requestingAuthorisation: true)
+                        }
+                    }
+            }
+        } header: {
+            Text("Current Location")
+                .font(
+                    .system(size: 20, weight: .semibold)
+                )
+        }
+    }
+    
+    private func savedLocationsSection() -> some View {
+        Section {
+            ForEach(locations) { location in
+                NavigationLink(value: location) {
+                    locationCell(for: location, isCurrentLocation: false)
+                }
+                .buttonStyle(.plain)
+            }
+        } header: {
+            Text("Saved Locations")
+                .font(
+                    .system(size: 20, weight: .semibold)
+                )
+        }
+    }
 }
 
 #Preview {
     LocationsView(
         viewModel: .init(
-            broadcaster: DependencyFactory.shared.makeUserLocationAuthorisationBroadcaster()
+            userLocationAuthorisationRepositoryFactory: DependencyFactory.shared.makeUserLocationAuthorisationRepository,
+            userLocationRepositoryFactory: DependencyFactory.shared.makeUserLocationRepository,
+            locationsRepositoryFactory: DependencyFactory.shared.makeLocationsRepository
         )
     )
     .modelContainer(for: Location.self, inMemory: true)

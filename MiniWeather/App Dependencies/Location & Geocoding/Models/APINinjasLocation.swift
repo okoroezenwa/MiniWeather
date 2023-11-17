@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CoreLocation
 
 struct APINinjasLocation: Decodable, LocationProtocol {
     enum CodingKeys: String, CodingKey {
@@ -16,9 +17,29 @@ struct APINinjasLocation: Decodable, LocationProtocol {
         case latitude
     }
     
+    init(tempLocation: APINinjasTemporaryLocation, coordinates: CLLocationCoordinate2D) {
+        self.city = tempLocation.city
+        self.state = tempLocation.state
+        self.country = tempLocation.country
+        self.longitude = coordinates.longitude
+        self.latitude = coordinates.latitude
+    }
+    
     let city: String
     let latitude: Double
     let longitude: Double
+    let country: String
+    let state: String?
+}
+
+struct APINinjasTemporaryLocation: Decodable {
+    enum CodingKeys: String, CodingKey {
+        case city = "name"
+        case state
+        case country
+    }
+    
+    let city: String
     let country: String
     let state: String?
 }

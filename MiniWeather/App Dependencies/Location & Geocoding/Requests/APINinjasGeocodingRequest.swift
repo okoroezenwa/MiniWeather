@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct APINinjasLocationsRequest: Request {
+struct APINinjasGeocodingRequest: Request {
     var host = "api.api-ninjas.com"
     var path = "/v1/geocoding"
     var queryItems: [String: String]

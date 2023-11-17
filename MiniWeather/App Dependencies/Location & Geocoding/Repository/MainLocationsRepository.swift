@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CoreLocation
 
 class MainLocationsRepository: LocationsRepository {
     private var geocodeService: GeocoderService
@@ -15,6 +16,10 @@ class MainLocationsRepository: LocationsRepository {
     }
     
     func getLocations(named searchText: String) async throws -> [Location] {
-        try await geocodeService.retrieveLocations(named: searchText)
+        try await geocodeService.getLocations(named: searchText)
+    }
+    
+    func getLocations(at coordinates: CLLocationCoordinate2D) async throws -> [Location] {
+        try await geocodeService.getLocations(at: coordinates)
     }
 }
