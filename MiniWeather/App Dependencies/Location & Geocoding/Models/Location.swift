@@ -78,7 +78,7 @@ extension Location {
     }
     
     var actualTimeZone: TimeZone {
-        return TimeZone(identifier: timeZone) ?? .gmt
+        return TimeZone(identifier: timeZone) ?? .autoupdatingCurrent
     }
     
     func currentDateString(with formatter: DateFormatter) -> String {

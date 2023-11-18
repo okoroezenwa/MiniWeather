@@ -87,7 +87,7 @@ struct LocationCell: View {
             country: "Nigeria",
             nickname: "Home",
             note: nil,
-            timeZone: TimeZone.gmt.identifier,
+            timeZone: TimeZone.autoupdatingCurrent.identifier,
             latitide: 0,
             longitude: 0
         ),

@@ -12,7 +12,7 @@ extension ShapeStyle where Self == Color {
         if colorScheme == .light {
             return .white.opacity(0.3)
         } else {
-            return .black.opacity(0.1)
+            return .black.opacity(0.3)
         }
     }
 }

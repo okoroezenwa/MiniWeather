@@ -30,14 +30,18 @@ struct MiniWeatherApp: App {
         
         return formatter
     }()
+    /// The location being searched for. This _should_ be in LocationsView but the searchable-related environment values are structured weirdly and this was much easier than changing my view heirarchy a lot.
+    @State private var searchText = ""
 
     var body: some Scene {
         WindowGroup {
             LocationsView(
-                viewModel: .shared
+                viewModel: .shared,
+                searchText: $searchText
             )
             .environment(\.timeFormatter, timeFormatter)
             .tint(.primary)
+            .searchable(text: $searchText, prompt: "Search City Name")
         }
         .modelContainer(sharedModelContainer)
     }

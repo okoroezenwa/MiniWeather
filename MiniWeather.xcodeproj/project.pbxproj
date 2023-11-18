@@ -49,8 +49,6 @@
 		BE7DA7852AE99D800016047C /* DataParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE7DA7842AE99D800016047C /* DataParser.swift */; };
 		BE7DA7872AEA6E550016047C /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE7DA7862AEA6E540016047C /* Request.swift */; };
 		BE9F20F82AD0624A00CDC9F4 /* MainLocationsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9F20F72AD0624A00CDC9F4 /* MainLocationsRepository.swift */; };
-		BEF4E7DA2ACF32FE0043BE93 /* AddLocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF4E7D92ACF32FE0043BE93 /* AddLocationView.swift */; };
-		BEF4E7DF2ACF3D890043BE93 /* LocationsAdder.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF4E7DE2ACF3D890043BE93 /* LocationsAdder.swift */; };
 		BEFE25532B04A86000AB5DED /* CLAuthorizationStatus+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFE25522B04A86000AB5DED /* CLAuthorizationStatus+Extensions.swift */; };
 		BEFE25562B04EDCF00AB5DED /* UserLocationRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFE25552B04EDCF00AB5DED /* UserLocationRepository.swift */; };
 		BEFE25582B0600EF00AB5DED /* MainUserLocationRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFE25572B0600EF00AB5DED /* MainUserLocationRepository.swift */; };
@@ -109,8 +107,6 @@
 		BE7DA7842AE99D800016047C /* DataParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataParser.swift; sourceTree = "<group>"; };
 		BE7DA7862AEA6E540016047C /* Request.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
 		BE9F20F72AD0624A00CDC9F4 /* MainLocationsRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainLocationsRepository.swift; sourceTree = "<group>"; };
-		BEF4E7D92ACF32FE0043BE93 /* AddLocationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddLocationView.swift; sourceTree = "<group>"; };
-		BEF4E7DE2ACF3D890043BE93 /* LocationsAdder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationsAdder.swift; sourceTree = "<group>"; };
 		BEFE25522B04A86000AB5DED /* CLAuthorizationStatus+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CLAuthorizationStatus+Extensions.swift"; sourceTree = "<group>"; };
 		BEFE25552B04EDCF00AB5DED /* UserLocationRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserLocationRepository.swift; sourceTree = "<group>"; };
 		BEFE25572B0600EF00AB5DED /* MainUserLocationRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainUserLocationRepository.swift; sourceTree = "<group>"; };
@@ -164,7 +160,6 @@
 			isa = PBXGroup;
 			children = (
 				BE62AF2D2AFA26BE00BEEBFA /* Location Detail */,
-				BEF4E7DD2ACF3D770043BE93 /* Add Location */,
 				BEF4E7E02ACF41A10043BE93 /* Locations */,
 			);
 			path = UI;
@@ -414,15 +409,6 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
-		BEF4E7DD2ACF3D770043BE93 /* Add Location */ = {
-			isa = PBXGroup;
-			children = (
-				BEF4E7E22ACF41BA0043BE93 /* Views */,
-				BEF4E7E32ACF41C50043BE93 /* Models */,
-			);
-			path = "Add Location";
-			sourceTree = "<group>";
-		};
 		BEF4E7E02ACF41A10043BE93 /* Locations */ = {
 			isa = PBXGroup;
 			children = (
@@ -430,22 +416,6 @@
 				BE4E41B72AFBE5DE008B07D5 /* Models */,
 			);
 			path = Locations;
-			sourceTree = "<group>";
-		};
-		BEF4E7E22ACF41BA0043BE93 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				BEF4E7D92ACF32FE0043BE93 /* AddLocationView.swift */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
-		BEF4E7E32ACF41C50043BE93 /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				BEF4E7DE2ACF3D890043BE93 /* LocationsAdder.swift */,
-			);
-			path = Models;
 			sourceTree = "<group>";
 		};
 		BEF4E7E42ACF41D90043BE93 /* Views */ = {
@@ -551,7 +521,6 @@
 				BE4FE4B82AEC242F00A381FD /* StandardDataParser.swift in Sources */,
 				BE62AF2F2AFA26D600BEEBFA /* LocationDetailView.swift in Sources */,
 				BE4FE49F2AEC1A0C00A381FD /* GeocoderService.swift in Sources */,
-				BEF4E7DF2ACF3D890043BE93 /* LocationsAdder.swift in Sources */,
 				BE46751A2AFFB38400E9FAA3 /* LocationManagerDelegate.swift in Sources */,
 				BE4FE4CA2AEF947200A381FD /* Weather.swift in Sources */,
 				BE4B45BC2B06C56D007DBF66 /* ShapeStyle+Extensions.swift in Sources */,
@@ -564,7 +533,6 @@
 				BE71B8112ACE9F2B003AA99C /* LocationsView.swift in Sources */,
 				BE4FE4D62AF1346000A381FD /* APINinjasWeatherService.swift in Sources */,
 				BEFE25532B04A86000AB5DED /* CLAuthorizationStatus+Extensions.swift in Sources */,
-				BEF4E7DA2ACF32FE0043BE93 /* AddLocationView.swift in Sources */,
 				BEFE25672B06918200AB5DED /* LocationAuthorisationCell.swift in Sources */,
 				BE4FE4D02AF1337100A381FD /* MainWeatherRepository.swift in Sources */,
 				BEFE255E2B061D1300AB5DED /* APINinjasReverseGeocodingRequest.swift in Sources */,

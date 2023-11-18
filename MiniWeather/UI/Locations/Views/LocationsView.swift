@@ -13,59 +13,31 @@ struct LocationsView: View {
     @Environment(\.colorScheme) private var colorScheme
     @Environment(\.openURL) private var openURL
     @Environment(\.scenePhase) private var scenePhase
-    @Query private var locations: [Location]
+    @Environment(\.isSearching) private var isSearching
+    @Environment(\.dismissSearch) private var dismissSearch
+    @Query(sort: \Location.timestamp, order: .reverse) private var locations: [Location]
     @State private var isAddLocationViewVisible = false
     @State var addedLocations = [(location: Location, weather: Weather)]()
     @State var selectedLocation: Location?
     @State var viewModel: ViewModel
+    @Binding var searchText: String
 
     var body: some View {
         NavigationSplitView {
-            ScrollView {
-                LazyVGrid(
-                    columns: [GridItem(.flexible())],
-                    alignment: .leading,
-                    spacing: 12
-                ) {
-                    currentLocationSection()
-                    
-                    if !locations.isEmpty {
-                        savedLocationsSection()
-                    }
+            rootView()
+                .background {
+                    background(for: colorScheme)
                 }
-                .padding(.horizontal, 16)
-            }
-            .background {
-                background(for: colorScheme)
-            }
-            .navigationTitle("Locations")
-            .navigationDestination(for: Location.self) { location in
-                LocationDetailView(location: location)
-            }
-            .toolbarBackground(.thinMaterial, for: .automatic)
-            .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    Button {
-                        
-                    } label: {
-                        Image(systemName: "gearshape")
-                    }
-                }
-                
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button {
-                        isAddLocationViewVisible.toggle()
-                    } label: {
-                        Image(systemName: "plus")
-                    }
-                }
-            }
         } detail: {
             detailContentUnavailableView()
                 .background {
                     background(for: colorScheme)
                 }
                 .ignoresSafeArea(.keyboard)
+        }
+        .onChange(of: searchText) { oldValue, newValue in
+            guard oldValue != newValue else { return }
+            viewModel.search(for: newValue)
         }
         .sheet(isPresented: $isAddLocationViewVisible) {
             addLocationView()
@@ -74,6 +46,13 @@ struct LocationsView: View {
             if oldValue == .background {
                 viewModel.refreshStatus()
             }
+        }
+    }
+    
+    // MARK: - SwiftData
+    private func add(_ location: Location) {
+        withAnimation {
+            modelContext.insert(location)
         }
     }
     
@@ -92,10 +71,19 @@ struct LocationsView: View {
     }
     
     // MARK: - Local Views
+    @ViewBuilder
+    private func rootView() -> some View {
+        if searchText.isEmpty {
+            locationsGrid()
+        } else {
+            searchView()
+        }
+    }
+    
     private func locationCell(for location: Location, isCurrentLocation: Bool) -> some View {
         LocationCell(
             location: location,
-            weather: addedLocations.first { $0.location == location }?.weather, 
+            weather: viewModel.weather(for: location),
             isCurrentLocation: isCurrentLocation
         )
         .contentShape(.contextMenuPreview, RoundedRectangle(cornerRadius: 16))
@@ -138,14 +126,83 @@ struct LocationsView: View {
         )
     }
     
+    private func locationsGrid() -> some View {
+        ScrollView {
+            LazyVGrid(
+                columns: [
+                    GridItem(
+                        .flexible()
+                    )
+                ],
+                alignment: .leading,
+                spacing: 12
+            ) {
+                currentLocationSection()
+                
+                if !locations.isEmpty {
+                    savedLocationsSection()
+                }
+            }
+        }
+        .navigationTitle("Locations")
+        .navigationDestination(for: Location.self) { location in
+            LocationDetailView(location: location)
+        }
+        .toolbarBackground(.thinMaterial, for: .automatic)
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                Button {
+                    
+                } label: {
+                    Image(systemName: "gearshape")
+                }
+            }
+            
+            ToolbarItem(placement: .topBarTrailing) {
+                EditButton()
+            }
+        }
+        .onAppear {
+            locations.forEach { location in
+                guard viewModel.weather(for: location) == nil else {
+                    return
+                }
+                viewModel.getWeather(for: location)
+            }
+        }
+    }
+    
+    private func searchView() -> some View {
+        List {
+            ForEach(viewModel.getSearchResults()) { location in
+                HStack {
+                    Text(location.fullName)
+                        .lineLimit(1)
+                    
+                    Spacer()
+                }
+                .contentShape(Rectangle())
+                .listRowSeparatorTint(.secondary.opacity(0.35))
+                .listRowBackground(Color.clear)
+                .onTapGesture {
+                    add(location)
+                    dismissSearch()
+                    viewModel.update(location)
+                }
+            }
+        }
+        .listStyle(.plain)
+    }
+    
     private func currentLocationSection() -> some View {
         Section {
             if let location = viewModel.getCurrentLocation() {
-                locationCell(for: location, isCurrentLocation: true)
-                    .padding(.bottom, 16)
+                NavigationLink(value: location) {
+                    locationCell(for: location, isCurrentLocation: true)
+                        .padding(.horizontal, 16)
+                }
             } else if !viewModel.getStatus().isAuthorised() {
                 LocationAuthorisationCell(status: viewModel.getStatus())
-                    .padding(.bottom, 16)
                     .onTapGesture {
                         let status = viewModel.getStatus()
                         if status.isDisallowed(),
@@ -155,12 +212,14 @@ struct LocationsView: View {
                             viewModel.refreshCurrentLocation(requestingAuthorisation: true)
                         }
                     }
+                    .padding(.horizontal, 16)
             }
         } header: {
             Text("Current Location")
                 .font(
                     .system(size: 20, weight: .semibold)
                 )
+                .padding([.top, .horizontal], 16)
         }
     }
     
@@ -169,6 +228,7 @@ struct LocationsView: View {
             ForEach(locations) { location in
                 NavigationLink(value: location) {
                     locationCell(for: location, isCurrentLocation: false)
+                        .padding(.horizontal, 16)
                 }
                 .buttonStyle(.plain)
             }
@@ -177,17 +237,15 @@ struct LocationsView: View {
                 .font(
                     .system(size: 20, weight: .semibold)
                 )
+                .padding([.horizontal, .top], 16)
         }
     }
 }
 
 #Preview {
     LocationsView(
-        viewModel: .init(
-            userLocationAuthorisationRepositoryFactory: DependencyFactory.shared.makeUserLocationAuthorisationRepository,
-            userLocationRepositoryFactory: DependencyFactory.shared.makeUserLocationRepository,
-            locationsRepositoryFactory: DependencyFactory.shared.makeLocationsRepository
-        )
+        viewModel: .shared, 
+        searchText: Binding(get: { "" }, set: { _ in })
     )
     .modelContainer(for: Location.self, inMemory: true)
 }
