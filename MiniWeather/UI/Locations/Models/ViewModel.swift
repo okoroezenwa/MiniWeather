@@ -9,6 +9,7 @@ import Foundation
 import CoreLocation
 import Combine
 import SwiftData
+import SwiftUI
 
 extension LocationsView {
     @Observable class ViewModel {
@@ -18,11 +19,25 @@ extension LocationsView {
         private let weatherRepositoryFactory: () -> WeatherRepository
         private let timeZoneRepositoryFactory: () -> TimeZoneRepository
         private var status: CLAuthorizationStatus
-        private var userLocation: CLLocationCoordinate2D
-        private var currentLocation: Location?
+        private var currentLocation: Location? {
+            didSet {
+                guard let currentLocation else { return }
+                let parent = String(describing: Location.self)
+                let data = try? JSONEncoder().encode(currentLocation.timestamp)
+                UserDefaults.standard.set(data, forKey: parent + ".timestamp")
+                let uuidData = try? JSONEncoder().encode(currentLocation.id)
+                UserDefaults.standard.set(uuidData, forKey: parent + ".id")
+                UserDefaults.standard.set(currentLocation.city, forKey: parent + ".city")
+                UserDefaults.standard.set(currentLocation.state, forKey: parent + ".state")
+                UserDefaults.standard.set(currentLocation.country, forKey: parent + ".country")
+                UserDefaults.standard.set(currentLocation.nickname, forKey: parent + ".nickname")
+                UserDefaults.standard.set(currentLocation.timeZone, forKey: parent + ".timeZone")
+                UserDefaults.standard.set(currentLocation.latitude, forKey: parent + ".latitude")
+                UserDefaults.standard.set(currentLocation.longitude, forKey: parent + ".longitude")
+            }
+        }
         private var weatherCache = [UUID: Weather]()
         private var searchResults = [Location]()
-        var searchText = ""
         private var searchCancellable: AnyCancellable?
         
         static let shared = ViewModel(
@@ -45,12 +60,10 @@ extension LocationsView {
             self.locationsRepositoryFactory = locationsRepositoryFactory
             self.weatherRepositoryFactory = weatherRepositoryFactory
             self.timeZoneRepositoryFactory = timeZoneRepositoryFactory
-            
-            status = userLocationAuthorisationRepositoryFactory().getAuthorisationStatus()
-            userLocation = .init(latitude: .zero, longitude: .zero)
+            self.status = userLocationAuthorisationRepositoryFactory().getAuthorisationStatus()
             
             if status != .notDetermined {
-                refreshCurrentLocation(requestingAuthorisation: false)
+                self.currentLocation = getCurrentLocationFromUserDefaults()
             }
         }
         
@@ -66,6 +79,35 @@ extension LocationsView {
             status = userLocationAuthorisationRepositoryFactory().getAuthorisationStatus()
         }
         
+        func getCurrentLocationFromUserDefaults() -> Location? {
+            let parent = String(describing: Location.self)
+            guard 
+                let data = UserDefaults.standard.data(forKey: parent + ".timestamp"),
+                let date = try? JSONDecoder().decode(Date.self, from: data),
+                let uuidData = UserDefaults.standard.data(forKey: parent + ".id"),
+                let id = try? JSONDecoder().decode(UUID.self, from: uuidData),
+                let city = UserDefaults.standard.string(forKey: parent + ".city"),
+                let state = UserDefaults.standard.string(forKey: parent + ".state"),
+                let country = UserDefaults.standard.string(forKey: parent + ".country"),
+                let nickname = UserDefaults.standard.string(forKey: parent + ".nickname"),
+                let timeZone = UserDefaults.standard.string(forKey: parent + ".timeZone"),
+                case let latitude = UserDefaults.standard.double(forKey: parent + ".latitude"),
+                case let longitude = UserDefaults.standard.double(forKey: parent + ".longitude")
+            else {
+                refreshCurrentLocation(requestingAuthorisation: false)
+                return nil
+            }
+            
+            let location = Location(id: id, timestamp: date, city: city, state: state, country: country, nickname: nickname, timeZone: timeZone, latitide: latitude, longitude: longitude)
+            getWeather(for: location)
+            
+            if location.isOutdated() {
+                refreshCurrentLocation(requestingAuthorisation: false)
+            }
+            
+            return location
+        }
+        
         func refreshCurrentLocation(requestingAuthorisation requestAuthorisation: Bool) {
             let userLocationAuthorisationRepository = userLocationAuthorisationRepositoryFactory()
             let userLocationRepository = userLocationRepositoryFactory()
@@ -75,11 +117,17 @@ extension LocationsView {
             
             Task {
                 do {
-                    let status = if requestAuthorisation {
-                        await userLocationAuthorisationRepository.requestLocationAuthorisation()
-                    } else {
-                        userLocationAuthorisationRepository.getAuthorisationStatus()
-                    }
+                    let status = await {
+                        if requestAuthorisation {
+                            let status = await userLocationAuthorisationRepository.requestLocationAuthorisation()
+                            await MainActor.run {
+                                self.status = status
+                            }
+                            return status
+                        } else {
+                            return userLocationAuthorisationRepository.getAuthorisationStatus()
+                        }
+                    }()
                     
                     if status.isAuthorised() {
                         let coordinates = try await userLocationRepository.getUserLocation()
@@ -99,7 +147,6 @@ extension LocationsView {
                         let weather = try await weatherRepository.getWeather(for: coordinates)
                         
                         await MainActor.run {
-                            self.status = status
                             self.currentLocation = location
                             self.weatherCache[location.id] = weather
                         }
@@ -110,7 +157,7 @@ extension LocationsView {
             }
         }
         
-        func update(_ location: Location) {
+        func update(_ location: Location, completion: @escaping (TimeZoneIdentifier) -> Void) {
             let weatherRepository = weatherRepositoryFactory()
             let timeZoneRepository = timeZoneRepositoryFactory()
             
@@ -121,11 +168,10 @@ extension LocationsView {
                 )
                 let weather = try await weatherRepository.getWeather(for: coordinates)
                 let timeZone = try await timeZoneRepository.getTimeZone(at: coordinates)
-                let location = Location(locationObject: location, timeZoneIdentifier: timeZone.name)
                 
                 await MainActor.run {
                     weatherCache[location.id] = weather
-                    location.timeZone = timeZone.name
+                    completion(timeZone)
                 }
             }
         }
@@ -169,8 +215,15 @@ extension LocationsView {
             }
         }
         
-        func weather(for location: Location) -> Weather? {
-            weatherCache[location.id]
+        func weather(for location: Location) -> Binding<Weather?> {
+            Binding(
+                get: { [weak self] in
+                    self?.weatherCache[location.id]
+                },
+                set: { [weak self] weather in
+                    self?.weatherCache[location.id] = weather
+                }
+            )
         }
         
         func getSearchResults() -> [Location] {

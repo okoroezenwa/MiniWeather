@@ -15,9 +15,10 @@ struct LocationsView: View {
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.isSearching) private var isSearching
     @Environment(\.dismissSearch) private var dismissSearch
-    @Query(sort: \Location.timestamp, order: .reverse) private var locations: [Location]
-    @State private var isAddLocationViewVisible = false
-    @State var addedLocations = [(location: Location, weather: Weather)]()
+    @Query(
+        sort: \Location.timestamp,
+        order: .reverse
+    ) private var locations: [Location]
     @State var selectedLocation: Location?
     @State var viewModel: ViewModel
     @Binding var searchText: String
@@ -38,9 +39,6 @@ struct LocationsView: View {
         .onChange(of: searchText) { oldValue, newValue in
             guard oldValue != newValue else { return }
             viewModel.search(for: newValue)
-        }
-        .sheet(isPresented: $isAddLocationViewVisible) {
-            addLocationView()
         }
         .onChange(of: scenePhase) { oldValue, _ in
             if oldValue == .background {
@@ -80,21 +78,29 @@ struct LocationsView: View {
         }
     }
     
-    private func locationCell(for location: Location, isCurrentLocation: Bool) -> some View {
+    @ViewBuilder
+    private func locationCell(for location: Location?, isCurrentLocation: Bool) -> some View {
         LocationCell(
             location: location,
-            weather: viewModel.weather(for: location),
+            weather: {
+                guard let location else {
+                    return nil
+                }
+                return viewModel.weather(for: location).wrappedValue
+            }(),
             isCurrentLocation: isCurrentLocation
         )
         .contentShape(.contextMenuPreview, RoundedRectangle(cornerRadius: 16))
         .contextMenu {
             if !isCurrentLocation {
                 Button {
+                    guard let location else { return }
                     delete(location)
                 } label: {
                     Label("Delete Location", systemImage: "trash")
                 }
             }
+            
         }
     }
     
@@ -109,20 +115,6 @@ struct LocationsView: View {
             "No Location Selected",
             systemImage: "location.magnifyingglass",
             description: Text("Select a location to view more weather information.")
-        )
-    }
-    
-    private func addLocationView() -> some View {
-        AddLocationView(
-            adder: .init(
-                locationsRepositoryFactory: DependencyFactory.shared.makeLocationsRepository,
-                timeZoneRepositoryFactory: DependencyFactory.shared.makeTimeZoneRepository,
-                weatherRepositoryFactory: DependencyFactory.shared.makeWeatherRepository
-            ),
-            addedLocation: Binding(
-                get: { addedLocations },
-                set: { addedLocations = $0 }
-            )
         )
     }
     
@@ -146,7 +138,10 @@ struct LocationsView: View {
         }
         .navigationTitle("Locations")
         .navigationDestination(for: Location.self) { location in
-            LocationDetailView(location: location)
+            LocationDetailView(
+                location: location,
+                weather: viewModel.weather(for: location)
+            )
         }
         .toolbarBackground(.thinMaterial, for: .automatic)
         .toolbar {
@@ -164,7 +159,7 @@ struct LocationsView: View {
         }
         .onAppear {
             locations.forEach { location in
-                guard viewModel.weather(for: location) == nil else {
+                guard viewModel.weather(for: location).wrappedValue == nil else {
                     return
                 }
                 viewModel.getWeather(for: location)
@@ -187,7 +182,10 @@ struct LocationsView: View {
                 .onTapGesture {
                     add(location)
                     dismissSearch()
-                    viewModel.update(location)
+                    viewModel.update(location) { timeZone in
+                        location.timeZone = timeZone.name
+                        try? modelContext.save()
+                    }
                 }
             }
         }
@@ -196,12 +194,12 @@ struct LocationsView: View {
     
     private func currentLocationSection() -> some View {
         Section {
-            if let location = viewModel.getCurrentLocation() {
-                NavigationLink(value: location) {
-                    locationCell(for: location, isCurrentLocation: true)
+            if viewModel.getStatus().isAuthorised() {
+                NavigationLink(value: viewModel.getCurrentLocation()) {
+                    locationCell(for: viewModel.getCurrentLocation(), isCurrentLocation: true)
                         .padding(.horizontal, 16)
                 }
-            } else if !viewModel.getStatus().isAuthorised() {
+            } else {
                 LocationAuthorisationCell(status: viewModel.getStatus())
                     .onTapGesture {
                         let status = viewModel.getStatus()
@@ -215,11 +213,22 @@ struct LocationsView: View {
                     .padding(.horizontal, 16)
             }
         } header: {
-            Text("Current Location")
-                .font(
-                    .system(size: 20, weight: .semibold)
-                )
-                .padding([.top, .horizontal], 16)
+            HStack {
+                Text("Current Location")
+                    .font(
+                        .system(size: 20, weight: .semibold)
+                    )
+                
+                Spacer()
+                
+                if (viewModel.getCurrentLocation() == nil ||
+                    viewModel.getCurrentLocation()?.isOutdated() == true),
+                   viewModel.getStatus().isAuthorised()
+                {
+                    ProgressView()
+                }
+            }
+            .padding([.top, .horizontal], 16)
         }
     }
     

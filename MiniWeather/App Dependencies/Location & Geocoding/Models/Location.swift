@@ -17,29 +17,30 @@ protocol LocationProtocol {
 }
 
 @Model
-final class Location: Identifiable, LocationProtocol {
-    let id = UUID()
-    let timestamp = Date.now
+final class Location: Identifiable {
+    let id: UUID
+    let timestamp: Date
     let city: String
     let state: String?
     let country: String
     var nickname: String
-    var note: String?
     var timeZone: String
     let longitude: Double
     let latitude: Double
     
-    init(city: String,
+    init(id: UUID = UUID(),
+         timestamp: Date = .now,
+         city: String,
          state: String?,
          country: String,
          nickname: String,
-         note: String?,
          timeZone: String,
          latitide: Double,
          longitude: Double
     ) {
+        self.id = id
+        self.timestamp = timestamp
         self.city = city
-        self.note = note
         self.timeZone = timeZone
         self.nickname = nickname
         self.state = state
@@ -57,10 +58,12 @@ final class Location: Identifiable, LocationProtocol {
         self.latitude = locationObject.latitude
         self.longitude = locationObject.longitude
         self.timeZone = timeZoneIdentifier
+        self.id = UUID()
+        self.timestamp = .now
     }
 }
 
-extension Location {
+extension Location: LocationProtocol {
     var countryName: String {
         country
     }
@@ -76,7 +79,9 @@ extension Location {
         
         return name
     }
-    
+}
+
+extension Location {
     var actualTimeZone: TimeZone {
         return TimeZone(identifier: timeZone) ?? .autoupdatingCurrent
     }
@@ -84,5 +89,12 @@ extension Location {
     func currentDateString(with formatter: DateFormatter) -> String {
         formatter.timeZone = actualTimeZone
         return formatter.string(from: Date.now)
+    }
+    
+    func isOutdated() -> Bool {
+        guard let fifteenAfter = Calendar.autoupdatingCurrent.date(byAdding: .minute, value: 15, to: timestamp), Date.now > fifteenAfter else {
+            return false
+        }
+        return true
     }
 }

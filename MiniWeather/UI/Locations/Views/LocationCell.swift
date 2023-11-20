@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct LocationCell: View {
-    let location: Location
+    let location: Location?
     let weather: Weather?
     let isCurrentLocation: Bool
     @Environment(\.timeFormatter) var timeFormatter
@@ -24,41 +24,43 @@ struct LocationCell: View {
                             .aspectRatio(contentMode: .fit)
                             .frame(square: 15)
                         
-                        Text(location.nickname)
+                        Text(location?.nickname ?? "Location Name")
+                            .foregroundStyle(isWithinCurrentLocationCacheTimeLimit() ? .primary : .quaternary)
                             .font(.system(size: 20, weight: .light))
                             .lineLimit(1)
                     }
                     
-                    Text(location.fullName)
+                    Text(location?.fullName ?? "Location Details")
                         .lineLimit(1)
                         .font(.system(size: 12))
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(isWithinCurrentLocationCacheTimeLimit() ? .secondary : .quaternary)
                 }
                 
                 Spacer(minLength: 8)
                 
                 Text((weather?.temperature.formatted(.number) ?? "--") + "°")
+                    .foregroundStyle(isWithinCurrentLocationCacheTimeLimit() ? .primary : .quaternary)
                     .font(.system(size: 45, weight: .ultraLight))
             }
             
             Rectangle()
                 .frame(height: 1)
-                .foregroundStyle(.tertiary)
+                .foregroundStyle(isWithinCurrentLocationCacheTimeLimit() ? .tertiary : .quaternary)
             
             HStack {
-                Text(location.currentDateString(with: timeFormatter))
-                    .foregroundStyle(.secondary)
+                Text(location?.currentDateString(with: timeFormatter) ?? "--:--")
+                    .foregroundStyle(isWithinCurrentLocationCacheTimeLimit() ? .secondary : .quaternary)
                 
                 Spacer()
                 
                 Text(weather?.getMinMaxTempString() ?? "-- • --")
                     .font(.system(size: 12))
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(isWithinCurrentLocationCacheTimeLimit() ? .secondary : .quaternary)
                 
                 Spacer()
                 
                 Label("1d", systemImage: "arrow.triangle.2.circlepath")
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(isWithinCurrentLocationCacheTimeLimit() ? .secondary : .quaternary)
             }
             .font(.system(size: 12))
         }
@@ -77,6 +79,16 @@ struct LocationCell: View {
             return Image(.currentLocation)
         }
     }
+    
+    private func isWithinCurrentLocationCacheTimeLimit() -> Bool {
+        guard isCurrentLocation else {
+            return true
+        }
+        guard let location else {
+            return false
+        }
+        return !location.isOutdated()
+    }
 }
 
 #Preview {
@@ -86,7 +98,6 @@ struct LocationCell: View {
             state: "FCT",
             country: "Nigeria",
             nickname: "Home",
-            note: nil,
             timeZone: TimeZone.autoupdatingCurrent.identifier,
             latitide: 0,
             longitude: 0
