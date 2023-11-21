@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// The API-Ninjas weather object.
 struct Weather: Decodable {
     enum CodingKeys: String, CodingKey {
         case temperature = "temp"
@@ -31,7 +32,9 @@ struct Weather: Decodable {
     let sunrise: Int
     let sunset: Int
     let cloudPercentage: Int
-    
+}
+
+extension Weather {
     func tempString() -> String {
         String(temperature)
     }

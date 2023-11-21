@@ -8,6 +8,7 @@
 import Foundation
 import CoreLocation
 
+/// The singleton object through which all app dependencies are retrieved.
 class DependencyFactory {
     public static let shared = DependencyFactory(
         parser: 

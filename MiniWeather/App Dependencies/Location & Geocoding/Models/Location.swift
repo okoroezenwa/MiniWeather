@@ -16,6 +16,7 @@ protocol LocationProtocol {
     var longitude: Double { get }
 }
 
+/// The Lcoation object used with SwiftData.
 @Model
 final class Location: Identifiable {
     let id: UUID

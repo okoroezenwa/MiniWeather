@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// The API request to get a reverse geocoding result from API-Ninjas.
 struct APINinjasReverseGeocodingRequest: Request {
     var host = "api.api-ninjas.com"
     var path = "/v1/reversegeocoding"

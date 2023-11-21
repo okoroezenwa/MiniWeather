@@ -1,18 +1,16 @@
 //
-//  LocationManagerDelegate.swift
+//  MainLocationManagerDelegate.swift
 //  MiniWeather
 //
-//  Created by Ezenwa Okoro on 11/11/2023.
+//  Created by Ezenwa Okoro on 20/11/2023.
 //
 
 import Foundation
 import CoreLocation
 
-protocol LocationManagerDelegate: UserLocationAuthorisationProvider, UserLocationProvider, CLLocationManagerDelegate { }
-
 class MainLocationManagerDelegate: NSObject, LocationManagerDelegate {
     private let locationManager: CLLocationManager
-    
+    // Checked continuation objects to bridge delegate functions with async functions
     private var userLocationCheckedThrowingContinuation: CheckedContinuation<CLLocationCoordinate2D, Error>?
     private var locationAuthorisationCheckedContinuation: CheckedContinuation<CLAuthorizationStatus, Never>?
     
@@ -23,6 +21,7 @@ class MainLocationManagerDelegate: NSObject, LocationManagerDelegate {
         locationManager.delegate = self
     }
     
+    // MARK: - UserLocationAuthorisationProvider
     func getAuthorisationStatus() -> CLAuthorizationStatus {
         locationManager.authorizationStatus
     }
@@ -41,6 +40,7 @@ class MainLocationManagerDelegate: NSObject, LocationManagerDelegate {
         }
     }
     
+    // MARK: - UserLocationProvider
     func getUserLocation() async throws -> CLLocationCoordinate2D {
         try await withCheckedThrowingContinuation { [weak self] continuation in
             guard let self else {
@@ -51,6 +51,7 @@ class MainLocationManagerDelegate: NSObject, LocationManagerDelegate {
         }
     }
     
+    // MARK: - CLLocationManagerDelegate
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         guard case let status = manager.authorizationStatus, status != .notDetermined else {
             return

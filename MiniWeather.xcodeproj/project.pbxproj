@@ -49,6 +49,7 @@
 		BE7DA7852AE99D800016047C /* DataParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE7DA7842AE99D800016047C /* DataParser.swift */; };
 		BE7DA7872AEA6E550016047C /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE7DA7862AEA6E540016047C /* Request.swift */; };
 		BE9F20F82AD0624A00CDC9F4 /* MainLocationsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9F20F72AD0624A00CDC9F4 /* MainLocationsRepository.swift */; };
+		BED0F59A2B0B9AEE00156E23 /* MainLocationManagerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED0F5992B0B9AEE00156E23 /* MainLocationManagerDelegate.swift */; };
 		BEFE25532B04A86000AB5DED /* CLAuthorizationStatus+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFE25522B04A86000AB5DED /* CLAuthorizationStatus+Extensions.swift */; };
 		BEFE25562B04EDCF00AB5DED /* UserLocationRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFE25552B04EDCF00AB5DED /* UserLocationRepository.swift */; };
 		BEFE25582B0600EF00AB5DED /* MainUserLocationRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFE25572B0600EF00AB5DED /* MainUserLocationRepository.swift */; };
@@ -107,6 +108,7 @@
 		BE7DA7842AE99D800016047C /* DataParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataParser.swift; sourceTree = "<group>"; };
 		BE7DA7862AEA6E540016047C /* Request.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
 		BE9F20F72AD0624A00CDC9F4 /* MainLocationsRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainLocationsRepository.swift; sourceTree = "<group>"; };
+		BED0F5992B0B9AEE00156E23 /* MainLocationManagerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainLocationManagerDelegate.swift; sourceTree = "<group>"; };
 		BEFE25522B04A86000AB5DED /* CLAuthorizationStatus+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CLAuthorizationStatus+Extensions.swift"; sourceTree = "<group>"; };
 		BEFE25552B04EDCF00AB5DED /* UserLocationRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserLocationRepository.swift; sourceTree = "<group>"; };
 		BEFE25572B0600EF00AB5DED /* MainUserLocationRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainUserLocationRepository.swift; sourceTree = "<group>"; };
@@ -286,7 +288,7 @@
 			isa = PBXGroup;
 			children = (
 				BE4FE4C32AECE5D200A381FD /* DependencyFactory.swift */,
-				BE4675192AFFB38400E9FAA3 /* LocationManagerDelegate.swift */,
+				BED0F59B2B0BA10C00156E23 /* LocationManagerDelegate */,
 				BEFE25542B04BCA800AB5DED /* User Location */,
 				BE4E41AE2AFA3F7A008B07D5 /* User Location Authorisation */,
 				BE4FE4C72AEECD5400A381FD /* Weather */,
@@ -409,6 +411,15 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
+		BED0F59B2B0BA10C00156E23 /* LocationManagerDelegate */ = {
+			isa = PBXGroup;
+			children = (
+				BE4675192AFFB38400E9FAA3 /* LocationManagerDelegate.swift */,
+				BED0F5992B0B9AEE00156E23 /* MainLocationManagerDelegate.swift */,
+			);
+			path = LocationManagerDelegate;
+			sourceTree = "<group>";
+		};
 		BEF4E7E02ACF41A10043BE93 /* Locations */ = {
 			isa = PBXGroup;
 			children = (
@@ -526,6 +537,7 @@
 				BE4B45BC2B06C56D007DBF66 /* ShapeStyle+Extensions.swift in Sources */,
 				BE4FE4A82AEC1EC900A381FD /* HTTPMethod.swift in Sources */,
 				BE4E41B42AFA45A2008B07D5 /* Listener.swift in Sources */,
+				BED0F59A2B0B9AEE00156E23 /* MainLocationManagerDelegate.swift in Sources */,
 				BE4FE4932AEC08D100A381FD /* APINinjasGeocodingRequest.swift in Sources */,
 				BE4FE4BF2AEC4A4300A381FD /* CountryCodes.swift in Sources */,
 				BE4675182AFE8EEE00E9FAA3 /* View+Extensions.swift in Sources */,

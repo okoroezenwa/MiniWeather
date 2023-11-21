@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// An object that can notify its observers of changes to its Property object.
 protocol Broadcaster<Property> {
     associatedtype Property
     

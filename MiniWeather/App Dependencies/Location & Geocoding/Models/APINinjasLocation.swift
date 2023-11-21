@@ -8,6 +8,7 @@
 import Foundation
 import CoreLocation
 
+/// The API-Ninjas location object.
 struct APINinjasLocation: Decodable, LocationProtocol {
     enum CodingKeys: String, CodingKey {
         case city = "name"
