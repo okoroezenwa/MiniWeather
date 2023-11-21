@@ -14,7 +14,7 @@ protocol DataParser {
      
      - Returns: An object conforming to Decodable.
      - Parameter data: The Data object to decode.
-     - Throws: NetworkError.failedDecode if unable to decode the object.
+     - Throws: `NetworkError.failedDecode` if unable to decode the object.
      */
     func decode<Response: Decodable>(_ data: Data) throws -> Response
 }

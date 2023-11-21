@@ -44,7 +44,7 @@
 		BE71B8132ACE9F2B003AA99C /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE71B8122ACE9F2B003AA99C /* Location.swift */; };
 		BE71B8152ACE9F2C003AA99C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BE71B8142ACE9F2C003AA99C /* Assets.xcassets */; };
 		BE71B8182ACE9F2C003AA99C /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BE71B8172ACE9F2C003AA99C /* Preview Assets.xcassets */; };
-		BE7DA77B2AE69EDE0016047C /* APINinjasGeodecoderService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE7DA77A2AE69EDE0016047C /* APINinjasGeodecoderService.swift */; };
+		BE7DA77B2AE69EDE0016047C /* APINinjasGeocoderService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE7DA77A2AE69EDE0016047C /* APINinjasGeocoderService.swift */; };
 		BE7DA77D2AE6B42A0016047C /* StandardNetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE7DA77C2AE6B42A0016047C /* StandardNetworkService.swift */; };
 		BE7DA7852AE99D800016047C /* DataParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE7DA7842AE99D800016047C /* DataParser.swift */; };
 		BE7DA7872AEA6E550016047C /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE7DA7862AEA6E540016047C /* Request.swift */; };
@@ -103,7 +103,7 @@
 		BE71B8172ACE9F2C003AA99C /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		BE71B8192ACE9F2C003AA99C /* MiniWeather.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MiniWeather.entitlements; sourceTree = "<group>"; };
 		BE71B81A2ACE9F2C003AA99C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		BE7DA77A2AE69EDE0016047C /* APINinjasGeodecoderService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APINinjasGeodecoderService.swift; sourceTree = "<group>"; };
+		BE7DA77A2AE69EDE0016047C /* APINinjasGeocoderService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APINinjasGeocoderService.swift; sourceTree = "<group>"; };
 		BE7DA77C2AE6B42A0016047C /* StandardNetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandardNetworkService.swift; sourceTree = "<group>"; };
 		BE7DA7842AE99D800016047C /* DataParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataParser.swift; sourceTree = "<group>"; };
 		BE7DA7862AEA6E540016047C /* Request.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
@@ -206,7 +206,7 @@
 			children = (
 				BE4FE49E2AEC1A0C00A381FD /* GeocoderService.swift */,
 				BE4FE4AC2AEC21F700A381FD /* AppleGeocoderService.swift */,
-				BE7DA77A2AE69EDE0016047C /* APINinjasGeodecoderService.swift */,
+				BE7DA77A2AE69EDE0016047C /* APINinjasGeocoderService.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -541,7 +541,7 @@
 				BE4FE4932AEC08D100A381FD /* APINinjasGeocodingRequest.swift in Sources */,
 				BE4FE4BF2AEC4A4300A381FD /* CountryCodes.swift in Sources */,
 				BE4675182AFE8EEE00E9FAA3 /* View+Extensions.swift in Sources */,
-				BE7DA77B2AE69EDE0016047C /* APINinjasGeodecoderService.swift in Sources */,
+				BE7DA77B2AE69EDE0016047C /* APINinjasGeocoderService.swift in Sources */,
 				BE71B8112ACE9F2B003AA99C /* LocationsView.swift in Sources */,
 				BE4FE4D62AF1346000A381FD /* APINinjasWeatherService.swift in Sources */,
 				BEFE25532B04A86000AB5DED /* CLAuthorizationStatus+Extensions.swift in Sources */,

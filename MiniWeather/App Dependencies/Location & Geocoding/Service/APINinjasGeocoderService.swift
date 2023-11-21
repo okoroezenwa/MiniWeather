@@ -1,5 +1,5 @@
 //
-//  APINinjasGeodecoderService.swift
+//  APINinjasGeocoderService.swift
 //  MiniWeather
 //
 //  Created by Ezenwa Okoro on 23/10/2023.
@@ -8,7 +8,7 @@
 import Foundation
 import CoreLocation
 
-class APINinjasGeodecoderService: GeocoderService {
+class APINinjasGeocoderService: GeocoderService {
     private let networkService: NetworkService
     private let parser: DataParser
     

@@ -69,7 +69,7 @@ class DependencyFactory {
     }
     
     private func makeAPINinjasGeocoderService() -> GeocoderService {
-        APINinjasGeodecoderService(
+        APINinjasGeocoderService(
             networkService: networkService,
             parser: parser
         )
