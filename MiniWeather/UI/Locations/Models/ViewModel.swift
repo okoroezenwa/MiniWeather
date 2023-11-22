@@ -19,21 +19,22 @@ extension LocationsView {
         private let weatherRepositoryFactory: () -> WeatherRepository
         private let timeZoneRepositoryFactory: () -> TimeZoneRepository
         private var status: CLAuthorizationStatus
-        private var currentLocation: Location? {
+        var currentLocation: Location? {
             didSet {
-                guard let currentLocation else { return }
+                // TODO: Replace use of UserDefaults with proper Datastore.
+                guard let location = currentLocation, currentLocation?.id != location.id else { return }
                 let parent = String(describing: Location.self)
-                let data = try? JSONEncoder().encode(currentLocation.timestamp)
+                let data = try? JSONEncoder().encode(location.timestamp)
                 UserDefaults.standard.set(data, forKey: parent + ".timestamp")
-                let uuidData = try? JSONEncoder().encode(currentLocation.id)
+                let uuidData = try? JSONEncoder().encode(location.id)
                 UserDefaults.standard.set(uuidData, forKey: parent + ".id")
-                UserDefaults.standard.set(currentLocation.city, forKey: parent + ".city")
-                UserDefaults.standard.set(currentLocation.state, forKey: parent + ".state")
-                UserDefaults.standard.set(currentLocation.country, forKey: parent + ".country")
-                UserDefaults.standard.set(currentLocation.nickname, forKey: parent + ".nickname")
-                UserDefaults.standard.set(currentLocation.timeZone, forKey: parent + ".timeZone")
-                UserDefaults.standard.set(currentLocation.latitude, forKey: parent + ".latitude")
-                UserDefaults.standard.set(currentLocation.longitude, forKey: parent + ".longitude")
+                UserDefaults.standard.set(location.city, forKey: parent + ".city")
+                UserDefaults.standard.set(location.state, forKey: parent + ".state")
+                UserDefaults.standard.set(location.country, forKey: parent + ".country")
+                UserDefaults.standard.set(location.nickname, forKey: parent + ".nickname")
+                UserDefaults.standard.set(location.timeZone, forKey: parent + ".timeZone")
+                UserDefaults.standard.set(location.latitude, forKey: parent + ".latitude")
+                UserDefaults.standard.set(location.longitude, forKey: parent + ".longitude")
             }
         }
         private var weatherCache = [UUID: Weather]()
@@ -80,6 +81,7 @@ extension LocationsView {
         }
         
         func getCurrentLocationFromUserDefaults() -> Location? {
+            // TODO: Replace use of UserDefaults with proper Datastore.
             let parent = String(describing: Location.self)
             guard 
                 let data = UserDefaults.standard.data(forKey: parent + ".timestamp"),
@@ -99,7 +101,11 @@ extension LocationsView {
             }
             
             let location = Location(id: id, timestamp: date, city: city, state: state, country: country, nickname: nickname, timeZone: timeZone, latitide: latitude, longitude: longitude)
-            getWeather(for: location)
+            
+            // only retrieve weather info if the location isn't outdated since it will be retrieved otherwise
+            if !location.isOutdated() {
+                getWeather(for: location)
+            }
             
             if location.isOutdated() {
                 refreshCurrentLocation(requestingAuthorisation: false)

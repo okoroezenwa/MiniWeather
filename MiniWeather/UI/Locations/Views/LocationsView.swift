@@ -42,7 +42,11 @@ struct LocationsView: View {
         }
         .onChange(of: scenePhase) { oldValue, _ in
             if oldValue == .background {
-                viewModel.refreshStatus()
+                if let location = viewModel.getCurrentLocation(), location.isOutdated() {
+                    viewModel.refreshCurrentLocation(requestingAuthorisation: false)
+                } else {
+                    viewModel.refreshStatus()
+                }
             }
         }
     }
