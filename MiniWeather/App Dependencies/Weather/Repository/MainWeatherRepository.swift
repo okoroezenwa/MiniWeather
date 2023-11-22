@@ -8,7 +8,7 @@
 import Foundation
 import CoreLocation
 
-class MainWeatherRepository: WeatherRepository {
+struct MainWeatherRepository: WeatherRepository {
     private let weatherService: WeatherService
     
     init(weatherService: WeatherService) {

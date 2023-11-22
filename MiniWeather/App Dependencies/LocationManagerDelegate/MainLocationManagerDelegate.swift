@@ -8,7 +8,7 @@
 import Foundation
 import CoreLocation
 
-class MainLocationManagerDelegate: NSObject, LocationManagerDelegate {
+final class MainLocationManagerDelegate: NSObject, LocationManagerDelegate {
     private let locationManager: CLLocationManager
     // Checked continuation objects to bridge delegate functions with async functions
     private var userLocationCheckedThrowingContinuation: CheckedContinuation<CLLocationCoordinate2D, Error>?

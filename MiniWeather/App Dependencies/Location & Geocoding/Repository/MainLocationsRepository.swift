@@ -8,7 +8,7 @@
 import Foundation
 import CoreLocation
 
-class MainLocationsRepository: LocationsRepository {
+struct MainLocationsRepository: LocationsRepository {
     private var geocodeService: GeocoderService
     
     init(geocodeService: GeocoderService) {

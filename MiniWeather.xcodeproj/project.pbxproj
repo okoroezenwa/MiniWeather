@@ -50,6 +50,7 @@
 		BE7DA7872AEA6E550016047C /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE7DA7862AEA6E540016047C /* Request.swift */; };
 		BE9F20F82AD0624A00CDC9F4 /* MainLocationsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9F20F72AD0624A00CDC9F4 /* MainLocationsRepository.swift */; };
 		BED0F59A2B0B9AEE00156E23 /* MainLocationManagerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED0F5992B0B9AEE00156E23 /* MainLocationManagerDelegate.swift */; };
+		BED0F59D2B0DF73200156E23 /* Sequence+Async.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED0F59C2B0DF73200156E23 /* Sequence+Async.swift */; };
 		BEFE25532B04A86000AB5DED /* CLAuthorizationStatus+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFE25522B04A86000AB5DED /* CLAuthorizationStatus+Extensions.swift */; };
 		BEFE25562B04EDCF00AB5DED /* UserLocationRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFE25552B04EDCF00AB5DED /* UserLocationRepository.swift */; };
 		BEFE25582B0600EF00AB5DED /* MainUserLocationRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFE25572B0600EF00AB5DED /* MainUserLocationRepository.swift */; };
@@ -109,6 +110,7 @@
 		BE7DA7862AEA6E540016047C /* Request.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
 		BE9F20F72AD0624A00CDC9F4 /* MainLocationsRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainLocationsRepository.swift; sourceTree = "<group>"; };
 		BED0F5992B0B9AEE00156E23 /* MainLocationManagerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainLocationManagerDelegate.swift; sourceTree = "<group>"; };
+		BED0F59C2B0DF73200156E23 /* Sequence+Async.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sequence+Async.swift"; sourceTree = "<group>"; };
 		BEFE25522B04A86000AB5DED /* CLAuthorizationStatus+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CLAuthorizationStatus+Extensions.swift"; sourceTree = "<group>"; };
 		BEFE25552B04EDCF00AB5DED /* UserLocationRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserLocationRepository.swift; sourceTree = "<group>"; };
 		BEFE25572B0600EF00AB5DED /* MainUserLocationRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainUserLocationRepository.swift; sourceTree = "<group>"; };
@@ -271,6 +273,7 @@
 				BE4675172AFE8EEE00E9FAA3 /* View+Extensions.swift */,
 				BEFE25522B04A86000AB5DED /* CLAuthorizationStatus+Extensions.swift */,
 				BE4B45BB2B06C56D007DBF66 /* ShapeStyle+Extensions.swift */,
+				BED0F59C2B0DF73200156E23 /* Sequence+Async.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -561,6 +564,7 @@
 				BE4FE4972AEC098300A381FD /* APINinjasLocation.swift in Sources */,
 				BE4FE4A62AEC1E2500A381FD /* NetworkService.swift in Sources */,
 				BE4FE4CE2AF132F400A381FD /* WeatherRepository.swift in Sources */,
+				BED0F59D2B0DF73200156E23 /* Sequence+Async.swift in Sources */,
 				BE4FE4BC2AEC399E00A381FD /* CLPlacemark+Extensions.swift in Sources */,
 				BE4FE49A2AEC0FEA00A381FD /* TimeZoneService.swift in Sources */,
 				BE4FE4D82AF135DB00A381FD /* APINinjasWeatherRequest.swift in Sources */,
@@ -732,6 +736,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_STRICT_CONCURRENCY = complete;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -765,6 +770,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_STRICT_CONCURRENCY = complete;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

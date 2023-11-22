@@ -7,7 +7,7 @@
 
 import Foundation
 
-class StandardNetworkService: NetworkService {
+struct StandardNetworkService: NetworkService {
     private let urlSession: URLSession
     
     init(urlSession: URLSession) {
