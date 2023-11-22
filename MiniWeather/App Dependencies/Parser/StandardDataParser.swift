@@ -7,7 +7,7 @@
 
 import Foundation
 
-class StandardDataParser: DataParser {
+final class StandardDataParser: DataParser {
     private let decoder: JSONDecoder
     
     init(decoder: JSONDecoder) {

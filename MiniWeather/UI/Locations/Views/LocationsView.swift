@@ -8,6 +8,7 @@
 import SwiftUI
 import SwiftData
 
+@MainActor
 struct LocationsView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.colorScheme) private var colorScheme
@@ -161,12 +162,12 @@ struct LocationsView: View {
                 EditButton()
             }
         }
-        .onAppear {
-            locations.forEach { location in
-                guard viewModel.weather(for: location).wrappedValue == nil else {
-                    return
-                }
-                viewModel.getWeather(for: location)
+        .task {
+            do {
+                try await viewModel.getWeather(for: locations)
+            } catch {
+                // TODO: - Replace with proper error-handling
+                print(error.localizedDescription)
             }
         }
     }

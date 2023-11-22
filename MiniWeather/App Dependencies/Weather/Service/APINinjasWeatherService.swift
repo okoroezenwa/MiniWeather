@@ -8,7 +8,7 @@
 import Foundation
 import CoreLocation
 
-class APINinjasWeatherService: WeatherService {
+struct APINinjasWeatherService: WeatherService {
     private let networkService: NetworkService
     private let parser: DataParser
     

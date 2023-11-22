@@ -8,7 +8,7 @@
 import Foundation
 import CoreLocation
 
-class MainTimeZoneRepository: TimeZoneRepository {
+struct MainTimeZoneRepository: TimeZoneRepository {
     private let service: TimeZoneService
     
     init(service: TimeZoneService) {

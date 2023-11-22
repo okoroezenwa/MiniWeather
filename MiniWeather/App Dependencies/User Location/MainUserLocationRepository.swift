@@ -8,7 +8,7 @@
 import Foundation
 import CoreLocation
 
-class MainUserLocationRepository: UserLocationRepository {
+struct MainUserLocationRepository: UserLocationRepository {
     private let userLocationProvider: UserLocationProvider
     
     init(userLocationProvider: UserLocationProvider) {

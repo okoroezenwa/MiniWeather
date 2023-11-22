@@ -12,7 +12,7 @@ import SwiftData
 import SwiftUI
 
 extension LocationsView {
-    @Observable class ViewModel {
+    @Observable @MainActor final class ViewModel {
         private let userLocationAuthorisationRepositoryFactory: () -> UserLocationAuthorisationRepository
         private let userLocationRepositoryFactory: () -> UserLocationRepository
         private let locationsRepositoryFactory: () -> LocationsRepository
@@ -21,7 +21,7 @@ extension LocationsView {
         private var status: CLAuthorizationStatus
         var currentLocation: Location? {
             didSet {
-                // TODO: Replace use of UserDefaults with proper Datastore.
+                // TODO: - Replace use of UserDefaults with proper Datastore.
                 guard let location = currentLocation, currentLocation?.id != location.id else { return }
                 let parent = String(describing: Location.self)
                 let data = try? JSONEncoder().encode(location.timestamp)
@@ -37,6 +37,7 @@ extension LocationsView {
                 UserDefaults.standard.set(location.longitude, forKey: parent + ".longitude")
             }
         }
+        // TODO: - replace with Actor object
         private var weatherCache = [UUID: Weather]()
         private var searchResults = [Location]()
         private var searchCancellable: AnyCancellable?
@@ -153,8 +154,11 @@ extension LocationsView {
                         let weather = try await weatherRepository.getWeather(for: coordinates)
                         
                         await MainActor.run {
+                            // TODO: - replace once actor implementation is done
+                            var constantWeatherCache = self.weatherCache
                             self.currentLocation = location
-                            self.weatherCache[location.id] = weather
+                            constantWeatherCache[location.id] = weather
+                            self.weatherCache = constantWeatherCache
                         }
                     }
                 } catch {
@@ -176,7 +180,10 @@ extension LocationsView {
                 let timeZone = try await timeZoneRepository.getTimeZone(at: coordinates)
                 
                 await MainActor.run {
-                    weatherCache[location.id] = weather
+                    // TODO: - replace once actor implementation is done
+                    var tempWeather = weatherCache
+                    tempWeather[location.id] = weather
+                    self.weatherCache = tempWeather
                     completion(timeZone)
                 }
             }
@@ -218,6 +225,36 @@ extension LocationsView {
                 )
                 let weather = try await weatherRepository.getWeather(for: coordinates)
                 weatherCache[location.id] = weather
+            }
+        }
+        
+        func getWeather(for locations: [Location]) async throws {
+            let weatherRepository = weatherRepositoryFactory()
+            var weatherInfo = [UUID: Weather]()
+            
+            for location in locations {
+                guard weatherCache[location.id] == nil else {
+                    continue
+                }
+                
+                do {
+                    let coordinates = CLLocationCoordinate2D(
+                        latitude: location.latitude,
+                        longitude: location.longitude
+                    )
+                    let weather = try await weatherRepository.getWeather(for: coordinates)
+                    weatherInfo[location.id] = weather
+                } catch {
+                    continue
+                }
+            }
+            
+            let constantWeatherInfo = weatherInfo
+            
+            await MainActor.run {
+                constantWeatherInfo.forEach { id, location in
+                    weatherCache[id] = location
+                }
             }
         }
         

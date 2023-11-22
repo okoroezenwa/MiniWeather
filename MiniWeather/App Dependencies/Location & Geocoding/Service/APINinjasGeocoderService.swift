@@ -8,7 +8,7 @@
 import Foundation
 import CoreLocation
 
-class APINinjasGeocoderService: GeocoderService {
+struct APINinjasGeocoderService: GeocoderService {
     private let networkService: NetworkService
     private let parser: DataParser
     
