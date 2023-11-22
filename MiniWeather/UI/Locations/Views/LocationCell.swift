@@ -23,6 +23,7 @@ struct LocationCell: View {
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(square: 15)
+                            .foregroundStyle(isWithinCurrentLocationCacheTimeLimit() ? .primary : .quaternary)
                         
                         Text(location?.nickname ?? "Location Name")
                             .foregroundStyle(isWithinCurrentLocationCacheTimeLimit() ? .primary : .quaternary)
@@ -70,6 +71,7 @@ struct LocationCell: View {
             .cellBackgroundColour(for: colorScheme)
         )
         .clipShape(.rect(cornerRadius: 16))
+        .shadow(color: .black.opacity(0.1), radius: 5)
     }
     
     private func locationImage() -> Image {
