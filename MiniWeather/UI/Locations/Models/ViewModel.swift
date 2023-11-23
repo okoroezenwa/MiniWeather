@@ -71,7 +71,7 @@ extension LocationsView {
             
             searchCancellable = searchText
                 .debounce(
-                    for: .seconds(1),
+                    for: .milliseconds(600),
                     scheduler: DispatchQueue.main
                 )
                 .sink { searchQuery in

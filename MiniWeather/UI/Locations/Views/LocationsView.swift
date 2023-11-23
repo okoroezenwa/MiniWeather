@@ -21,8 +21,11 @@ struct LocationsView: View {
         order: .reverse
     ) private var locations: [Location]
     @State var selectedLocation: Location?
+    // TODO: - Replace alert with toast
+    @State var duplicateLocation: Location?
     @State var viewModel: ViewModel
     @Binding var searchText: String
+    @State var isShowingDuplicateAlert = false
 
     var body: some View {
         NavigationSplitView {
@@ -49,6 +52,15 @@ struct LocationsView: View {
                     viewModel.refreshStatus()
                 }
             }
+        }
+        .alert("Duplicate Location", isPresented: $isShowingDuplicateAlert, presenting: duplicateLocation) { _ in
+            Button(role: .cancel) {
+                isShowingDuplicateAlert = false
+            } label: {
+                Text("OK")
+            }
+        } message: { location in
+            Text("You have already saved \"\(location.fullName)\".")
         }
     }
     
@@ -125,12 +137,7 @@ struct LocationsView: View {
     
     private func locationsGrid() -> some View {
         ScrollView {
-            LazyVGrid(
-                columns: [
-                    GridItem(
-                        .flexible()
-                    )
-                ],
+            LazyVStack(
                 alignment: .leading,
                 spacing: 12
             ) {
@@ -141,6 +148,7 @@ struct LocationsView: View {
                 }
             }
         }
+        .scrollDismissesKeyboard(.immediately)
         .navigationTitle("Locations")
         .navigationDestination(for: Location.self) { location in
             LocationDetailView(
@@ -185,6 +193,16 @@ struct LocationsView: View {
                 .listRowSeparatorTint(.secondary.opacity(0.35))
                 .listRowBackground(Color.clear)
                 .onTapGesture {
+                    guard !locations.contains(where: { location.fullName == $0.fullName  }) else {
+                        duplicateLocation = location
+                        isShowingDuplicateAlert = true
+                        return
+                    }
+                    
+                    if locations.count == 10, let last = locations.last {
+                        delete(last)
+                    }
+                    
                     add(location)
                     dismissSearch()
                     viewModel.update(location) { timeZone in
@@ -195,6 +213,7 @@ struct LocationsView: View {
             }
         }
         .listStyle(.plain)
+        .scrollDismissesKeyboard(.immediately)
     }
     
     private func currentLocationSection() -> some View {
@@ -245,7 +264,9 @@ struct LocationsView: View {
                         .padding(.horizontal, 16)
                 }
                 .buttonStyle(.plain)
+                .transition(.move(edge: .leading))
             }
+            .animation(.easeInOut, value: locations)
         } header: {
             Text("Saved Locations")
                 .font(
