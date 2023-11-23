@@ -41,6 +41,7 @@ extension LocationsView {
         private var weatherCache = [UUID: Weather]()
         private var searchResults = [Location]()
         private var searchCancellable: AnyCancellable?
+        var searchText = PassthroughSubject<String, Never>()
         
         static let shared = ViewModel(
             userLocationAuthorisationRepositoryFactory: DependencyFactory.shared.makeUserLocationAuthorisationRepository,
@@ -67,6 +68,15 @@ extension LocationsView {
             if status != .notDetermined {
                 self.currentLocation = getCurrentLocationFromUserDefaults()
             }
+            
+            searchCancellable = searchText
+                .debounce(
+                    for: .seconds(1),
+                    scheduler: DispatchQueue.main
+                )
+                .sink { searchQuery in
+                    self.performSearch(for: searchQuery)
+                }
         }
         
         func getStatus() -> CLAuthorizationStatus {
@@ -189,7 +199,7 @@ extension LocationsView {
             }
         }
         
-        func search(for query: String) {
+        func performSearch(for query: String) {
             guard query.count > 2 else {
                 searchResults = []
                 return
@@ -205,15 +215,8 @@ extension LocationsView {
             }
         }
         
-        private func performSearch(for query: String) {
-            searchCancellable?.cancel()
-            searchCancellable = Just(query)
-                .debounce(for: .milliseconds(500),
-                          scheduler: DispatchQueue.main
-                )
-                .sink { searchQuery in
-                    self.search(for: searchQuery)
-                }
+        func search(for query: String) {
+            searchText.send(query)
         }
         
         func getWeather(for location: Location) {
