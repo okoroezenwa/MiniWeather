@@ -21,20 +21,7 @@ extension LocationsView {
         private var status: CLAuthorizationStatus
         var currentLocation: Location? {
             didSet {
-                // TODO: - Replace use of UserDefaults with proper Datastore.
-                guard let location = currentLocation, currentLocation?.id != location.id else { return }
-                let parent = String(describing: Location.self)
-                let data = try? JSONEncoder().encode(location.timestamp)
-                UserDefaults.standard.set(data, forKey: parent + ".timestamp")
-                let uuidData = try? JSONEncoder().encode(location.id)
-                UserDefaults.standard.set(uuidData, forKey: parent + ".id")
-                UserDefaults.standard.set(location.city, forKey: parent + ".city")
-                UserDefaults.standard.set(location.state, forKey: parent + ".state")
-                UserDefaults.standard.set(location.country, forKey: parent + ".country")
-                UserDefaults.standard.set(location.nickname, forKey: parent + ".nickname")
-                UserDefaults.standard.set(location.timeZone, forKey: parent + ".timeZone")
-                UserDefaults.standard.set(location.latitude, forKey: parent + ".latitude")
-                UserDefaults.standard.set(location.longitude, forKey: parent + ".longitude")
+                
             }
         }
         // TODO: - replace with Actor object
@@ -68,15 +55,6 @@ extension LocationsView {
             if status != .notDetermined {
                 self.currentLocation = getCurrentLocationFromUserDefaults()
             }
-            
-            searchCancellable = searchText
-                .debounce(
-                    for: .seconds(1),
-                    scheduler: DispatchQueue.main
-                )
-                .sink { searchQuery in
-                    self.performSearch(for: searchQuery)
-                }
         }
         
         func getStatus() -> CLAuthorizationStatus {
@@ -125,6 +103,23 @@ extension LocationsView {
             return location
         }
         
+        private func saveCurrentLocationToUserDefaults() {
+            // TODO: - Replace use of UserDefaults with proper Datastore.
+            guard let location = currentLocation else { return }
+            let parent = String(describing: Location.self)
+            let data = try? JSONEncoder().encode(location.timestamp)
+            UserDefaults.standard.set(data, forKey: parent + ".timestamp")
+            let uuidData = try? JSONEncoder().encode(location.id)
+            UserDefaults.standard.set(uuidData, forKey: parent + ".id")
+            UserDefaults.standard.set(location.city, forKey: parent + ".city")
+            UserDefaults.standard.set(location.state, forKey: parent + ".state")
+            UserDefaults.standard.set(location.country, forKey: parent + ".country")
+            UserDefaults.standard.set(location.nickname, forKey: parent + ".nickname")
+            UserDefaults.standard.set(location.timeZone, forKey: parent + ".timeZone")
+            UserDefaults.standard.set(location.latitude, forKey: parent + ".latitude")
+            UserDefaults.standard.set(location.longitude, forKey: parent + ".longitude")
+        }
+        
         func refreshCurrentLocation(requestingAuthorisation requestAuthorisation: Bool) {
             let userLocationAuthorisationRepository = userLocationAuthorisationRepositoryFactory()
             let userLocationRepository = userLocationRepositoryFactory()
@@ -167,6 +162,7 @@ extension LocationsView {
                             // TODO: - replace once actor implementation is done
                             var constantWeatherCache = self.weatherCache
                             self.currentLocation = location
+                            self.saveCurrentLocationToUserDefaults()
                             constantWeatherCache[location.id] = weather
                             self.weatherCache = constantWeatherCache
                         }
@@ -216,6 +212,15 @@ extension LocationsView {
         }
         
         func search(for query: String) {
+            searchCancellable?.cancel()
+            searchCancellable = searchText
+                .debounce(
+                    for: .milliseconds(600),
+                    scheduler: DispatchQueue.main
+                )
+                .sink { searchQuery in
+                    self.performSearch(for: searchQuery)
+                }
             searchText.send(query)
         }
         
