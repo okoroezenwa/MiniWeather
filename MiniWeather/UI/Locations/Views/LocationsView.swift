@@ -117,7 +117,6 @@ struct LocationsView: View {
                     Label("Delete Location", systemImage: "trash")
                 }
             }
-            
         }
     }
     
