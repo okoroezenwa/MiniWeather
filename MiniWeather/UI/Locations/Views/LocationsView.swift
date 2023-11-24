@@ -279,7 +279,7 @@ struct LocationsView: View {
 
 #Preview {
     LocationsView(
-        viewModel: .shared, 
+        viewModel: .shared,
         searchText: Binding(get: { "" }, set: { _ in })
     )
     .modelContainer(for: Location.self, inMemory: true)
