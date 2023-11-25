@@ -28,7 +28,11 @@ final class DependencyFactory {
     private let networkService: NetworkService
     private let locationManagerDelegate: LocationManagerDelegate
     
-    private init(parser: DataParser, networkService: NetworkService, locationManagerDelegate: LocationManagerDelegate) {
+    private init(
+        parser: DataParser,
+        networkService: NetworkService,
+        locationManagerDelegate: LocationManagerDelegate
+    ) {
         self.parser = parser
         self.networkService = networkService
         self.locationManagerDelegate = locationManagerDelegate
@@ -36,7 +40,7 @@ final class DependencyFactory {
     
     public func makeLocationsRepository() -> LocationsRepository {
         MainLocationsRepository(
-            geocodeService: makeAPINinjasGeocoderService()
+            geocodeService: makeOpenWeatherMapsGeocoderService()
         )
     }
     
@@ -70,6 +74,13 @@ final class DependencyFactory {
     
     private func makeAPINinjasGeocoderService() -> GeocoderService {
         APINinjasGeocoderService(
+            networkService: networkService,
+            parser: parser
+        )
+    }
+    
+    private func makeOpenWeatherMapsGeocoderService() -> GeocoderService {
+        OpenWeatherMapsGeocoderService(
             networkService: networkService,
             parser: parser
         )
