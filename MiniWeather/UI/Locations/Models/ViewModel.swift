@@ -149,14 +149,9 @@ extension LocationsView {
                             throw LocationError.notFound
                         }
                         
-                        let timeZone = try await timeZoneRepository.getTimeZone(
-                            at: .init(
-                                latitude: location.latitude,
-                                longitude: location.longitude
-                            )
-                        )
-                        location.timeZone = timeZone.name
                         let weather = try await weatherRepository.getWeather(for: coordinates)
+                        let timeZone = try await timeZoneRepository.getTimeZone(for: location)
+                        location.timeZone = timeZone.name
                         
                         await MainActor.run {
                             // TODO: - replace once actor implementation is done
@@ -178,12 +173,9 @@ extension LocationsView {
             let timeZoneRepository = timeZoneRepositoryFactory()
             
             Task {
-                let coordinates = CLLocationCoordinate2D(
-                    latitude: location.latitude,
-                    longitude: location.longitude
-                )
+                let coordinates = location.coordinates()
                 let weather = try await weatherRepository.getWeather(for: coordinates)
-                let timeZone = try await timeZoneRepository.getTimeZone(at: coordinates)
+                let timeZone = try await timeZoneRepository.getTimeZone(for: location)
                 
                 await MainActor.run {
                     // TODO: - replace once actor implementation is done

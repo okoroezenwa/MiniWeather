@@ -7,6 +7,7 @@
 
 import Foundation
 import CoreLocation
+import OSLog
 
 /// The singleton object through which all app dependencies are retrieved.
 final class DependencyFactory {
@@ -68,6 +69,25 @@ final class DependencyFactory {
         )
     }
     
+    public func makeUserDefaultsDatastore() -> Datastore {
+        UserDefaultsDatastore(
+            store: makeUserDefaultsKeyValueStore(),
+            decoder: JSONDecoder(),
+            encoder: JSONEncoder(),
+            logger: Logger()
+        )
+    }
+    
+    public func makeCloudKeyValueDatastore() -> Datastore {
+        CloudKeyValueDatastore(
+            store: makeCloudKeyValueStore(),
+            decoder: JSONDecoder(),
+            encoder: JSONEncoder(),
+            localStorage: makeUserDefaultsKeyValueStore(),
+            logger: Logger()
+        )
+    }
+    
     private func makeAppleGeocoderService() -> GeocoderService {
         AppleGeocoderService()
     }
@@ -106,5 +126,13 @@ final class DependencyFactory {
     
     private func makeUserLocationAuthorisationProvider() -> UserLocationAuthorisationProvider {
         locationManagerDelegate
+    }
+    
+    private func makeUserDefaultsKeyValueStore() -> KeyValueStore {
+        UserDefaults.standard
+    }
+    
+    private func makeCloudKeyValueStore() -> KeyValueStore {
+        NSUbiquitousKeyValueStore.default
     }
 }

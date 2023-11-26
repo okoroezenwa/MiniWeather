@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftData
+import CoreLocation
 
 protocol LocationProtocol {
     var city: String { get }
@@ -82,6 +83,7 @@ extension Location: LocationProtocol {
     }
 }
 
+// Convenience functions for Location
 extension Location {
     var actualTimeZone: TimeZone {
         return TimeZone(identifier: timeZone) ?? .autoupdatingCurrent
@@ -97,5 +99,12 @@ extension Location {
             return false
         }
         return true
+    }
+    
+    func coordinates() -> CLLocationCoordinate2D {
+        .init(
+            latitude: latitude,
+            longitude: longitude
+        )
     }
 }

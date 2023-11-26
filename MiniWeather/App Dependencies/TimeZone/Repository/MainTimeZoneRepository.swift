@@ -15,7 +15,7 @@ struct MainTimeZoneRepository: TimeZoneRepository {
         self.service = service
     }
     
-    func getTimeZone(at coordinates: CLLocationCoordinate2D) async throws -> TimeZoneIdentifier {
-        try await service.getTimeZone(at: coordinates)
+    func getTimeZone(for location: Location) async throws -> TimeZoneIdentifier {
+        try await service.getTimeZone(for: location)
     }
 }
