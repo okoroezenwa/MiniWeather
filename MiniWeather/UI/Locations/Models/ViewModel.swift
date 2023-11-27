@@ -19,13 +19,9 @@ extension LocationsView {
         private let weatherRepositoryFactory: () -> WeatherRepository
         private let timeZoneRepositoryFactory: () -> TimeZoneRepository
         private var status: CLAuthorizationStatus
-        var currentLocation: Location? {
-            didSet {
-                
-            }
-        }
+        var currentLocation: Location?
         // TODO: - replace with Actor object
-        private var weatherCache = [UUID: Weather]()
+        private var weatherCache = [UUID: WeatherProtocol]()
         private var searchResults = [Location]()
         private var searchCancellable: AnyCancellable?
         var searchText = PassthroughSubject<String, Never>()
@@ -149,7 +145,7 @@ extension LocationsView {
                             throw LocationError.notFound
                         }
                         
-                        let weather = try await weatherRepository.getWeather(for: coordinates)
+                        let weather = try await weatherRepository.getWeather(for: location)
                         let timeZone = try await timeZoneRepository.getTimeZone(for: location)
                         location.timeZone = timeZone.name
                         
@@ -174,7 +170,7 @@ extension LocationsView {
             
             Task {
                 let coordinates = location.coordinates()
-                let weather = try await weatherRepository.getWeather(for: coordinates)
+                let weather = try await weatherRepository.getWeather(for: location)
                 let timeZone = try await timeZoneRepository.getTimeZone(for: location)
                 
                 await MainActor.run {
@@ -223,14 +219,14 @@ extension LocationsView {
                     latitude: location.latitude,
                     longitude: location.longitude
                 )
-                let weather = try await weatherRepository.getWeather(for: coordinates)
+                let weather = try await weatherRepository.getWeather(for: location)
                 weatherCache[location.id] = weather
             }
         }
         
         func getWeather(for locations: [Location]) async throws {
             let weatherRepository = weatherRepositoryFactory()
-            var weatherInfo = [UUID: Weather]()
+            var weatherInfo = [UUID: WeatherProtocol]()
             
             for location in locations {
                 guard weatherCache[location.id] == nil else {
@@ -242,7 +238,7 @@ extension LocationsView {
                         latitude: location.latitude,
                         longitude: location.longitude
                     )
-                    let weather = try await weatherRepository.getWeather(for: coordinates)
+                    let weather = try await weatherRepository.getWeather(for: location)
                     weatherInfo[location.id] = weather
                 } catch {
                     continue
@@ -258,7 +254,7 @@ extension LocationsView {
             }
         }
         
-        func weather(for location: Location) -> Binding<Weather?> {
+        func weather(for location: Location) -> Binding<WeatherProtocol?> {
             Binding(
                 get: { [weak self] in
                     self?.weatherCache[location.id]

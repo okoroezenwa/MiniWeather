@@ -23,37 +23,41 @@ final class DependencyFactory {
         locationManagerDelegate:
             MainLocationManagerDelegate(
                 locationManager: CLLocationManager()
-            )
+            ),
+        temporaryStore: TemporaryStore()
     )
     private let parser: DataParser
     private let networkService: NetworkService
     private let locationManagerDelegate: LocationManagerDelegate
+    private let temporaryStore: TemporaryStore
     
     private init(
         parser: DataParser,
         networkService: NetworkService,
-        locationManagerDelegate: LocationManagerDelegate
+        locationManagerDelegate: LocationManagerDelegate,
+        temporaryStore: TemporaryStore
     ) {
         self.parser = parser
         self.networkService = networkService
         self.locationManagerDelegate = locationManagerDelegate
+        self.temporaryStore = temporaryStore
     }
     
     public func makeLocationsRepository() -> LocationsRepository {
         MainLocationsRepository(
-            geocodeService: makeOpenWeatherMapsGeocoderService()
+            geocodeService: makeOpenWeatherMapGeocoderService()
         )
     }
     
     public func makeTimeZoneRepository() -> TimeZoneRepository {
         MainTimeZoneRepository(
-            service: makeAPINinjasTimeZoneService()
+            service: makeOpenWeatherMapTimeZoneService()
         )
     }
     
     public func makeWeatherRepository() -> WeatherRepository {
         MainWeatherRepository(
-            weatherService: makeAPINinjasWeatherService()
+            weatherService: makeOpenWeatherMapWeatherService()
         )
     }
     
@@ -66,6 +70,13 @@ final class DependencyFactory {
     public func makeUserLocationRepository() -> UserLocationRepository {
         MainUserLocationRepository(
             userLocationProvider: makeUserLocationProvider()
+        )
+    }
+    
+    public func makeMemoryDatastore() -> Datastore {
+        MemoryDatastore(
+            store: temporaryStore,
+            logger: Logger()
         )
     }
     
@@ -99,8 +110,8 @@ final class DependencyFactory {
         )
     }
     
-    private func makeOpenWeatherMapsGeocoderService() -> GeocoderService {
-        OpenWeatherMapsGeocoderService(
+    private func makeOpenWeatherMapGeocoderService() -> GeocoderService {
+        OpenWeatherMapGeocoderService(
             networkService: networkService,
             parser: parser
         )
@@ -113,9 +124,23 @@ final class DependencyFactory {
         )
     }
     
+    private func makeOpenWeatherMapTimeZoneService() -> TimeZoneService {
+        OpenWeatherMapTimeZoneService(
+            cache: makeMemoryDatastore()
+        )
+    }
+    
     private func makeAPINinjasWeatherService() -> WeatherService {
         APINinjasWeatherService(
             networkService: networkService,
+            parser: parser
+        )
+    }
+    
+    private func makeOpenWeatherMapWeatherService() -> WeatherService {
+        OpenWeatherMapWeatherService(
+            networkService: networkService,
+            timeZoneDatastore: makeMemoryDatastore(),
             parser: parser
         )
     }

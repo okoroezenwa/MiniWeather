@@ -1,5 +1,5 @@
 //
-//  OpenWeatherMapsLocation.swift
+//  OpenWeatherMapLocation.swift
 //  MiniWeather
 //
 //  Created by Ezenwa Okoro on 24/11/2023.
@@ -8,7 +8,7 @@
 import Foundation
 import CoreLocation
 
-struct OpenWeatherMapsLocation: Decodable, LocationProtocol {
+struct OpenWeatherMapLocation: Decodable, LocationProtocol {
     enum CodingKeys: String, CodingKey {
         case city = "name"
         case state
@@ -24,7 +24,7 @@ struct OpenWeatherMapsLocation: Decodable, LocationProtocol {
     let state: String?
 }
 
-extension OpenWeatherMapsLocation {
+extension OpenWeatherMapLocation {
     var countryName: String {
         CountryCodes(rawValue: country)?.country ?? "Unknown Country"
     }

@@ -18,7 +18,7 @@ final class StandardDataParser: DataParser {
         do {
             return try decoder.decode(Response.self, from: data)
         } catch {
-            throw NetworkError.failedDecode
+            throw error//NetworkError.failedDecode
         }
     }
 }

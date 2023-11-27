@@ -9,17 +9,17 @@ import Foundation
 import OSLog
 
 /// Needs work.
-final class MemoryDatastore: Datastore {
-    private var store: [DatastoreKey: Any]
+struct MemoryDatastore: Datastore {
+    private var store: TemporaryStore
     private let logger: Logger
     
-    init(store: [DatastoreKey : Any], logger: Logger) {
+    init(store: TemporaryStore, logger: Logger) {
         self.store = store
         self.logger = logger
     }
     
     func fetch<Storable>(forKey key: DatastoreKey) throws -> Storable where Storable : Decodable {
-        guard let object = store[key] as? Storable else {
+        guard let object = store.value(forKey: key) as? Storable else {
             throw DatastoreError.notFound
         }
         
@@ -27,6 +27,18 @@ final class MemoryDatastore: Datastore {
     }
     
     func store<Storable>(_ storable: Storable, withKey key: DatastoreKey) throws where Storable : Encodable {
-        store[key] = storable
+        store.set(storable, forKey: key)
+    }
+}
+
+final class TemporaryStore {
+    private lazy var dictionary = [DatastoreKey: Any]()
+    
+    func value(forKey key: DatastoreKey) -> Any? {
+        dictionary[key]
+    }
+    
+    func set(_ value: Any, forKey key: DatastoreKey) {
+        dictionary[key] = value
     }
 }

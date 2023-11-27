@@ -17,11 +17,11 @@ struct APINinjasWeatherService: WeatherService {
         self.parser = parser
     }
     
-    func getWeather(at coordinates: CLLocationCoordinate2D) async throws -> Weather {
+    func getWeather(for location: Location) async throws -> WeatherProtocol {
         let weatherRequest = APINinjasWeatherRequest(
             queryItems: [
-                "lat": String(coordinates.latitude),
-                "lon": String(coordinates.longitude)
+                "lat": String(location.coordinates().latitude),
+                "lon": String(location.coordinates().longitude)
             ],
             headers: ["X-Api-Key": "S7/jrjbcI+0knImPq9dH9Q==lNZI74iBzjtGlZjR"]
         )

@@ -24,7 +24,7 @@ struct StandardNetworkService: NetworkService {
             
             return data
         } catch {
-            throw NetworkError.operationFailed
+            throw error//NetworkError.operationFailed
         }
     }
 }

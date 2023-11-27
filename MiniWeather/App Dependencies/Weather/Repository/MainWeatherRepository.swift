@@ -15,7 +15,7 @@ struct MainWeatherRepository: WeatherRepository {
         self.weatherService = weatherService
     }
     
-    func getWeather(for coordinates: CLLocationCoordinate2D) async throws -> Weather {
-        try await weatherService.getWeather(at: coordinates)
+    func getWeather(for location: Location) async throws -> WeatherProtocol {
+        try await weatherService.getWeather(for: location)
     }
 }

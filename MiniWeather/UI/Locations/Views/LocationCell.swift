@@ -9,7 +9,7 @@ import SwiftUI
 
 struct LocationCell: View {
     let location: Location?
-    let weather: Weather?
+    let weather: WeatherProtocol?
     let isCurrentLocation: Bool
     @Environment(\.timeFormatter) var timeFormatter
     @Environment(\.colorScheme) var colorScheme

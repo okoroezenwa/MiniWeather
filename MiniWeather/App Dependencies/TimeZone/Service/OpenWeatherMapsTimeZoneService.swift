@@ -1,5 +1,5 @@
 //
-//  OpenWeatherMapsTimeZoneService.swift
+//  OpenWeatherMapTimeZoneService.swift
 //  MiniWeather
 //
 //  Created by Ezenwa Okoro on 26/11/2023.
@@ -8,7 +8,7 @@
 import Foundation
 import CoreLocation
 
-struct OpenWeatherMapsTimeZoneService: TimeZoneService {
+struct OpenWeatherMapTimeZoneService: TimeZoneService {
     private let cache: Datastore
     
     init(cache: Datastore) {

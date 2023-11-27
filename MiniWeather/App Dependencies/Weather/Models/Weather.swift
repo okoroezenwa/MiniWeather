@@ -8,7 +8,7 @@
 import Foundation
 
 /// The API-Ninjas weather object.
-struct Weather: Decodable {
+struct Weather: Decodable, WeatherProtocol {
     enum CodingKeys: String, CodingKey {
         case temperature = "temp"
         case feelsLike = "feels_like"
@@ -32,22 +32,4 @@ struct Weather: Decodable {
     let sunrise: Int
     let sunset: Int
     let cloudPercentage: Int
-}
-
-extension Weather {
-    func tempString() -> String {
-        String(temperature)
-    }
-    
-    func minTempString() -> String {
-        String(minimumTemperature)
-    }
-    
-    func maxTempString() -> String {
-        String(maximumTemperature)
-    }
-    
-    func getMinMaxTempString() -> String {
-        "H \(maximumTemperature)° • L \(minimumTemperature)°"
-    }
 }
