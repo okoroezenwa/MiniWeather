@@ -21,6 +21,7 @@ struct OpenWeatherMapGeocoderService: GeocoderService {
         let locationsRequest = OpenWeatherMapGeocodingRequest(
             queryItems: [
                 "q": searchText,
+                "limit": "5",
                 "appid": "b70953dbe7338b90a67f650598d6e321"
             ]
         )
@@ -39,8 +40,8 @@ struct OpenWeatherMapGeocoderService: GeocoderService {
             queryItems: [
                 "lat": "\(coordinates.latitude)",
                 "lon": "\(coordinates.longitude)",
-                "appid": "b70953dbe7338b90a67f650598d6e321",
-                "limit": "1"
+                "limit": "5",
+                "appid": "b70953dbe7338b90a67f650598d6e321"
             ]
         )
         

@@ -1,5 +1,5 @@
 //
-//  Weather.swift
+//  APINinjasWeather.swift
 //  MiniWeather
 //
 //  Created by Ezenwa Okoro on 30/10/2023.
@@ -8,7 +8,7 @@
 import Foundation
 
 /// The API-Ninjas weather object.
-struct Weather: Decodable, WeatherProtocol {
+struct APINinjasWeather: Decodable, WeatherProtocol {
     enum CodingKeys: String, CodingKey {
         case temperature = "temp"
         case feelsLike = "feels_like"

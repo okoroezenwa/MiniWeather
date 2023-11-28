@@ -28,7 +28,7 @@ struct OpenWeatherMapWeather: Codable {
     let minutelyForecast: [Precipitation]?
     let hourlyForecast: [WeatherForecast]
     let dailyForecast: [WeatherForecast]
-    let alerts: [Alert]
+    let alerts: [Alert]?
 }
 
 // MARK: - WeatherProtocol Conformance 😮‍💨
@@ -82,15 +82,24 @@ extension OpenWeatherMapWeather: WeatherProtocol {
     }
     
     var humidity: Double {
-        currentWeather.humidity
+        guard let humidity = currentWeather.humidity else {
+            fatalError("Humidity missing for OpenWeatherMap")
+        }
+        return humidity
     }
     
     var windSpeed: Double {
-        currentWeather.windSpeed
+        guard let windSpeed = currentWeather.windSpeed else {
+            fatalError("Wind speed missing for OpenWeatherMap")
+        }
+        return windSpeed
     }
     
     var windDegrees: Double {
-        currentWeather.windDirection
+        guard let windDirection = currentWeather.windDirection else {
+            fatalError("Wind direction missing for OpenWeatherMap")
+        }
+        return windDirection
     }
     
     var sunrise: Int {

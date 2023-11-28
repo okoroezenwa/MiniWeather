@@ -67,8 +67,8 @@ final class DependencyFactory {
         )
     }
     
-    public func makeUserLocationRepository() -> UserLocationRepository {
-        MainUserLocationRepository(
+    public func makeUserLocationCoordinatesRepository() -> UserLocationCoordinatesRepository {
+        MainUserLocationCoordinatesRepository(
             userLocationProvider: makeUserLocationProvider()
         )
     }

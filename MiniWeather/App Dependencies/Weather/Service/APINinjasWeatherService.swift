@@ -28,7 +28,7 @@ struct APINinjasWeatherService: WeatherService {
         
         do {
             let data = try await networkService.getData(from: weatherRequest)
-            let weather: Weather = try parser.decode(data)
+            let weather: APINinjasWeather = try parser.decode(data)
             return weather
         } catch {
             throw error

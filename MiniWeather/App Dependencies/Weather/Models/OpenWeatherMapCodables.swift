@@ -15,20 +15,20 @@ struct WeatherForecast: Codable {
     let moonset: Int?
     let moonPhase: Double?
     let summary: String?
-    let temperature: DualValueJSON<Double, Temperature> // Daily uses Temperature, others use Double
-    let feelsLike: DualValueJSON<Double, Temperature> // Daily uses Temperature, others use Double
-    let pressure: Double
-    let humidity: Double
-    let dewPoint: Double
-    let uvIndex: Double
+    let temperature: DualValueDecodable<Double, Temperature> // Daily uses Temperature, others use Double
+    let feelsLike: DualValueDecodable<Double, Temperature> // Daily uses Temperature, others use Double
+    let pressure: Double?
+    let humidity: Double?
+    let dewPoint: Double?
+    let uvIndex: Double?
     let clouds: Int
-    let visibility: Double
-    let windSpeed: Double
-    let windGust: Double
-    let windDirection: Double
+    let visibility: Double?
+    let windSpeed: Double?
+    let windGust: Double?
+    let windDirection: Double?
     let probabilityOfPrecipitation: Double?
-    let rain: DualValueJSON<Double, HourReading> // Daily uses Double, others use HourReading
-    let snow: DualValueJSON<Double, HourReading> // Daily uses Double, others use HourReading
+    let rain: DualValueDecodable<Double, HourReading>? // Daily uses Double, others use HourReading
+    let snow: DualValueDecodable<Double, HourReading>? // Daily uses Double, others use HourReading
     let weather: [WeatherCondition]
     
     enum CodingKeys: String, CodingKey {
@@ -69,7 +69,11 @@ struct Precipitation: Codable {
 
 /// Returns a 1h reading of rain or snow.
 struct HourReading: Codable {
-    let hourReading: Int
+    enum CodingKeys: String, CodingKey {
+        case hourReading = "1h"
+    }
+    
+    let hourReading: Double?
 }
 
 struct WeatherCondition: Codable {
@@ -123,7 +127,7 @@ struct Temperature: Codable {
 }
 
 /// A type that holds 2 different types for the same JSON field name.
-enum DualValueJSON<First: Codable, Second: Codable>: Codable {
+enum DualValueDecodable<First: Codable, Second: Codable>: Codable {
     case first(First)
     case second(Second)
     
@@ -139,7 +143,7 @@ enum DualValueJSON<First: Codable, Second: Codable>: Codable {
             return
         }
         
-        throw DecodingError.typeMismatch(DualValueJSON.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Wrong type(s) for DualValueJSON. Both values should be \(First.self) or \(Second.self)"))
+        throw DecodingError.typeMismatch(DualValueDecodable.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Wrong type(s) for DualValueDecodable. Both values should be \(First.self) or \(Second.self)"))
     }
     
     func encode(to encoder: Encoder) throws {

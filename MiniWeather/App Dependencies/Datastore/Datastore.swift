@@ -29,26 +29,31 @@ protocol Datastore {
 }
 
 enum DatastoreKey: RawRepresentable, Hashable {
-    case locations
+    case savedLocations
     case timeZone(name: String)
+    case currentLocation
     
     init?(rawValue: String) {
         switch rawValue {
             case "locations": 
-                self = .locations
+                self = .savedLocations
             case let x where x.hasPrefix("timeZone"): 
                 self = .timeZone(name: x.replacingOccurrences(of: "timeZone", with: ""))
-            default: 
+            case "currentLocation":
+                self = .currentLocation
+            default:
                 return nil
         }
     }
     
     var rawValue: String {
         switch self {
-            case .locations: 
+            case .savedLocations: 
                 return "locations"
             case .timeZone(name: let fullName): 
                 return "timeZone+\(fullName)"
+            case .currentLocation:
+                return "currentLocation"
         }
     }
 }

@@ -95,27 +95,8 @@ struct LocationCell: View {
 
 #Preview {
     LocationCell(
-        location: Location(
-            city: "Abuja",
-            state: "FCT",
-            country: "Nigeria",
-            nickname: "Home",
-            timeZone: TimeZone.autoupdatingCurrent.identifier,
-            latitide: 0,
-            longitude: 0
-        ),
-        weather: Weather(
-            temperature: 20,
-            feelsLike: 19,
-            minimumTemperature: 16,
-            maximumTemperature: 23,
-            humidity: 87,
-            windSpeed: 10,
-            windDegrees: 210,
-            sunrise: 1615616341,
-            sunset: 1615658463,
-            cloudPercentage: 75
-        ),
+        location: UniversalConstants.location,
+        weather: UniversalConstants.weather,
         isCurrentLocation: true
     )
 }

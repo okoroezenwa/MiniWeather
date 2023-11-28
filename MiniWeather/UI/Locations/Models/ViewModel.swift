@@ -14,7 +14,7 @@ import SwiftUI
 extension LocationsView {
     @Observable @MainActor final class ViewModel {
         private let userLocationAuthorisationRepositoryFactory: () -> UserLocationAuthorisationRepository
-        private let userLocationRepositoryFactory: () -> UserLocationRepository
+        private let userLocationCoordinatesRepositoryFactory: () -> UserLocationCoordinatesRepository
         private let locationsRepositoryFactory: () -> LocationsRepository
         private let weatherRepositoryFactory: () -> WeatherRepository
         private let timeZoneRepositoryFactory: () -> TimeZoneRepository
@@ -28,7 +28,7 @@ extension LocationsView {
         
         static let shared = ViewModel(
             userLocationAuthorisationRepositoryFactory: DependencyFactory.shared.makeUserLocationAuthorisationRepository,
-            userLocationRepositoryFactory: DependencyFactory.shared.makeUserLocationRepository,
+            userLocationCoordinatesRepositoryFactory: DependencyFactory.shared.makeUserLocationCoordinatesRepository,
             locationsRepositoryFactory: DependencyFactory.shared.makeLocationsRepository,
             weatherRepositoryFactory: DependencyFactory.shared.makeWeatherRepository,
             timeZoneRepositoryFactory: DependencyFactory.shared.makeTimeZoneRepository
@@ -36,13 +36,13 @@ extension LocationsView {
         
         init(
             userLocationAuthorisationRepositoryFactory: @escaping () -> UserLocationAuthorisationRepository,
-            userLocationRepositoryFactory: @escaping () -> UserLocationRepository,
+            userLocationCoordinatesRepositoryFactory: @escaping () -> UserLocationCoordinatesRepository,
             locationsRepositoryFactory: @escaping () -> LocationsRepository,
             weatherRepositoryFactory: @escaping () -> WeatherRepository,
             timeZoneRepositoryFactory: @escaping () -> TimeZoneRepository
         ) {
             self.userLocationAuthorisationRepositoryFactory = userLocationAuthorisationRepositoryFactory
-            self.userLocationRepositoryFactory = userLocationRepositoryFactory
+            self.userLocationCoordinatesRepositoryFactory = userLocationCoordinatesRepositoryFactory
             self.locationsRepositoryFactory = locationsRepositoryFactory
             self.weatherRepositoryFactory = weatherRepositoryFactory
             self.timeZoneRepositoryFactory = timeZoneRepositoryFactory
@@ -118,7 +118,7 @@ extension LocationsView {
         
         func refreshCurrentLocation(requestingAuthorisation requestAuthorisation: Bool) {
             let userLocationAuthorisationRepository = userLocationAuthorisationRepositoryFactory()
-            let userLocationRepository = userLocationRepositoryFactory()
+            let userLocationCoordinatesRepository = userLocationCoordinatesRepositoryFactory()
             let locationsRepository = locationsRepositoryFactory()
             let timeZoneRepository = timeZoneRepositoryFactory()
             let weatherRepository = weatherRepositoryFactory()
@@ -138,7 +138,7 @@ extension LocationsView {
                     }()
                     
                     if status.isAuthorised() {
-                        let coordinates = try await userLocationRepository.getUserLocation()
+                        let coordinates = try await userLocationCoordinatesRepository.getUserLocationCoordinates()
                         let locations = try await locationsRepository.getLocations(at: coordinates)
                         
                         guard let location = locations.first else {
@@ -215,10 +215,6 @@ extension LocationsView {
         func getWeather(for location: Location) {
             Task {
                 let weatherRepository = weatherRepositoryFactory()
-                let coordinates = CLLocationCoordinate2D(
-                    latitude: location.latitude,
-                    longitude: location.longitude
-                )
                 let weather = try await weatherRepository.getWeather(for: location)
                 weatherCache[location.id] = weather
             }
@@ -234,10 +230,6 @@ extension LocationsView {
                 }
                 
                 do {
-                    let coordinates = CLLocationCoordinate2D(
-                        latitude: location.latitude,
-                        longitude: location.longitude
-                    )
                     let weather = try await weatherRepository.getWeather(for: location)
                     weatherInfo[location.id] = weather
                 } catch {

@@ -9,7 +9,7 @@ import Foundation
 import CoreLocation
 
 struct OpenWeatherMapTimeZoneService: TimeZoneService {
-    private let cache: Datastore
+    private let cache: Datastore // only cache is used since we get timezone from the weather object
     
     init(cache: Datastore) {
         self.cache = cache

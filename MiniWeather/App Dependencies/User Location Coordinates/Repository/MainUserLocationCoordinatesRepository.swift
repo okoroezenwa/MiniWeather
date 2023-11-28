@@ -1,5 +1,5 @@
 //
-//  MainUserLocationRepository.swift
+//  MainUserLocationCoordinatesRepository.swift
 //  MiniWeather
 //
 //  Created by Ezenwa Okoro on 16/11/2023.
@@ -8,14 +8,14 @@
 import Foundation
 import CoreLocation
 
-struct MainUserLocationRepository: UserLocationRepository {
+struct MainUserLocationCoordinatesRepository: UserLocationCoordinatesRepository {
     private let userLocationProvider: UserLocationProvider
     
     init(userLocationProvider: UserLocationProvider) {
         self.userLocationProvider = userLocationProvider
     }
     
-    func getUserLocation() async throws -> CLLocationCoordinate2D {
-        try await userLocationProvider.getUserLocation()
+    func getUserLocationCoordinates() async throws -> CLLocationCoordinate2D {
+        try await userLocationProvider.getUserLocationCoordinates()
     }
 }

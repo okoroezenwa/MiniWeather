@@ -18,7 +18,7 @@ struct UniversalConstants {
         longitude: 0
     )
     
-    static let weather = Weather(
+    static let weather = APINinjasWeather(
         temperature: 20,
         feelsLike: 19,
         minimumTemperature: 16,
