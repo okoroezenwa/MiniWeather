@@ -1,5 +1,5 @@
 //
-//  LocationsRepository.swift
+//  LocationsSearchRepository.swift
 //  MiniWeather
 //
 //  Created by Ezenwa Okoro on 06/10/2023.
@@ -9,7 +9,7 @@ import Foundation
 import CoreLocation
 
 /// An object that can return a set of locations.
-protocol LocationsRepository {
+protocol LocationsSearchRepository {
     /**
      Gets a set of locations based on a search term.
      

@@ -6,9 +6,5 @@
 	<string>MiniWeather needs your current location to automatically fill in weather info for it.</string>
 	<key>NSLocationUsageDescription</key>
 	<string>MiniWeather needs your current location to automatically fill in weather info for it.</string>
-	<key>UIBackgroundModes</key>
-	<array>
-		<string>remote-notification</string>
-	</array>
 </dict>
 </plist>

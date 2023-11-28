@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import SwiftData
 import CoreLocation
 
 protocol LocationProtocol {
@@ -17,9 +16,8 @@ protocol LocationProtocol {
     var longitude: Double { get }
 }
 
-/// The Location object used with SwiftData.
-@Model
-final class Location: Identifiable {
+/// The Location object.
+struct Location: Codable, Identifiable, Hashable {
     let id: UUID
     let timestamp: Date
     let city: String

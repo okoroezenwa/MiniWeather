@@ -8,112 +8,85 @@
 import Foundation
 import CoreLocation
 import Combine
-import SwiftData
 import SwiftUI
+import OSLog
 
 extension LocationsView {
     @Observable @MainActor final class ViewModel {
         private let userLocationAuthorisationRepositoryFactory: () -> UserLocationAuthorisationRepository
         private let userLocationCoordinatesRepositoryFactory: () -> UserLocationCoordinatesRepository
-        private let locationsRepositoryFactory: () -> LocationsRepository
+        private let locationsRepositoryFactory: () -> LocationsSearchRepository
         private let weatherRepositoryFactory: () -> WeatherRepository
         private let timeZoneRepositoryFactory: () -> TimeZoneRepository
-        private var status: CLAuthorizationStatus
+        private let currentLocationRepositoryFactory: () -> CurrentLocationRepository
+        private let savedLocationsRepositoryFactory: () -> SavedLocationsRepository
+        private let logger: Logger
+        var status: CLAuthorizationStatus
         var currentLocation: Location?
+        var locations = [Location]()
         // TODO: - replace with Actor object
         private var weatherCache = [UUID: WeatherProtocol]()
-        private var searchResults = [Location]()
+        var searchResults = [Location]()
         private var searchCancellable: AnyCancellable?
         var searchText = PassthroughSubject<String, Never>()
         
         static let shared = ViewModel(
             userLocationAuthorisationRepositoryFactory: DependencyFactory.shared.makeUserLocationAuthorisationRepository,
             userLocationCoordinatesRepositoryFactory: DependencyFactory.shared.makeUserLocationCoordinatesRepository,
-            locationsRepositoryFactory: DependencyFactory.shared.makeLocationsRepository,
+            locationsRepositoryFactory: DependencyFactory.shared.makeLocationsSearchRepository,
             weatherRepositoryFactory: DependencyFactory.shared.makeWeatherRepository,
-            timeZoneRepositoryFactory: DependencyFactory.shared.makeTimeZoneRepository
+            timeZoneRepositoryFactory: DependencyFactory.shared.makeTimeZoneRepository,
+            currentLocationRepositoryFactory: DependencyFactory.shared.makeCurrentLocationRepository,
+            savedLocationsRepositoryFactory: DependencyFactory.shared.makeSavedLocationsRepository
         )
         
         init(
             userLocationAuthorisationRepositoryFactory: @escaping () -> UserLocationAuthorisationRepository,
             userLocationCoordinatesRepositoryFactory: @escaping () -> UserLocationCoordinatesRepository,
-            locationsRepositoryFactory: @escaping () -> LocationsRepository,
+            locationsRepositoryFactory: @escaping () -> LocationsSearchRepository,
             weatherRepositoryFactory: @escaping () -> WeatherRepository,
-            timeZoneRepositoryFactory: @escaping () -> TimeZoneRepository
+            timeZoneRepositoryFactory: @escaping () -> TimeZoneRepository,
+            currentLocationRepositoryFactory: @escaping () -> CurrentLocationRepository,
+            savedLocationsRepositoryFactory: @escaping () -> SavedLocationsRepository,
+            logger: Logger = Logger()
         ) {
             self.userLocationAuthorisationRepositoryFactory = userLocationAuthorisationRepositoryFactory
             self.userLocationCoordinatesRepositoryFactory = userLocationCoordinatesRepositoryFactory
             self.locationsRepositoryFactory = locationsRepositoryFactory
             self.weatherRepositoryFactory = weatherRepositoryFactory
             self.timeZoneRepositoryFactory = timeZoneRepositoryFactory
-            self.status = userLocationAuthorisationRepositoryFactory().getAuthorisationStatus()
+            self.currentLocationRepositoryFactory = currentLocationRepositoryFactory
+            self.savedLocationsRepositoryFactory = savedLocationsRepositoryFactory
             
-            if status != .notDetermined {
-                self.currentLocation = getCurrentLocationFromUserDefaults()
+            self.status = userLocationAuthorisationRepositoryFactory().getAuthorisationStatus()
+            self.logger = logger
+            
+            do {
+                let location = try currentLocationRepositoryFactory().getCurrentLocation()
+                self.currentLocation = location
+                // only retrieve weather info if the location isn't outdated since it will be retrieved otherwise
+                if !location.isOutdated() {
+                    getWeather(for: location)
+                } else {
+                    throw CurrentLocationError.outdated
+                }
+            } catch {
+                logger.error("\(error)")
+                refreshCurrentLocation(requestingAuthorisation: false)
             }
         }
         
-        func getStatus() -> CLAuthorizationStatus {
-            status
-        }
-        
-        func getCurrentLocation() -> Location? {
-            currentLocation
+        func getSavedLocations() async throws {
+            let savedLocationsRepository = savedLocationsRepositoryFactory()
+            let locations = try await savedLocationsRepository.getSavedLocations()
+            
+            await MainActor.run {
+                self.locations = locations
+            }
         }
         
         func refreshStatus() {
             status = userLocationAuthorisationRepositoryFactory().getAuthorisationStatus()
-        }
-        
-        func getCurrentLocationFromUserDefaults() -> Location? {
-            // TODO: Replace use of UserDefaults with proper Datastore.
-            let parent = String(describing: Location.self)
-            guard 
-                let data = UserDefaults.standard.data(forKey: parent + ".timestamp"),
-                let date = try? JSONDecoder().decode(Date.self, from: data),
-                let uuidData = UserDefaults.standard.data(forKey: parent + ".id"),
-                let id = try? JSONDecoder().decode(UUID.self, from: uuidData),
-                let city = UserDefaults.standard.string(forKey: parent + ".city"),
-                let state = UserDefaults.standard.string(forKey: parent + ".state"),
-                let country = UserDefaults.standard.string(forKey: parent + ".country"),
-                let nickname = UserDefaults.standard.string(forKey: parent + ".nickname"),
-                let timeZone = UserDefaults.standard.string(forKey: parent + ".timeZone"),
-                case let latitude = UserDefaults.standard.double(forKey: parent + ".latitude"),
-                case let longitude = UserDefaults.standard.double(forKey: parent + ".longitude")
-            else {
-                refreshCurrentLocation(requestingAuthorisation: false)
-                return nil
-            }
-            
-            let location = Location(id: id, timestamp: date, city: city, state: state, country: country, nickname: nickname, timeZone: timeZone, latitide: latitude, longitude: longitude)
-            
-            // only retrieve weather info if the location isn't outdated since it will be retrieved otherwise
-            if !location.isOutdated() {
-                getWeather(for: location)
-            }
-            
-            if location.isOutdated() {
-                refreshCurrentLocation(requestingAuthorisation: false)
-            }
-            
-            return location
-        }
-        
-        private func saveCurrentLocationToUserDefaults() {
-            // TODO: - Replace use of UserDefaults with proper Datastore.
-            guard let location = currentLocation else { return }
-            let parent = String(describing: Location.self)
-            let data = try? JSONEncoder().encode(location.timestamp)
-            UserDefaults.standard.set(data, forKey: parent + ".timestamp")
-            let uuidData = try? JSONEncoder().encode(location.id)
-            UserDefaults.standard.set(uuidData, forKey: parent + ".id")
-            UserDefaults.standard.set(location.city, forKey: parent + ".city")
-            UserDefaults.standard.set(location.state, forKey: parent + ".state")
-            UserDefaults.standard.set(location.country, forKey: parent + ".country")
-            UserDefaults.standard.set(location.nickname, forKey: parent + ".nickname")
-            UserDefaults.standard.set(location.timeZone, forKey: parent + ".timeZone")
-            UserDefaults.standard.set(location.latitude, forKey: parent + ".latitude")
-            UserDefaults.standard.set(location.longitude, forKey: parent + ".longitude")
         }
         
         func refreshCurrentLocation(requestingAuthorisation requestAuthorisation: Bool) {
@@ -141,7 +114,7 @@ extension LocationsView {
                         let coordinates = try await userLocationCoordinatesRepository.getUserLocationCoordinates()
                         let locations = try await locationsRepository.getLocations(at: coordinates)
                         
-                        guard let location = locations.first else {
+                        guard var location = locations.first else {
                             throw LocationError.notFound
                         }
                         
@@ -149,11 +122,12 @@ extension LocationsView {
                         let timeZone = try await timeZoneRepository.getTimeZone(for: location)
                         location.timeZone = timeZone.name
                         
+                        try self.currentLocationRepositoryFactory().saveCurrentLocation(location)
+                        
                         await MainActor.run {
                             // TODO: - replace once actor implementation is done
                             var constantWeatherCache = self.weatherCache
                             self.currentLocation = location
-                            self.saveCurrentLocationToUserDefaults()
                             constantWeatherCache[location.id] = weather
                             self.weatherCache = constantWeatherCache
                         }
@@ -169,7 +143,6 @@ extension LocationsView {
             let timeZoneRepository = timeZoneRepositoryFactory()
             
             Task {
-                let coordinates = location.coordinates()
                 let weather = try await weatherRepository.getWeather(for: location)
                 let timeZone = try await timeZoneRepository.getTimeZone(for: location)
                 
@@ -220,7 +193,7 @@ extension LocationsView {
             }
         }
         
-        func getWeather(for locations: [Location]) async throws {
+        func getWeatherForSavedLocations() async throws {
             let weatherRepository = weatherRepositoryFactory()
             var weatherInfo = [UUID: WeatherProtocol]()
             
@@ -257,8 +230,100 @@ extension LocationsView {
             )
         }
         
-        func getSearchResults() -> [Location] {
-            searchResults
+        /**
+         Handles the addition of a new location to the locations array.
+         
+         The returned array is used to revert things if the repository's add operation fails.
+         
+         - Returns: The locations array before the modification was performed.
+         - Parameter location: The new location to be added to the user's saved locations,
+         */
+        private func performLocalAdd(of location: Location) -> [Location] {
+            var tempLocations = locations
+            let oldLocations = locations
+            
+            if locations.count == 10 {
+                tempLocations.removeLast()
+            }
+            
+            tempLocations.insert(location, at: 0)
+            locations = tempLocations
+            
+            return oldLocations
+        }
+        
+        func add(_ location: Location) {
+            let savedLocationsRepository = savedLocationsRepositoryFactory()
+            let weatherRepository = weatherRepositoryFactory()
+            let timeZoneRepository = timeZoneRepositoryFactory()
+            let oldLocations = performLocalAdd(of: location)
+            var variableLocation = location
+            
+            Task {
+                do {
+                    try await savedLocationsRepository.add(variableLocation)
+                    let weather = try await weatherRepository.getWeather(for: variableLocation)
+                    let timeZone = try await timeZoneRepository.getTimeZone(for: variableLocation)
+                    
+                    await MainActor.run {
+                        // TODO: - replace once actor implementation is done
+                        variableLocation.timeZone = timeZone.name
+                        
+                        if let index = locations.firstIndex(of: location) {
+                            var tempLocations = locations
+                            tempLocations[index] = variableLocation
+                            locations = tempLocations
+                        }
+                        
+                        var tempWeather = weatherCache
+                        tempWeather[variableLocation.id] = weather
+                        self.weatherCache = tempWeather
+                    }
+                } catch {
+                    logger.log("Adding saved location failed: \(error)")
+                    self.locations = oldLocations
+                }
+            }
+        }
+        
+        /**
+         Handles the deletion of a location from the locations array.
+         
+         The returned array is used to revert things if the repository's delete operation fails.
+         
+         - Returns: The locations array before the modification was performed.
+         - Parameter location: The location to be removed from the user's saved locations,
+         */
+        private func performLocalDelete(of location: Location) -> [Location] {
+            var tempLocations = locations
+            let oldLocations = locations
+            
+            if let index = tempLocations.firstIndex(of: location) {
+                tempLocations.remove(at: index)
+            }
+            
+            locations = tempLocations
+            
+            return oldLocations
+        }
+        
+        func delete(_ location: Location) {
+            let savedLocationsRepository = savedLocationsRepositoryFactory()
+            let oldLocations = performLocalDelete(of: location)
+            
+            Task {
+                do {
+                    try await savedLocationsRepository.delete(location)
+                } catch {
+                    logger.log("Deleting saved location failed: \(error)")
+                    self.locations = oldLocations
+                }
+            }
         }
     }
+}
+
+// TODO: - Use a better Error type?
+enum CurrentLocationError: Error {
+    case outdated
 }
