@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol WeatherProtocol {
+protocol WeatherProtocol: Sendable {
     var temperature: Int { get }
     var feelsLike: Int { get }
     var minimumTemperature: Int { get }

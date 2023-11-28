@@ -1,5 +1,5 @@
 //
-//  MainLocationsRepository.swift
+//  MainLocationsSearchRepository.swift
 //  MiniWeather
 //
 //  Created by Ezenwa Okoro on 06/10/2023.
@@ -8,7 +8,7 @@
 import Foundation
 import CoreLocation
 
-struct MainLocationsRepository: LocationsRepository {
+struct MainLocationsSearchRepository: LocationsSearchRepository {
     private var geocodeService: GeocoderService
     
     init(geocodeService: GeocoderService) {

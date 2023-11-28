@@ -43,8 +43,8 @@ final class DependencyFactory {
         self.temporaryStore = temporaryStore
     }
     
-    public func makeLocationsRepository() -> LocationsRepository {
-        MainLocationsRepository(
+    public func makeLocationsSearchRepository() -> LocationsSearchRepository {
+        MainLocationsSearchRepository(
             geocodeService: makeOpenWeatherMapGeocoderService()
         )
     }
@@ -70,6 +70,18 @@ final class DependencyFactory {
     public func makeUserLocationCoordinatesRepository() -> UserLocationCoordinatesRepository {
         MainUserLocationCoordinatesRepository(
             userLocationProvider: makeUserLocationProvider()
+        )
+    }
+    
+    public func makeCurrentLocationRepository() -> CurrentLocationRepository {
+        MainCurrentLocationRepository(
+            provider: makeCurrentLocationProvider()
+        )
+    }
+    
+    public func makeSavedLocationsRepository() -> SavedLocationsRepository {
+        MainSavedLocationsRepository(
+            provider: makeSavedLocationsProvider()
         )
     }
     
@@ -151,6 +163,21 @@ final class DependencyFactory {
     
     private func makeUserLocationAuthorisationProvider() -> UserLocationAuthorisationProvider {
         locationManagerDelegate
+    }
+    
+    private func makeCurrentLocationProvider() -> CurrentLocationProvider {
+        MainCurrentLocationProvider(
+            store: makeUserDefaultsDatastore(),
+            userLocationAuthorisationProvider: makeUserLocationAuthorisationProvider(),
+            logger: Logger()
+        )
+    }
+    
+    private func makeSavedLocationsProvider() -> SavedLocationsProvider {
+        MainSavedLocationsProvider(
+            datastore: makeCloudKeyValueDatastore(),
+            logger: Logger()
+        )
     }
     
     private func makeUserDefaultsKeyValueStore() -> KeyValueStore {

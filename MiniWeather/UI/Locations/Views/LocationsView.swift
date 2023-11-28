@@ -6,20 +6,14 @@
 //
 
 import SwiftUI
-import SwiftData
 
 @MainActor
 struct LocationsView: View {
-    @Environment(\.modelContext) private var modelContext
     @Environment(\.colorScheme) private var colorScheme
     @Environment(\.openURL) private var openURL
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.isSearching) private var isSearching
     @Environment(\.dismissSearch) private var dismissSearch
-    @Query(
-        sort: \Location.timestamp,
-        order: .reverse
-    ) private var locations: [Location]
     @State var selectedLocation: Location?
     // TODO: - Replace alert with toast
     @State var duplicateLocation: Location?
@@ -40,13 +34,22 @@ struct LocationsView: View {
                 }
                 .ignoresSafeArea(.keyboard)
         }
+        .task {
+            do {
+                try await viewModel.getSavedLocations()
+                try await viewModel.getWeatherForSavedLocations()
+            } catch {
+                // TODO: - Replace with proper error-handling
+                print(error.localizedDescription)
+            }
+        }
         .onChange(of: searchText) { oldValue, newValue in
             guard oldValue != newValue else { return }
             viewModel.search(for: newValue)
         }
         .onChange(of: scenePhase) { oldValue, _ in
             if oldValue == .background {
-                if let location = viewModel.getCurrentLocation(), location.isOutdated() {
+                if let location = viewModel.currentLocation, location.isOutdated() {
                     viewModel.refreshCurrentLocation(requestingAuthorisation: false)
                 } else {
                     viewModel.refreshStatus()
@@ -61,27 +64,6 @@ struct LocationsView: View {
             }
         } message: { location in
             Text("You have already saved \"\(location.fullName)\".")
-        }
-    }
-    
-    // MARK: - SwiftData
-    private func add(_ location: Location) {
-        withAnimation {
-            modelContext.insert(location)
-        }
-    }
-    
-    private func delete(_ location: Location) {
-        withAnimation {
-            modelContext.delete(location)
-        }
-    }
-
-    private func deleteItems(offsets: IndexSet) {
-        withAnimation {
-            for index in offsets {
-                modelContext.delete(locations[index])
-            }
         }
     }
     
@@ -110,9 +92,11 @@ struct LocationsView: View {
         .contentShape(.contextMenuPreview, RoundedRectangle(cornerRadius: 16))
         .contextMenu {
             if !isCurrentLocation {
-                Button {
+                Button(role: .destructive) {
                     guard let location else { return }
-                    delete(location)
+                    withAnimation {
+                        viewModel.delete(location)
+                    }
                 } label: {
                     Label("Delete Location", systemImage: "trash")
                 }
@@ -142,7 +126,7 @@ struct LocationsView: View {
             ) {
                 currentLocationSection()
                 
-                if !locations.isEmpty {
+                if !viewModel.locations.isEmpty {
                     savedLocationsSection()
                 }
             }
@@ -169,19 +153,11 @@ struct LocationsView: View {
                 EditButton()
             }
         }
-        .task {
-            do {
-                try await viewModel.getWeather(for: locations)
-            } catch {
-                // TODO: - Replace with proper error-handling
-                print(error.localizedDescription)
-            }
-        }
     }
     
     private func searchView() -> some View {
         List {
-            ForEach(viewModel.getSearchResults()) { location in
+            ForEach(viewModel.searchResults) { location in
                 HStack {
                     Text(location.fullName)
                         .lineLimit(1)
@@ -192,22 +168,16 @@ struct LocationsView: View {
                 .listRowSeparatorTint(.secondary.opacity(0.35))
                 .listRowBackground(Color.clear)
                 .onTapGesture {
-                    guard !locations.contains(where: { location.fullName == $0.fullName  }) else {
+                    guard !viewModel.locations.contains(where: { location.fullName == $0.fullName  }) else {
                         duplicateLocation = location
                         isShowingDuplicateAlert = true
                         return
                     }
                     
-                    if locations.count == 10, let last = locations.last {
-                        delete(last)
+                    withAnimation {
+                        viewModel.add(location)
                     }
-                    
-                    add(location)
                     dismissSearch()
-                    viewModel.update(location) { timeZone in
-                        location.timeZone = timeZone.name
-                        try? modelContext.save()
-                    }
                 }
             }
         }
@@ -217,15 +187,15 @@ struct LocationsView: View {
     
     private func currentLocationSection() -> some View {
         Section {
-            if viewModel.getStatus().isAuthorised() {
-                NavigationLink(value: viewModel.getCurrentLocation()) {
-                    locationCell(for: viewModel.getCurrentLocation(), isCurrentLocation: true)
+            if viewModel.status.isAuthorised() {
+                NavigationLink(value: viewModel.currentLocation) {
+                    locationCell(for: viewModel.currentLocation, isCurrentLocation: true)
                         .padding(.horizontal, 16)
                 }
             } else {
-                LocationAuthorisationCell(status: viewModel.getStatus())
+                LocationAuthorisationCell(status: viewModel.status)
                     .onTapGesture {
-                        let status = viewModel.getStatus()
+                        let status = viewModel.status
                         if status.isDisallowed(),
                             let url = URL(string: UIApplication.openSettingsURLString) {
                             openURL(url)
@@ -244,9 +214,9 @@ struct LocationsView: View {
                 
                 Spacer()
                 
-                if (viewModel.getCurrentLocation() == nil ||
-                    viewModel.getCurrentLocation()?.isOutdated() == true),
-                   viewModel.getStatus().isAuthorised()
+                if (viewModel.currentLocation == nil ||
+                    viewModel.currentLocation?.isOutdated() == true),
+                   viewModel.status.isAuthorised()
                 {
                     ProgressView()
                 }
@@ -257,7 +227,7 @@ struct LocationsView: View {
     
     private func savedLocationsSection() -> some View {
         Section {
-            ForEach(locations) { location in
+            ForEach(viewModel.locations) { location in
                 NavigationLink(value: location) {
                     locationCell(for: location, isCurrentLocation: false)
                         .padding(.horizontal, 16)
@@ -265,7 +235,7 @@ struct LocationsView: View {
                 .buttonStyle(.plain)
                 .transition(.move(edge: .leading))
             }
-            .animation(.easeInOut, value: locations)
+            .animation(.easeInOut, value: viewModel.locations)
         } header: {
             Text("Saved Locations")
                 .font(
@@ -281,5 +251,4 @@ struct LocationsView: View {
         viewModel: .shared,
         searchText: Binding(get: { "" }, set: { _ in })
     )
-    .modelContainer(for: Location.self, inMemory: true)
 }

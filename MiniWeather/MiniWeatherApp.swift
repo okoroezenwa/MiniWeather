@@ -6,22 +6,9 @@
 //
 
 import SwiftUI
-import SwiftData
 
 @main
 struct MiniWeatherApp: App {
-    var sharedModelContainer: ModelContainer = {
-        let schema = Schema([
-            Location.self,
-        ])
-        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
-
-        do {
-            return try ModelContainer(for: schema, configurations: [modelConfiguration])
-        } catch {
-            fatalError("Could not create ModelContainer: \(error)")
-        }
-    }()
     let timeFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.amSymbol = "am"
@@ -43,10 +30,8 @@ struct MiniWeatherApp: App {
             .tint(.primary)
             .searchable(text: $searchText, prompt: "Search City Name")
         }
-        .modelContainer(sharedModelContainer)
     }
 }
-
 
 private struct TimeFormatterKey: EnvironmentKey {
     static let defaultValue: DateFormatter = DateFormatter()
