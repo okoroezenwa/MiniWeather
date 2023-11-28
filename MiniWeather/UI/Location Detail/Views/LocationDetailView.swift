@@ -9,7 +9,7 @@ import SwiftUI
 
 struct LocationDetailView: View {
     var location: Location
-    @Binding var weather: Weather?
+    @Binding var weather: WeatherProtocol?
     @Environment(\.colorScheme) var colorScheme
     
     var body: some View {

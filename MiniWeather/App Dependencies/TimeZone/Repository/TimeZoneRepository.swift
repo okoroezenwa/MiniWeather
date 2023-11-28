@@ -14,8 +14,8 @@ protocol TimeZoneRepository {
      Obtains the time zone for a given set of coordinates.
      
      - Returns: The requested time zone as a TimeZoneIdentifier object.
-     - Parameter coordinates: The coordinates to get the time zone for.
+     - Parameter location: The location to get the time zone for.
      - Throws: A generic Error if unsuccessful.
      */
-    func getTimeZone(at coordinates: CLLocationCoordinate2D) async throws -> TimeZoneIdentifier
+    func getTimeZone(for location: Location) async throws -> TimeZoneIdentifier
 }

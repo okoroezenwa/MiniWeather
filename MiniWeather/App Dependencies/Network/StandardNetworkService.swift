@@ -17,14 +17,14 @@ struct StandardNetworkService: NetworkService {
     func getData(from request: Request) async throws -> Data {
         do {
             let (data, response) = try await urlSession.data(for: request.createURLRequest())
-            
+            // TODO: - More response code handling
             guard let response = response as? HTTPURLResponse, (200...299).contains(response.statusCode) else {
                 throw NetworkError.invalidResponse
             }
             
             return data
         } catch {
-            throw NetworkError.operationFailed
+            throw error//NetworkError.operationFailed
         }
     }
 }

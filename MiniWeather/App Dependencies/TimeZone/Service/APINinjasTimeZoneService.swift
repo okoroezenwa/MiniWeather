@@ -17,11 +17,11 @@ struct APINinjasTimeZoneService: TimeZoneService {
         self.parser = parser
     }
     
-    func getTimeZone(at coordinates: CLLocationCoordinate2D) async throws -> TimeZoneIdentifier {
+    func getTimeZone(for location: Location) async throws -> TimeZoneIdentifier {
         let timeZoneRequest = APINinjasTimeZoneRequest(
             queryItems: [
-                "lat": String(coordinates.latitude),
-                "lon": String(coordinates.longitude)
+                "lat": String(location.latitude),
+                "lon": String(location.longitude)
             ],
             headers: ["X-Api-Key": "S7/jrjbcI+0knImPq9dH9Q==lNZI74iBzjtGlZjR"]
         )

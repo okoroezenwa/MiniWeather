@@ -41,7 +41,7 @@ final class MainLocationManagerDelegate: NSObject, LocationManagerDelegate {
     }
     
     // MARK: - UserLocationProvider
-    func getUserLocation() async throws -> CLLocationCoordinate2D {
+    func getUserLocationCoordinates() async throws -> CLLocationCoordinate2D {
         try await withCheckedThrowingContinuation { [weak self] continuation in
             guard let self else {
                 return
@@ -77,4 +77,6 @@ final class MainLocationManagerDelegate: NSObject, LocationManagerDelegate {
 
 enum LocationError: Error {
     case notFound
+    case accessNotDetermined
+    case denied
 }

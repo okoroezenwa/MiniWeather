@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct TimeZoneIdentifier: Decodable {
+struct TimeZoneIdentifier: Codable {
     enum CodingKeys: String, CodingKey {
         case name = "timezone"
     }

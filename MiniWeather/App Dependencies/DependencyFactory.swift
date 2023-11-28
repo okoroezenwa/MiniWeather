@@ -7,6 +7,7 @@
 
 import Foundation
 import CoreLocation
+import OSLog
 
 /// The singleton object through which all app dependencies are retrieved.
 final class DependencyFactory {
@@ -22,33 +23,41 @@ final class DependencyFactory {
         locationManagerDelegate:
             MainLocationManagerDelegate(
                 locationManager: CLLocationManager()
-            )
+            ),
+        temporaryStore: TemporaryStore()
     )
     private let parser: DataParser
     private let networkService: NetworkService
     private let locationManagerDelegate: LocationManagerDelegate
+    private let temporaryStore: TemporaryStore
     
-    private init(parser: DataParser, networkService: NetworkService, locationManagerDelegate: LocationManagerDelegate) {
+    private init(
+        parser: DataParser,
+        networkService: NetworkService,
+        locationManagerDelegate: LocationManagerDelegate,
+        temporaryStore: TemporaryStore
+    ) {
         self.parser = parser
         self.networkService = networkService
         self.locationManagerDelegate = locationManagerDelegate
+        self.temporaryStore = temporaryStore
     }
     
     public func makeLocationsRepository() -> LocationsRepository {
         MainLocationsRepository(
-            geocodeService: makeAPINinjasGeocoderService()
+            geocodeService: makeOpenWeatherMapGeocoderService()
         )
     }
     
     public func makeTimeZoneRepository() -> TimeZoneRepository {
         MainTimeZoneRepository(
-            service: makeAPINinjasTimeZoneService()
+            service: makeOpenWeatherMapTimeZoneService()
         )
     }
     
     public func makeWeatherRepository() -> WeatherRepository {
         MainWeatherRepository(
-            weatherService: makeAPINinjasWeatherService()
+            weatherService: makeOpenWeatherMapWeatherService()
         )
     }
     
@@ -58,9 +67,35 @@ final class DependencyFactory {
         )
     }
     
-    public func makeUserLocationRepository() -> UserLocationRepository {
-        MainUserLocationRepository(
+    public func makeUserLocationCoordinatesRepository() -> UserLocationCoordinatesRepository {
+        MainUserLocationCoordinatesRepository(
             userLocationProvider: makeUserLocationProvider()
+        )
+    }
+    
+    public func makeMemoryDatastore() -> Datastore {
+        MemoryDatastore(
+            store: temporaryStore,
+            logger: Logger()
+        )
+    }
+    
+    public func makeUserDefaultsDatastore() -> Datastore {
+        UserDefaultsDatastore(
+            store: makeUserDefaultsKeyValueStore(),
+            decoder: JSONDecoder(),
+            encoder: JSONEncoder(),
+            logger: Logger()
+        )
+    }
+    
+    public func makeCloudKeyValueDatastore() -> Datastore {
+        CloudKeyValueDatastore(
+            store: makeCloudKeyValueStore(),
+            decoder: JSONDecoder(),
+            encoder: JSONEncoder(),
+            localStorage: makeUserDefaultsKeyValueStore(),
+            logger: Logger()
         )
     }
     
@@ -75,10 +110,23 @@ final class DependencyFactory {
         )
     }
     
+    private func makeOpenWeatherMapGeocoderService() -> GeocoderService {
+        OpenWeatherMapGeocoderService(
+            networkService: networkService,
+            parser: parser
+        )
+    }
+    
     private func makeAPINinjasTimeZoneService() -> TimeZoneService {
         APINinjasTimeZoneService(
             networkService: networkService,
             parser: parser
+        )
+    }
+    
+    private func makeOpenWeatherMapTimeZoneService() -> TimeZoneService {
+        OpenWeatherMapTimeZoneService(
+            cache: makeMemoryDatastore()
         )
     }
     
@@ -89,11 +137,27 @@ final class DependencyFactory {
         )
     }
     
+    private func makeOpenWeatherMapWeatherService() -> WeatherService {
+        OpenWeatherMapWeatherService(
+            networkService: networkService,
+            timeZoneDatastore: makeMemoryDatastore(),
+            parser: parser
+        )
+    }
+    
     private func makeUserLocationProvider() -> UserLocationProvider {
         locationManagerDelegate
     }
     
     private func makeUserLocationAuthorisationProvider() -> UserLocationAuthorisationProvider {
         locationManagerDelegate
+    }
+    
+    private func makeUserDefaultsKeyValueStore() -> KeyValueStore {
+        UserDefaults.standard
+    }
+    
+    private func makeCloudKeyValueStore() -> KeyValueStore {
+        NSUbiquitousKeyValueStore.default
     }
 }
