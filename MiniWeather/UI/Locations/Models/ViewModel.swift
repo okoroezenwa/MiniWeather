@@ -25,10 +25,11 @@ extension LocationsView {
         var currentLocation: Location?
         var locations = [Location]()
         // TODO: - replace with Actor object
-        private var weatherCache = [UUID: WeatherProtocol]()
+        private var weatherCache = [String: WeatherProtocol]()
         var searchResults = [Location]()
         private var searchCancellable: AnyCancellable?
         var searchText = PassthroughSubject<String, Never>()
+        var kvsCancellable: Cancellable?
         
         static let shared = ViewModel(
             userLocationAuthorisationRepositoryFactory: DependencyFactory.shared.makeUserLocationAuthorisationRepository,
@@ -60,6 +61,20 @@ extension LocationsView {
             
             self.status = userLocationAuthorisationRepositoryFactory().getAuthorisationStatus()
             self.logger = logger
+            
+            kvsCancellable = NotificationCenter.default
+                .publisher(for: .cloudStoreUpdated, object: NSUbiquitousKeyValueStore.default)
+                .sink { [weak self] _ in
+                    Task {
+                        do {
+                            try await self?.getSavedLocations()
+                            try await self?.getWeatherForSavedLocations()
+                        } catch {
+                            // TODO: - Replace with proper error-handling
+                            print(error.localizedDescription)
+                        }
+                    }
+                }
             
             do {
                 let location = try currentLocationRepositoryFactory().getCurrentLocation()
@@ -128,7 +143,7 @@ extension LocationsView {
                             // TODO: - replace once actor implementation is done
                             var constantWeatherCache = self.weatherCache
                             self.currentLocation = location
-                            constantWeatherCache[location.id] = weather
+                            constantWeatherCache[location.fullName] = weather
                             self.weatherCache = constantWeatherCache
                         }
                     }
@@ -149,7 +164,7 @@ extension LocationsView {
                 await MainActor.run {
                     // TODO: - replace once actor implementation is done
                     var tempWeather = weatherCache
-                    tempWeather[location.id] = weather
+                    tempWeather[location.fullName] = weather
                     self.weatherCache = tempWeather
                     completion(timeZone)
                 }
@@ -189,22 +204,22 @@ extension LocationsView {
             Task {
                 let weatherRepository = weatherRepositoryFactory()
                 let weather = try await weatherRepository.getWeather(for: location)
-                weatherCache[location.id] = weather
+                weatherCache[location.fullName] = weather
             }
         }
         
         func getWeatherForSavedLocations() async throws {
             let weatherRepository = weatherRepositoryFactory()
-            var weatherInfo = [UUID: WeatherProtocol]()
+            var weatherInfo = [String: WeatherProtocol]()
             
             for location in locations {
-                guard weatherCache[location.id] == nil else {
+                guard weatherCache[location.fullName] == nil else {
                     continue
                 }
                 
                 do {
                     let weather = try await weatherRepository.getWeather(for: location)
-                    weatherInfo[location.id] = weather
+                    weatherInfo[location.fullName] = weather
                 } catch {
                     continue
                 }
@@ -213,8 +228,8 @@ extension LocationsView {
             let constantWeatherInfo = weatherInfo
             
             await MainActor.run {
-                constantWeatherInfo.forEach { id, location in
-                    weatherCache[id] = location
+                constantWeatherInfo.forEach { fullName, location in
+                    weatherCache[fullName] = location
                 }
             }
         }
@@ -222,10 +237,10 @@ extension LocationsView {
         func weather(for location: Location) -> Binding<WeatherProtocol?> {
             Binding(
                 get: { [weak self] in
-                    self?.weatherCache[location.id]
+                    self?.weatherCache[location.fullName]
                 },
                 set: { [weak self] weather in
-                    self?.weatherCache[location.id] = weather
+                    self?.weatherCache[location.fullName] = weather
                 }
             )
         }
@@ -276,7 +291,7 @@ extension LocationsView {
                         }
                         
                         var tempWeather = weatherCache
-                        tempWeather[variableLocation.id] = weather
+                        tempWeather[variableLocation.fullName] = weather
                         self.weatherCache = tempWeather
                     }
                 } catch {

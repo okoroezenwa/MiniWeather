@@ -10,7 +10,11 @@ import CoreLocation
 
 extension CLAuthorizationStatus {
     func isAuthorised() -> Bool {
+#if os(iOS)
         [.authorizedAlways, .authorizedWhenInUse].contains(self)
+#elseif os(macOS)
+        [.authorized, .authorizedAlways].contains(self)
+#endif
     }
     
     func isDisallowed() -> Bool {

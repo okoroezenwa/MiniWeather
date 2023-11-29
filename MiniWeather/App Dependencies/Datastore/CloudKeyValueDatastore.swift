@@ -9,22 +9,22 @@ import Foundation
 import OSLog
 
 struct CloudKeyValueDatastore: Datastore {
-    private let store: KeyValueStore
+    private let cloudStore: KeyValueStore
+    private let localStore: KeyValueStore
     private let decoder: DataDecoder
     private let encoder: DataEncoder
-    private let localStorage: KeyValueStore
     private let logger: Logger
     
-    init(store: KeyValueStore, decoder: DataDecoder, encoder: DataEncoder, localStorage: KeyValueStore, logger: Logger) {
-        self.store = store
+    init(cloudStore: KeyValueStore, localStore: KeyValueStore, decoder: DataDecoder, encoder: DataEncoder, logger: Logger) {
+        self.cloudStore = cloudStore
+        self.localStore = localStore
         self.decoder = decoder
         self.encoder = encoder
-        self.localStorage = localStorage
         self.logger = logger
     }
     
     func fetch<Storable: Decodable>(forKey key: DatastoreKey) throws -> Storable {
-        guard let data = localStorage.data(forKey: key.rawValue) else {
+        guard let data = localStore.data(forKey: key.rawValue) else {
             throw DatastoreError.notFound
         }
         
@@ -41,10 +41,10 @@ struct CloudKeyValueDatastore: Datastore {
     func store<Storable: Encodable>(_ storable: Storable, withKey key: DatastoreKey) throws {
         do {
             let data = try encoder.encode(storable)
-            localStorage.set(data, forKey: key.rawValue)
-            store.set(data, forKey: key.rawValue)
+            localStore.set(data, forKey: key.rawValue)
+            cloudStore.set(data, forKey: key.rawValue)
             
-            let isSuccessful = store.synchronize()
+            let isSuccessful = cloudStore.synchronize()
             if !isSuccessful {
                 logger.error("NSUbiqiousKeyValueStore synchronisation failed")
                 throw DatastoreError.failedSynchronise
@@ -56,24 +56,6 @@ struct CloudKeyValueDatastore: Datastore {
     }
 }
 
-protocol KeyValueStore {
-    func data(forKey: String) -> Data?
-    func set(_ value: Any?, forKey: String)
-    func synchronize() -> Bool
+extension NSNotification.Name {
+    static let cloudStoreUpdated = NSNotification.Name.init("cloudStoreUpdated")
 }
-
-protocol DataDecoder {
-    func decode<Object>(_ type: Object.Type, from data: Data) throws -> Object where Object : Decodable
-}
-
-protocol DataEncoder {
-    func encode<Object: Encodable>(_ object: Object) throws -> Data
-}
-
-extension JSONDecoder: DataDecoder { }
-
-extension JSONEncoder: DataEncoder { }
-
-extension UserDefaults: KeyValueStore { }
-
-extension NSUbiquitousKeyValueStore: KeyValueStore { }

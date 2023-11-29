@@ -65,7 +65,11 @@ struct LocationAuthorisationCell: View {
             case .notDetermined:
                 return "Tap to grant location access"
             case .denied, .restricted:
+                #if os(iOS)
                 return "Tap to open Settings"
+                #else
+                return "Allow MiniWeather to use location in Settings"
+                #endif
             default:
                 return ""
         }

@@ -28,11 +28,11 @@ struct LocationsView: View {
                     background(for: colorScheme)
                 }
         } detail: {
-            detailContentUnavailableView()
-                .background {
-                    background(for: colorScheme)
+            background(for: colorScheme)
+                .overlay {
+                    detailContentUnavailableView()
+                        .ignoresSafeArea(.keyboard)
                 }
-                .ignoresSafeArea(.keyboard)
         }
         .task {
             do {
@@ -89,7 +89,9 @@ struct LocationsView: View {
             }(),
             isCurrentLocation: isCurrentLocation
         )
+        #if os(iOS)
         .contentShape(.contextMenuPreview, RoundedRectangle(cornerRadius: 16))
+        #endif
         .contextMenu {
             if !isCurrentLocation {
                 Button(role: .destructive) {
@@ -140,6 +142,7 @@ struct LocationsView: View {
             )
         }
         .toolbarBackground(.thinMaterial, for: .automatic)
+        #if os(iOS)
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 Button {
@@ -149,10 +152,12 @@ struct LocationsView: View {
                 }
             }
             
+            
             ToolbarItem(placement: .topBarTrailing) {
                 EditButton()
             }
         }
+        #endif
     }
     
     private func searchView() -> some View {
@@ -196,8 +201,15 @@ struct LocationsView: View {
                 LocationAuthorisationCell(status: viewModel.status)
                     .onTapGesture {
                         let status = viewModel.status
+                        let string: String = {
+                            #if os(iOS)
+                            UIApplication.openSettingsURLString
+                            #endif
+                            return ""
+                        }()
+                        
                         if status.isDisallowed(),
-                            let url = URL(string: UIApplication.openSettingsURLString) {
+                            let url = URL(string: string) {
                             openURL(url)
                         } else if status == .notDetermined {
                             viewModel.refreshCurrentLocation(requestingAuthorisation: true)
