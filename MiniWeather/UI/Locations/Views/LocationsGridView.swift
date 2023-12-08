@@ -9,6 +9,7 @@ import SwiftUI
 
 struct LocationsGridView<Current: View, Saved: View>: View {
     private let hasLocations: Bool
+    @State private var isShowingSettings = false
     @ViewBuilder private let currentLocationSection: () -> Current
     @ViewBuilder private let savedLocationsSection: () -> Saved
     
@@ -38,7 +39,7 @@ struct LocationsGridView<Current: View, Saved: View>: View {
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 Button {
-                    
+                    isShowingSettings = true
                 } label: {
                     Image(systemName: "gearshape")
                 }
@@ -50,6 +51,11 @@ struct LocationsGridView<Current: View, Saved: View>: View {
             }
         }
         #endif
+        .sheet(isPresented: $isShowingSettings) {
+            SettingsView() {
+                isShowingSettings = false
+            }
+        }
     }
 }
 

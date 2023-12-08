@@ -71,6 +71,7 @@
 		BECDADCA2B220DC700CA2EAB /* SavedLocationsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = BECDADC92B220DC700CA2EAB /* SavedLocationsSection.swift */; };
 		BECDADCE2B2226B700CA2EAB /* CurrentLocationSectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = BECDADCD2B2226B700CA2EAB /* CurrentLocationSectionHeader.swift */; };
 		BECDADD02B2227DD00CA2EAB /* SavedLocationsSectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = BECDADCF2B2227DD00CA2EAB /* SavedLocationsSectionHeader.swift */; };
+		BECDADD32B23758700CA2EAB /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BECDADD22B23758700CA2EAB /* SettingsView.swift */; };
 		BED0F59A2B0B9AEE00156E23 /* MainLocationManagerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED0F5992B0B9AEE00156E23 /* MainLocationManagerDelegate.swift */; };
 		BED0F59D2B0DF73200156E23 /* Sequence+Async.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED0F59C2B0DF73200156E23 /* Sequence+Async.swift */; };
 		BED0F59F2B10D1CC00156E23 /* OpenWeatherMapGeocoderService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED0F59E2B10D1CC00156E23 /* OpenWeatherMapGeocoderService.swift */; };
@@ -164,6 +165,7 @@
 		BECDADC92B220DC700CA2EAB /* SavedLocationsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedLocationsSection.swift; sourceTree = "<group>"; };
 		BECDADCD2B2226B700CA2EAB /* CurrentLocationSectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentLocationSectionHeader.swift; sourceTree = "<group>"; };
 		BECDADCF2B2227DD00CA2EAB /* SavedLocationsSectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedLocationsSectionHeader.swift; sourceTree = "<group>"; };
+		BECDADD22B23758700CA2EAB /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		BED0F5992B0B9AEE00156E23 /* MainLocationManagerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainLocationManagerDelegate.swift; sourceTree = "<group>"; };
 		BED0F59C2B0DF73200156E23 /* Sequence+Async.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sequence+Async.swift"; sourceTree = "<group>"; };
 		BED0F59E2B10D1CC00156E23 /* OpenWeatherMapGeocoderService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenWeatherMapGeocoderService.swift; sourceTree = "<group>"; };
@@ -229,6 +231,7 @@
 		BE4FE49B2AEC12EB00A381FD /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				BECDADD12B23757300CA2EAB /* Settings */,
 				BE62AF2D2AFA26BE00BEEBFA /* Location Detail */,
 				BEF4E7E02ACF41A10043BE93 /* Locations */,
 			);
@@ -506,6 +509,14 @@
 				BE75A3612B163B5E0041ED46 /* MainSavedLocationsRepository.swift */,
 			);
 			path = Repository;
+			sourceTree = "<group>";
+		};
+		BECDADD12B23757300CA2EAB /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				BECDADD22B23758700CA2EAB /* SettingsView.swift */,
+			);
+			path = Settings;
 			sourceTree = "<group>";
 		};
 		BED0F59B2B0BA10C00156E23 /* LocationManagerDelegate */ = {
@@ -789,6 +800,7 @@
 				BE44D6B32B128EE700897390 /* MemoryDatastore.swift in Sources */,
 				BE4FE4A62AEC1E2500A381FD /* NetworkService.swift in Sources */,
 				BED0F5A32B10D84E00156E23 /* OpenWeatherMapReverseGeocodingRequest.swift in Sources */,
+				BECDADD32B23758700CA2EAB /* SettingsView.swift in Sources */,
 				BE4FE4CE2AF132F400A381FD /* WeatherRepository.swift in Sources */,
 				BED750BB2B16116A00E2CF9E /* MainCurrentLocationRepository.swift in Sources */,
 				BED0F59D2B0DF73200156E23 /* Sequence+Async.swift in Sources */,

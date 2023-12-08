@@ -136,8 +136,11 @@ import OSLog
                     }
                     
                     let weather = try await weatherRepository.getWeather(for: location)
-                    let timeZone = try await timeZoneRepository.getTimeZone(for: location)
-                    location.timeZone = timeZone.name
+                    
+                    if location.timeZone.isEmpty {
+                        let timeZone = try await timeZoneRepository.getTimeZone(for: location)
+                        location.timeZone = timeZone.name
+                    }
                     
                     try self.currentLocationRepositoryFactory().saveCurrentLocation(location)
                     
