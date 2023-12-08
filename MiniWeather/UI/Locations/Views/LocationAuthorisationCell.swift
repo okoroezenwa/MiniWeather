@@ -9,44 +9,40 @@ import SwiftUI
 import CoreLocation
 
 struct LocationAuthorisationCell: View {
-    @Environment(\.colorScheme) var colorScheme
-    let status: CLAuthorizationStatus
+    private let status: CLAuthorizationStatus
+    
+    init(status: CLAuthorizationStatus) {
+        self.status = status
+    }
     
     var body: some View {
-        VStack {
-            HStack {
-                VStack(alignment: .leading, spacing: 4) {
-                    Text(cellTitle())
-                        .font(.system(size: 17))
-                    
-                    Text(cellSubtitle())
-                        .font(.system(size: 12))
-                        .foregroundStyle(.secondary)
-                }
+        HStack {
+            VStack(alignment: .leading, spacing: 4) {
+                Text(cellTitle())
+                    .font(.system(size: 17))
                 
-                Spacer()
+                Text(cellSubtitle())
+                    .font(.system(size: 12))
+                    .foregroundStyle(.secondary)
+            }
+            
+            Spacer()
+            
+            ZStack {
+                Circle()
+                    .frame(square: 32)
+                    .foregroundStyle(
+                        Color.primary
+                            .opacity(0.05)
+                    )
                 
-                ZStack {
-                    Circle()
-                        .frame(square: 32)
-                        .foregroundStyle(
-                            Color.primary
-                                .opacity(0.05)
-                        )
-                    
-                    Image(systemName: imageName())
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(square: 16)
-                    
-                }
+                Image(systemName: imageName())
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(square: 16)
+                
             }
         }
-        .padding(16)
-        .background(
-            .cellBackgroundColour(for: colorScheme)
-        )
-        .clipShape(.rect(cornerRadius: 16))
     }
     
     func cellTitle() -> String {
