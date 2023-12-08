@@ -33,7 +33,11 @@ final class MainLocationManagerDelegate: NSObject, LocationManagerDelegate {
                     return
                 }
                 self.locationAuthorisationCheckedContinuation = continuation
+                #if os(iOS)
                 locationManager.requestWhenInUseAuthorization()
+                #elseif os(macOS)
+                locationManager.requestAlwaysAuthorization()
+                #endif
             }
         } else {
             return locationManager.authorizationStatus

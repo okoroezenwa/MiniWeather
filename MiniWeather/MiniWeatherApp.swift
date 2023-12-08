@@ -9,6 +9,7 @@ import SwiftUI
 
 @main
 struct MiniWeatherApp: App {
+    @Environment(\.scenePhase) private var scenePhase
     let timeFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.amSymbol = "am"
@@ -17,18 +18,23 @@ struct MiniWeatherApp: App {
         
         return formatter
     }()
-    /// The location being searched for. This _should_ be in LocationsView but the searchable-related environment values are structured weirdly and this was much easier than changing my view heirarchy a lot.
-    @State private var searchText = ""
+    
+    init() {
+        NSUbiquitousKeyValueStore.default.synchronize()
+    }
 
     var body: some Scene {
         WindowGroup {
-            LocationsView(
-                viewModel: .shared,
-                searchText: $searchText
+            MainView(
+                viewModel: .shared
             )
             .environment(\.timeFormatter, timeFormatter)
             .tint(.primary)
-            .searchable(text: $searchText, prompt: "Search City Name")
+        }
+        .onChange(of: scenePhase) { oldValue, newValue in
+            if oldValue == .background {
+                NSUbiquitousKeyValueStore.default.synchronize()
+            }
         }
     }
 }

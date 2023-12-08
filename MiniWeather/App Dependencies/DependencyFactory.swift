@@ -12,35 +12,30 @@ import OSLog
 /// The singleton object through which all app dependencies are retrieved.
 final class DependencyFactory {
     public static let shared = DependencyFactory(
-        parser: 
-            StandardDataParser(
-                decoder: JSONDecoder()
-            ),
-        networkService:
-            StandardNetworkService(
-                urlSession: .shared
-            ), 
         locationManagerDelegate:
             MainLocationManagerDelegate(
                 locationManager: CLLocationManager()
             ),
-        temporaryStore: TemporaryStore()
+        temporaryStore: TemporaryStore(), 
+        cloudDatastoreUpdateHandler:
+            CloudKeyValueDatastoreUpdateHandler(
+                cloudStore: NSUbiquitousKeyValueStore.default,
+                localStore: UserDefaults.standard,
+                logger: Logger()
+            )
     )
-    private let parser: DataParser
-    private let networkService: NetworkService
     private let locationManagerDelegate: LocationManagerDelegate
     private let temporaryStore: TemporaryStore
+    private let cloudDatastoreUpdateHandler: CloudKeyValueDatastoreUpdateHandler
     
     private init(
-        parser: DataParser,
-        networkService: NetworkService,
         locationManagerDelegate: LocationManagerDelegate,
-        temporaryStore: TemporaryStore
+        temporaryStore: TemporaryStore,
+        cloudDatastoreUpdateHandler: CloudKeyValueDatastoreUpdateHandler
     ) {
-        self.parser = parser
-        self.networkService = networkService
         self.locationManagerDelegate = locationManagerDelegate
         self.temporaryStore = temporaryStore
+        self.cloudDatastoreUpdateHandler = cloudDatastoreUpdateHandler
     }
     
     public func makeLocationsSearchRepository() -> LocationsSearchRepository {
@@ -103,10 +98,10 @@ final class DependencyFactory {
     
     public func makeCloudKeyValueDatastore() -> Datastore {
         CloudKeyValueDatastore(
-            store: makeCloudKeyValueStore(),
+            cloudStore: makeCloudKeyValueStore(),
+            localStore: makeUserDefaultsKeyValueStore(), 
             decoder: JSONDecoder(),
             encoder: JSONEncoder(),
-            localStorage: makeUserDefaultsKeyValueStore(),
             logger: Logger()
         )
     }
@@ -117,22 +112,22 @@ final class DependencyFactory {
     
     private func makeAPINinjasGeocoderService() -> GeocoderService {
         APINinjasGeocoderService(
-            networkService: networkService,
-            parser: parser
+            networkService: makeStandardNetworkService(),
+            parser: makeStandardDataParser()
         )
     }
     
     private func makeOpenWeatherMapGeocoderService() -> GeocoderService {
         OpenWeatherMapGeocoderService(
-            networkService: networkService,
-            parser: parser
+            networkService: makeStandardNetworkService(),
+            parser: makeStandardDataParser()
         )
     }
     
     private func makeAPINinjasTimeZoneService() -> TimeZoneService {
         APINinjasTimeZoneService(
-            networkService: networkService,
-            parser: parser
+            networkService: makeStandardNetworkService(),
+            parser: makeStandardDataParser()
         )
     }
     
@@ -144,16 +139,16 @@ final class DependencyFactory {
     
     private func makeAPINinjasWeatherService() -> WeatherService {
         APINinjasWeatherService(
-            networkService: networkService,
-            parser: parser
+            networkService: makeStandardNetworkService(),
+            parser: makeStandardDataParser()
         )
     }
     
     private func makeOpenWeatherMapWeatherService() -> WeatherService {
         OpenWeatherMapWeatherService(
-            networkService: networkService,
+            networkService: makeStandardNetworkService(),
             timeZoneDatastore: makeMemoryDatastore(),
-            parser: parser
+            parser: makeStandardDataParser()
         )
     }
     
@@ -186,5 +181,17 @@ final class DependencyFactory {
     
     private func makeCloudKeyValueStore() -> KeyValueStore {
         NSUbiquitousKeyValueStore.default
+    }
+    
+    private func makeStandardNetworkService() -> NetworkService {
+        StandardNetworkService(
+            urlSession: .shared
+        )
+    }
+    
+    private func makeStandardDataParser() -> DataParser {
+        StandardDataParser(
+            decoder: JSONDecoder()
+        )
     }
 }

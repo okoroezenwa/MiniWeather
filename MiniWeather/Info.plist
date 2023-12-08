@@ -4,6 +4,8 @@
 <dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>MiniWeather needs your current location to automatically fill in weather info for it.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>MiniWeather needs your current location to automatically fill in weather info for it.</string>
 	<key>NSLocationUsageDescription</key>
 	<string>MiniWeather needs your current location to automatically fill in weather info for it.</string>
 </dict>

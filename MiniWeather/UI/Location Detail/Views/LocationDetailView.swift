@@ -7,8 +7,12 @@
 
 import SwiftUI
 
-struct LocationDetailView: View {
+struct LocationDetailViewViewModel {
     var location: Location
+}
+
+struct LocationDetailView: View {
+    let viewModel: LocationDetailViewViewModel
     @Binding var weather: WeatherProtocol?
     @Environment(\.colorScheme) var colorScheme
     
@@ -24,16 +28,21 @@ struct LocationDetailView: View {
             Text((weather?.tempString() ?? "--") + "°")
                 .font(.system(size: 200, weight: .light, design: .rounded))
         }
+        #if os(iOS)
         .navigationBarTitleDisplayMode(.large)
+        #endif
         .navigationTitle("Details")
     }
 }
 
 #Preview {
     LocationDetailView(
-        location: UniversalConstants.location,
+        viewModel:
+            .init(
+                location: UniversalConstants.location
+            ),
         weather: .init(
-            get: { nil },
+            get: { UniversalConstants.weather },
             set: { _ in }
         )
     )
