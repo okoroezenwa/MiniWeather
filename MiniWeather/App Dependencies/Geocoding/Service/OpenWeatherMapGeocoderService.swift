@@ -9,12 +9,14 @@ import Foundation
 import CoreLocation
 
 struct OpenWeatherMapGeocoderService: GeocoderService {
-    private let networkService: NetworkService
     private let parser: DataParser
+    private let networkService: NetworkService
+    private let apiKeysProvider: StringPreferenceProvider
     
-    init(networkService: NetworkService, parser: DataParser) {
-        self.networkService = networkService
+    init(parser: DataParser, networkService: NetworkService, apiKeysProvider: StringPreferenceProvider) {
         self.parser = parser
+        self.networkService = networkService
+        self.apiKeysProvider = apiKeysProvider
     }
     
     func getLocations(named searchText: String) async throws -> [Location] {
@@ -22,7 +24,7 @@ struct OpenWeatherMapGeocoderService: GeocoderService {
             queryItems: [
                 "q": searchText,
                 "limit": "5",
-                "appid": "b70953dbe7338b90a67f650598d6e321"
+                "appid": apiKeysProvider.string(forKey: Settings.openWeatherMapKey) ?? ""
             ]
         )
         
@@ -41,7 +43,7 @@ struct OpenWeatherMapGeocoderService: GeocoderService {
                 "lat": "\(coordinates.latitude)",
                 "lon": "\(coordinates.longitude)",
                 "limit": "5",
-                "appid": "b70953dbe7338b90a67f650598d6e321"
+                "appid": apiKeysProvider.string(forKey: Settings.openWeatherMapKey) ?? ""
             ]
         )
         

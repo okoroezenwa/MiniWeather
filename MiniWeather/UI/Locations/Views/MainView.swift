@@ -13,7 +13,8 @@ struct MainView: View {
     @Environment(\.scenePhase) private var scenePhase
     @State var selectedLocation: Location?
     // TODO: - Replace alert with toast
-    @State var duplicateLocation: Location?
+    @State private var duplicateLocation: Location?
+    @State private var isShowingSettings = false
     @State var viewModel: LocationsViewModel
 
     var body: some View {
@@ -73,14 +74,39 @@ struct MainView: View {
             .background {
                 background(for: colorScheme)
             }
-            .navigationDestination(for: Location.self) { location in
-                let weather = viewModel.weather(for: location)
-                LocationDetailView(
-                    viewModel: .init(
-                        location: location
-                    ),
-                    weather: weather
-                )
+            .navigationTitle("Locations")
+            .navigationDestination(for: Location.self) { [weak viewModel] location in
+                if let viewModel {
+                    LocationDetailView(
+                        viewModel: .init(
+                            location: location
+                        ),
+                        weather: viewModel.weather(for: location)
+                    )
+                    .preferredColorScheme(colorScheme)
+                }
+            }
+            .toolbarBackground(.thinMaterial, for: .automatic)
+            #if os(iOS)
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button {
+                        isShowingSettings = true
+                    } label: {
+                        Image(systemName: "gearshape")
+                    }
+                }
+                
+                ToolbarItem(placement: .topBarTrailing) {
+                    EditButton()
+                }
+            }
+            #endif
+            .sheet(isPresented: $isShowingSettings) {
+                SettingsView() {
+                    isShowingSettings = false
+                }
+                .preferredColorScheme(colorScheme)
             }
         } detail: {
             background(for: colorScheme)

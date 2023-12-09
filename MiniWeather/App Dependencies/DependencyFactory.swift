@@ -40,19 +40,19 @@ final class DependencyFactory {
     
     public func makeLocationsSearchRepository() -> LocationsSearchRepository {
         MainLocationsSearchRepository(
-            geocodeService: makeOpenWeatherMapGeocoderService()
+            geocodeService: makePreferredGeocoderService()
         )
     }
     
     public func makeTimeZoneRepository() -> TimeZoneRepository {
         MainTimeZoneRepository(
-            service: makeOpenWeatherMapTimeZoneService()
+            service: makePreferredTimeZoneService()
         )
     }
     
     public func makeWeatherRepository() -> WeatherRepository {
         MainWeatherRepository(
-            weatherService: makeOpenWeatherMapWeatherService()
+            weatherService: makePreferredWeatherService()
         )
     }
     
@@ -107,27 +107,43 @@ final class DependencyFactory {
     }
     
     private func makeAppleGeocoderService() -> GeocoderService {
-        AppleGeocoderService()
+        AppleGeocoderService(geocoder: .init())
     }
     
     private func makeAPINinjasGeocoderService() -> GeocoderService {
         APINinjasGeocoderService(
-            networkService: makeStandardNetworkService(),
-            parser: makeStandardDataParser()
+            parser: makeStandardDataParser(), 
+            networkService: makeStandardNetworkService(), 
+            apiKeysProvider: makeMainStringPreferenceProvider()
         )
     }
     
     private func makeOpenWeatherMapGeocoderService() -> GeocoderService {
         OpenWeatherMapGeocoderService(
+            parser: makeStandardDataParser(),
             networkService: makeStandardNetworkService(),
-            parser: makeStandardDataParser()
+            apiKeysProvider: makeMainStringPreferenceProvider()
         )
+    }
+    
+    private func makePreferredGeocoderService() -> GeocoderService {
+        let preferredService: Service = Settings.currentValue(for: Settings.geocoderService) ?? .default
+        
+        switch preferredService {
+            case .apple:
+                return makeAppleGeocoderService()
+            case .apiNinjas:
+                return makeAPINinjasGeocoderService()
+            case .openWeatherMap:
+                return makeOpenWeatherMapGeocoderService()
+        }
     }
     
     private func makeAPINinjasTimeZoneService() -> TimeZoneService {
         APINinjasTimeZoneService(
+            parser: makeStandardDataParser(), 
             networkService: makeStandardNetworkService(),
-            parser: makeStandardDataParser()
+            apiKeysProvider: makeMainStringPreferenceProvider()
         )
     }
     
@@ -137,19 +153,44 @@ final class DependencyFactory {
         )
     }
     
+    private func makePreferredTimeZoneService() -> TimeZoneService {
+        let preferredService: Service = Settings.currentValue(for: Settings.geocoderService) ?? .default
+        
+        switch preferredService {
+            case .apple, .openWeatherMap:
+                return makeOpenWeatherMapTimeZoneService()
+            case .apiNinjas:
+                return makeAPINinjasTimeZoneService()
+        }
+    }
+    
     private func makeAPINinjasWeatherService() -> WeatherService {
         APINinjasWeatherService(
+            parser: makeStandardDataParser(), 
             networkService: makeStandardNetworkService(),
-            parser: makeStandardDataParser()
+            apiKeysProvider: makeMainStringPreferenceProvider()
         )
     }
     
     private func makeOpenWeatherMapWeatherService() -> WeatherService {
         OpenWeatherMapWeatherService(
-            networkService: makeStandardNetworkService(),
+            parser: makeStandardDataParser(),
             timeZoneDatastore: makeMemoryDatastore(),
-            parser: makeStandardDataParser()
+            networkService: makeStandardNetworkService(),
+            stringPreferenceProvider: makeMainStringPreferenceProvider()
         )
+    }
+    
+    private func makePreferredWeatherService() -> WeatherService {
+        let preferredService: Service = Settings.currentValue(for: Settings.weatherProvider) ?? .default
+        
+        #warning("Change this after implementing WeatherKit")
+        switch preferredService {
+            case .apple, .openWeatherMap:
+                return makeOpenWeatherMapWeatherService()
+            case .apiNinjas:
+                return makeAPINinjasWeatherService()
+        }
     }
     
     private func makeUserLocationProvider() -> UserLocationProvider {
@@ -170,7 +211,7 @@ final class DependencyFactory {
     
     private func makeSavedLocationsProvider() -> SavedLocationsProvider {
         MainSavedLocationsProvider(
-            datastore: makeCloudKeyValueDatastore(),
+            datastore: makeUserDefaultsDatastore(),
             logger: Logger()
         )
     }
@@ -193,5 +234,9 @@ final class DependencyFactory {
         StandardDataParser(
             decoder: JSONDecoder()
         )
+    }
+    
+    private func makeMainStringPreferenceProvider() -> StringPreferenceProvider {
+        UserDefaults.standard
     }
 }

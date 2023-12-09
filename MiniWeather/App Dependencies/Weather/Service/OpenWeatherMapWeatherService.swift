@@ -9,14 +9,16 @@ import Foundation
 import CoreLocation
 
 struct OpenWeatherMapWeatherService: WeatherService {
-    private let networkService: NetworkService
-    private let timeZoneDatastore: Datastore
     private let parser: DataParser
+    private let timeZoneDatastore: Datastore
+    private let networkService: NetworkService
+    private let stringPreferenceProvider: StringPreferenceProvider
     
-    init(networkService: NetworkService, timeZoneDatastore: Datastore, parser: DataParser) {
-        self.networkService = networkService
-        self.timeZoneDatastore = timeZoneDatastore
+    init(parser: DataParser, timeZoneDatastore: Datastore, networkService: NetworkService, stringPreferenceProvider: StringPreferenceProvider) {
         self.parser = parser
+        self.timeZoneDatastore = timeZoneDatastore
+        self.networkService = networkService
+        self.stringPreferenceProvider = stringPreferenceProvider
     }
     
     func getWeather(for location: Location) async throws -> WeatherProtocol {
@@ -24,8 +26,8 @@ struct OpenWeatherMapWeatherService: WeatherService {
             queryItems: [
                 "lat": String(location.coordinates().latitude),
                 "lon": String(location.coordinates().longitude),
-                "units": "metric",
-                "appid": "b70953dbe7338b90a67f650598d6e321"
+                "units": getUnitsStringPreference(),
+                "appid": stringPreferenceProvider.string(forKey: Settings.openWeatherMapKey) ?? ""
             ]
         )
         
@@ -39,6 +41,19 @@ struct OpenWeatherMapWeatherService: WeatherService {
             return weather
         } catch {
             throw error
+        }
+    }
+    
+    private func getUnitsStringPreference() -> String {
+        guard let string = stringPreferenceProvider.string(forKey: Settings.openWeatherMapKey), let unit = UnitOfMeasure(rawValue: string) else {
+            return UnitOfMeasure.default.rawValue.lowercased()
+        }
+        
+        switch unit {
+            case .hybrid: 
+                return "standard"
+            case .metric, .imperial:
+                return unit.rawValue.lowercased()
         }
     }
 }

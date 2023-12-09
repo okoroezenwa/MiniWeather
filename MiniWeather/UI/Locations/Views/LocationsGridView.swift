@@ -32,24 +32,6 @@ struct LocationsGridView<Current: View, Saved: View>: View {
             }
         }
         .scrollDismissesKeyboard(.immediately)
-        .navigationTitle("Locations")
-        .toolbarBackground(.thinMaterial, for: .automatic)
-        #if os(iOS)
-        .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
-                Button {
-                    
-                } label: {
-                    Image(systemName: "gearshape")
-                }
-            }
-            
-            
-            ToolbarItem(placement: .topBarTrailing) {
-                EditButton()
-            }
-        }
-        #endif
     }
 }
 

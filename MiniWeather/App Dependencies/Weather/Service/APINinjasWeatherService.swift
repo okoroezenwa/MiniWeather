@@ -9,12 +9,14 @@ import Foundation
 import CoreLocation
 
 struct APINinjasWeatherService: WeatherService {
-    private let networkService: NetworkService
     private let parser: DataParser
+    private let networkService: NetworkService
+    private let apiKeysProvider: StringPreferenceProvider
     
-    init(networkService: NetworkService, parser: DataParser) {
-        self.networkService = networkService
+    init(parser: DataParser, networkService: NetworkService, apiKeysProvider: StringPreferenceProvider) {
         self.parser = parser
+        self.networkService = networkService
+        self.apiKeysProvider = apiKeysProvider
     }
     
     func getWeather(for location: Location) async throws -> WeatherProtocol {
@@ -23,7 +25,7 @@ struct APINinjasWeatherService: WeatherService {
                 "lat": String(location.coordinates().latitude),
                 "lon": String(location.coordinates().longitude)
             ],
-            headers: ["X-Api-Key": "S7/jrjbcI+0knImPq9dH9Q==lNZI74iBzjtGlZjR"]
+            headers: ["X-Api-Key": apiKeysProvider.string(forKey: Settings.apiNinjasKey) ?? ""]
         )
         
         do {

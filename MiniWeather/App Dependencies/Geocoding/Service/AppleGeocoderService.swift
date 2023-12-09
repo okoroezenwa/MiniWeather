@@ -9,8 +9,13 @@ import Foundation
 import CoreLocation
 
 struct AppleGeocoderService: GeocoderService {
+    private let geocoder: CLGeocoder
+    
+    init(geocoder: CLGeocoder) {
+        self.geocoder = geocoder
+    }
+    
     func getLocations(named searchText: String) async throws -> [Location] {
-        let geocoder = CLGeocoder()
         do {
             let placemarks = try await geocoder.geocodeAddressString(searchText)
             return placemarks.map { Location(locationObject: $0, timeZoneIdentifier: $0.timeZone?.identifier ?? "") }
@@ -20,7 +25,6 @@ struct AppleGeocoderService: GeocoderService {
     }
     
     func getLocations(at coordinates: CLLocationCoordinate2D) async throws -> [Location] {
-        let geocoder = CLGeocoder()
         do {
             let placemarks = try await geocoder.reverseGeocodeLocation(
                 .init(latitude: coordinates.latitude, longitude: coordinates.longitude)
