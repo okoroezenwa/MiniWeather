@@ -28,9 +28,7 @@ struct LocationCellContainerView<Content: View>: View {
         .padding(.leading, leadingPadding)
         .padding(.bottom, bottomPadding)
         .padding(.trailing, trailingPadding)
-        .background(
-            .cellBackgroundColour(for: colorScheme)
-        )
+        .background(.thinMaterial)
         .clipShape(.rect(cornerRadius: 16))
         .shadow(color: .black.opacity(0.1), radius: 5)
     }

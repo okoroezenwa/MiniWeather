@@ -10,7 +10,6 @@ import SwiftUI
 @main
 struct MiniWeatherApp: App {
     @Environment(\.scenePhase) private var scenePhase
-    @Environment(\.colorScheme) private var colorScheme
     @AppStorage(Settings.appTheme) private var theme = Theme.default
     
     let timeFormatter: DateFormatter = {
@@ -42,14 +41,14 @@ struct MiniWeatherApp: App {
         }
     }
     
-    private func getColorScheme() -> ColorScheme {
+    private func getColorScheme() -> ColorScheme? {
         switch theme {
             case .light: 
                 return .light
             case .dark:
                 return .dark
             case .system:
-                return colorScheme
+                return nil
         }
     }
 }
