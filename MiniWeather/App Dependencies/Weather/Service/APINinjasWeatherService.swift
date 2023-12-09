@@ -11,9 +11,9 @@ import CoreLocation
 struct APINinjasWeatherService: WeatherService {
     private let parser: DataParser
     private let networkService: NetworkService
-    private let apiKeysProvider: APIKeysProvider
+    private let apiKeysProvider: StringPreferenceProvider
     
-    init(parser: DataParser, networkService: NetworkService, apiKeysProvider: APIKeysProvider) {
+    init(parser: DataParser, networkService: NetworkService, apiKeysProvider: StringPreferenceProvider) {
         self.parser = parser
         self.networkService = networkService
         self.apiKeysProvider = apiKeysProvider
@@ -25,7 +25,7 @@ struct APINinjasWeatherService: WeatherService {
                 "lat": String(location.coordinates().latitude),
                 "lon": String(location.coordinates().longitude)
             ],
-            headers: ["X-Api-Key": apiKeysProvider.getAPIKey(for: Settings.apiNinjasKey)]
+            headers: ["X-Api-Key": apiKeysProvider.string(forKey: Settings.apiNinjasKey) ?? ""]
         )
         
         do {

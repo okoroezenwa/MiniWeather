@@ -114,7 +114,7 @@ final class DependencyFactory {
         APINinjasGeocoderService(
             parser: makeStandardDataParser(), 
             networkService: makeStandardNetworkService(), 
-            apiKeysProvider: makeMainAPIKeysProvider()
+            apiKeysProvider: makeMainStringPreferenceProvider()
         )
     }
     
@@ -122,7 +122,7 @@ final class DependencyFactory {
         OpenWeatherMapGeocoderService(
             parser: makeStandardDataParser(),
             networkService: makeStandardNetworkService(),
-            apiKeysProvider: makeMainAPIKeysProvider()
+            apiKeysProvider: makeMainStringPreferenceProvider()
         )
     }
     
@@ -143,7 +143,7 @@ final class DependencyFactory {
         APINinjasTimeZoneService(
             parser: makeStandardDataParser(), 
             networkService: makeStandardNetworkService(),
-            apiKeysProvider: makeMainAPIKeysProvider()
+            apiKeysProvider: makeMainStringPreferenceProvider()
         )
     }
     
@@ -168,7 +168,7 @@ final class DependencyFactory {
         APINinjasWeatherService(
             parser: makeStandardDataParser(), 
             networkService: makeStandardNetworkService(),
-            apiKeysProvider: makeMainAPIKeysProvider()
+            apiKeysProvider: makeMainStringPreferenceProvider()
         )
     }
     
@@ -177,7 +177,7 @@ final class DependencyFactory {
             parser: makeStandardDataParser(),
             timeZoneDatastore: makeMemoryDatastore(),
             networkService: makeStandardNetworkService(),
-            apiKeysProvider: makeMainAPIKeysProvider()
+            stringPreferenceProvider: makeMainStringPreferenceProvider()
         )
     }
     
@@ -236,10 +236,7 @@ final class DependencyFactory {
         )
     }
     
-#warning("Change to a protocol that returns a String")
-    private func makeMainAPIKeysProvider() -> APIKeysProvider {
-        MainAPIKeysProvider(
-            defaults: .standard
-        )
+    private func makeMainStringPreferenceProvider() -> StringPreferenceProvider {
+        UserDefaults.standard
     }
 }

@@ -53,7 +53,7 @@ struct WeatherForecast: Codable {
         case probabilityOfPrecipitation = "pop"
         case rain
         case snow
-        case weather = "weather"
+        case weather
     }
 }
 
@@ -127,7 +127,7 @@ struct Temperature: Codable {
 }
 
 /// A type that holds 2 different types for the same JSON field name.
-enum DualValueDecodable<First: Codable, Second: Codable>: Codable {
+enum DualValueDecodable<First: Codable & Sendable, Second: Codable & Sendable>: Codable {
     case first(First)
     case second(Second)
     

@@ -9,6 +9,7 @@ import SwiftUI
 
 struct Settings {
     static let appTheme = "appTheme"
+    static let unitsOfMeasure = "unitsOfMeasure"
     static let geocoderService = "geocoderService"
     static let weatherProvider = "weatherProvider"
     static let apiNinjasKey = "apiNinjasKey"
@@ -51,10 +52,23 @@ enum Service: String, CaseIterable, Identifiable, DefaultPresenting {
     static let `default`: Service = .apple
 }
 
+enum UnitOfMeasure: String, CaseIterable, Identifiable, DefaultPresenting {
+    case metric = "Metric"
+    case imperial = "Imperial"
+    case hybrid = "Hybrid"
+    
+    var id: Self {
+        self
+    }
+    
+    static let `default`: UnitOfMeasure = .metric
+}
+
 struct SettingsView: View {
     @AppStorage(Settings.appTheme) private var theme = Theme.default
     @AppStorage(Settings.geocoderService) private var geocoderService = Service.default
     @AppStorage(Settings.weatherProvider) private var weatherProvider = Service.default
+    @AppStorage(Settings.unitsOfMeasure) private var unitsOfMeasure = UnitOfMeasure.default
     @AppStorage(Settings.apiNinjasKey) private var apiNinjasKey = ""
     @AppStorage(Settings.openWeatherMapKey) private var openWeatherMapKey = ""
     private var dismiss: () -> ()
@@ -70,10 +84,23 @@ struct SettingsView: View {
                     SettingsPicker(title: "Theme", selection: $theme)
                 }
                 
-                Section("Services") {
+                Section {
+                    SettingsPicker(title: "Units", selection: $unitsOfMeasure)
+                } header: {
+                    Text("General")
+                } footer: {
+                    Text("Changing units may require a refresh of existing weather info.")
+                }
+                .disabled(weatherProvider == .apiNinjas)
+
+                Section {
                     SettingsPicker(title: "Geocoder", selection: $geocoderService)
                     
                     SettingsPicker(title: "Weather Provider", selection: $weatherProvider)
+                } header: {
+                    Text("Services")
+                } footer: {
+                    Text("Weather provided by API-Ninjas is always returned in Metric unis.")
                 }
                 
                 Section("API Keys") {
