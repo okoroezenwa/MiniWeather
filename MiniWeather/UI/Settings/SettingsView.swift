@@ -83,7 +83,7 @@ struct SettingsView: View {
                 }
             }
             .navigationTitle("Settings")
-            
+            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("Done") {
@@ -107,6 +107,7 @@ struct SettingsPicker<Selection: SelectionEnum>: View where Selection.AllCases =
                 Text(selection.rawValue)
             }
         }
+        .tint(.secondary)
     }
 }
 
