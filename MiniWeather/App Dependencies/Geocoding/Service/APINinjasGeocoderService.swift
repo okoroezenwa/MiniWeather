@@ -9,18 +9,20 @@ import Foundation
 import CoreLocation
 
 struct APINinjasGeocoderService: GeocoderService {
-    private let networkService: NetworkService
     private let parser: DataParser
+    private let networkService: NetworkService
+    private let apiKeysProvider: APIKeysProvider
     
-    init(networkService: NetworkService, parser: DataParser) {
-        self.networkService = networkService
+    init(parser: DataParser, networkService: NetworkService, apiKeysProvider: APIKeysProvider) {
         self.parser = parser
+        self.networkService = networkService
+        self.apiKeysProvider = apiKeysProvider
     }
     
     func getLocations(named searchText: String) async throws -> [Location] {
         let locationsRequest = APINinjasGeocodingRequest(
             queryItems: ["city": searchText],
-            headers: ["X-Api-Key": "S7/jrjbcI+0knImPq9dH9Q==lNZI74iBzjtGlZjR"]
+            headers: ["X-Api-Key": apiKeysProvider.getAPIKey(for: Settings.apiNinjasKey)]
         )
         
         do {
@@ -38,7 +40,7 @@ struct APINinjasGeocoderService: GeocoderService {
                 "lat": "\(coordinates.latitude)",
                 "lon": "\(coordinates.longitude)"
             ],
-            headers: ["X-Api-Key": "S7/jrjbcI+0knImPq9dH9Q==lNZI74iBzjtGlZjR"]
+            headers: ["X-Api-Key": apiKeysProvider.getAPIKey(for: Settings.apiNinjasKey)]
         )
         
         do {

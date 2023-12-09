@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BE248C392B248D46007E32FD /* APIKeysProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE248C382B248D46007E32FD /* APIKeysProvider.swift */; };
+		BE248C3B2B248DAD007E32FD /* MainAPIKeysProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE248C3A2B248DAD007E32FD /* MainAPIKeysProvider.swift */; };
 		BE2D18BB2B134F0A0012D1F0 /* OpenWeatherMapTimeZoneService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2D18BA2B134F0A0012D1F0 /* OpenWeatherMapTimeZoneService.swift */; };
 		BE2D18BD2B1502CE0012D1F0 /* OpenWeatherMapWeather.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2D18BC2B1502CE0012D1F0 /* OpenWeatherMapWeather.swift */; };
 		BE2D18BF2B1503850012D1F0 /* OpenWeatherMapCodables.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2D18BE2B1503850012D1F0 /* OpenWeatherMapCodables.swift */; };
@@ -98,6 +100,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		BE248C382B248D46007E32FD /* APIKeysProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIKeysProvider.swift; sourceTree = "<group>"; };
+		BE248C3A2B248DAD007E32FD /* MainAPIKeysProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainAPIKeysProvider.swift; sourceTree = "<group>"; };
 		BE2D18BA2B134F0A0012D1F0 /* OpenWeatherMapTimeZoneService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenWeatherMapTimeZoneService.swift; sourceTree = "<group>"; };
 		BE2D18BC2B1502CE0012D1F0 /* OpenWeatherMapWeather.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenWeatherMapWeather.swift; sourceTree = "<group>"; };
 		BE2D18BE2B1503850012D1F0 /* OpenWeatherMapCodables.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenWeatherMapCodables.swift; sourceTree = "<group>"; };
@@ -202,6 +206,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		BE248C372B248CE0007E32FD /* API Keys */ = {
+			isa = PBXGroup;
+			children = (
+				BE248C382B248D46007E32FD /* APIKeysProvider.swift */,
+				BE248C3A2B248DAD007E32FD /* MainAPIKeysProvider.swift */,
+			);
+			path = "API Keys";
+			sourceTree = "<group>";
+		};
 		BE4E41AE2AFA3F7A008B07D5 /* User Location Authorisation */ = {
 			isa = PBXGroup;
 			children = (
@@ -361,6 +374,7 @@
 		BE4FE4C22AECE28F00A381FD /* App Dependencies */ = {
 			isa = PBXGroup;
 			children = (
+				BE248C372B248CE0007E32FD /* API Keys */,
 				BE4FE4C32AECE5D200A381FD /* DependencyFactory.swift */,
 				BED750C52B162C5900E2CF9E /* Saved Locations */,
 				BED750B32B160BDD00E2CF9E /* Current Location */,
@@ -795,6 +809,7 @@
 				BE4FE4972AEC098300A381FD /* APINinjasLocation.swift in Sources */,
 				BECDADC02B21BBAD00CA2EAB /* LocationCellContainerView.swift in Sources */,
 				BE75A3602B163ABC0041ED46 /* SavedLocationsRepository.swift in Sources */,
+				BE248C3B2B248DAD007E32FD /* MainAPIKeysProvider.swift in Sources */,
 				BED0F59F2B10D1CC00156E23 /* OpenWeatherMapGeocoderService.swift in Sources */,
 				BE2D18C12B150CF40012D1F0 /* OpenWeatherMapWeatherRequest.swift in Sources */,
 				BE44D6B32B128EE700897390 /* MemoryDatastore.swift in Sources */,
@@ -828,6 +843,7 @@
 				BECDADC22B21D9BC00CA2EAB /* LocationsView.swift in Sources */,
 				BE7DA77D2AE6B42A0016047C /* StandardNetworkService.swift in Sources */,
 				BED750B92B16104300E2CF9E /* CurrentLocationRepository.swift in Sources */,
+				BE248C392B248D46007E32FD /* APIKeysProvider.swift in Sources */,
 				BE7DA7852AE99D800016047C /* DataParser.swift in Sources */,
 				BE9F20F82AD0624A00CDC9F4 /* MainLocationsSearchRepository.swift in Sources */,
 				BECDADC42B21F34000CA2EAB /* LocationsGridView.swift in Sources */,

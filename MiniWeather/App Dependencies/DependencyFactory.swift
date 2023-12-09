@@ -112,15 +112,17 @@ final class DependencyFactory {
     
     private func makeAPINinjasGeocoderService() -> GeocoderService {
         APINinjasGeocoderService(
-            networkService: makeStandardNetworkService(),
-            parser: makeStandardDataParser()
+            parser: makeStandardDataParser(), 
+            networkService: makeStandardNetworkService(), 
+            apiKeysProvider: makeMainAPIKeysProvider()
         )
     }
     
     private func makeOpenWeatherMapGeocoderService() -> GeocoderService {
         OpenWeatherMapGeocoderService(
+            parser: makeStandardDataParser(),
             networkService: makeStandardNetworkService(),
-            parser: makeStandardDataParser()
+            apiKeysProvider: makeMainAPIKeysProvider()
         )
     }
     
@@ -139,8 +141,9 @@ final class DependencyFactory {
     
     private func makeAPINinjasTimeZoneService() -> TimeZoneService {
         APINinjasTimeZoneService(
+            parser: makeStandardDataParser(), 
             networkService: makeStandardNetworkService(),
-            parser: makeStandardDataParser()
+            apiKeysProvider: makeMainAPIKeysProvider()
         )
     }
     
@@ -163,16 +166,18 @@ final class DependencyFactory {
     
     private func makeAPINinjasWeatherService() -> WeatherService {
         APINinjasWeatherService(
+            parser: makeStandardDataParser(), 
             networkService: makeStandardNetworkService(),
-            parser: makeStandardDataParser()
+            apiKeysProvider: makeMainAPIKeysProvider()
         )
     }
     
     private func makeOpenWeatherMapWeatherService() -> WeatherService {
         OpenWeatherMapWeatherService(
-            networkService: makeStandardNetworkService(),
+            parser: makeStandardDataParser(),
             timeZoneDatastore: makeMemoryDatastore(),
-            parser: makeStandardDataParser()
+            networkService: makeStandardNetworkService(),
+            apiKeysProvider: makeMainAPIKeysProvider()
         )
     }
     
@@ -228,6 +233,13 @@ final class DependencyFactory {
     private func makeStandardDataParser() -> DataParser {
         StandardDataParser(
             decoder: JSONDecoder()
+        )
+    }
+    
+#warning("Change to a protocol that returns a String")
+    private func makeMainAPIKeysProvider() -> APIKeysProvider {
+        MainAPIKeysProvider(
+            defaults: .standard
         )
     }
 }
