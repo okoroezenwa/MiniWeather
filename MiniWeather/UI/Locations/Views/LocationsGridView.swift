@@ -9,7 +9,6 @@ import SwiftUI
 
 struct LocationsGridView<Current: View, Saved: View>: View {
     private let hasLocations: Bool
-    @State private var isShowingSettings = false
     @ViewBuilder private let currentLocationSection: () -> Current
     @ViewBuilder private let savedLocationsSection: () -> Saved
     
@@ -33,29 +32,6 @@ struct LocationsGridView<Current: View, Saved: View>: View {
             }
         }
         .scrollDismissesKeyboard(.immediately)
-        .navigationTitle("Locations")
-        .toolbarBackground(.thinMaterial, for: .automatic)
-        #if os(iOS)
-        .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
-                Button {
-                    isShowingSettings = true
-                } label: {
-                    Image(systemName: "gearshape")
-                }
-            }
-            
-            
-            ToolbarItem(placement: .topBarTrailing) {
-                EditButton()
-            }
-        }
-        #endif
-        .sheet(isPresented: $isShowingSettings) {
-            SettingsView() {
-                isShowingSettings = false
-            }
-        }
     }
 }
 

@@ -81,7 +81,7 @@ struct SettingsView: View {
         NavigationStack {
             Form {
                 Section("Appearance") {
-                    SettingsPicker(title: "Theme", selection: $theme)
+                    SettingsPicker(title: "Theme", selection: $theme.animation())
                 }
                 
                 Section {

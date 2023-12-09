@@ -211,7 +211,7 @@ final class DependencyFactory {
     
     private func makeSavedLocationsProvider() -> SavedLocationsProvider {
         MainSavedLocationsProvider(
-            datastore: makeCloudKeyValueDatastore(),
+            datastore: makeUserDefaultsDatastore(),
             logger: Logger()
         )
     }
