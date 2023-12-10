@@ -66,7 +66,7 @@ import OSLog
         kvsCancellable = NotificationCenter.default
             .publisher(for: .cloudStoreUpdated, object: NSUbiquitousKeyValueStore.default)
             .sink { [weak self] _ in
-                Task {
+                Task(priority: .background) {
                     do {
                         try await self?.getSavedLocations()
                         try await self?.getWeatherForSavedLocations()
@@ -113,7 +113,7 @@ import OSLog
         let timeZoneRepository = timeZoneRepositoryFactory()
         let weatherRepository = weatherRepositoryFactory()
         
-        Task {
+        Task(priority: .userInitiated) {
             do {
                 let status = await {
                     if requestAuthorisation {
@@ -176,8 +176,9 @@ import OSLog
         let weatherRepository = weatherRepositoryFactory()
         let timeZoneRepository = timeZoneRepositoryFactory()
         
-        Task {
+        Task(priority: .background) {
             let weather = try await weatherRepository.getWeather(for: location)
+            #warning("update for Apple geocoder since location already contains a time zone in that case")
             let timeZone = try await timeZoneRepository.getTimeZone(for: location)
             
             await MainActor.run {
@@ -196,7 +197,7 @@ import OSLog
             return
         }
         
-        Task {
+        Task(priority: .background) {
             let locationsRepository = locationsRepositoryFactory()
             let locations = try await locationsRepository.getLocations(named: query)
             
@@ -220,7 +221,7 @@ import OSLog
     }
     
     func getWeather(for location: Location) {
-        Task {
+        Task(priority: .background) {
             let weatherRepository = weatherRepositoryFactory()
             let weather = try await weatherRepository.getWeather(for: location)
             weatherCache[location.fullName] = weather
@@ -293,10 +294,11 @@ import OSLog
         let oldLocations = performLocalAdd(of: location)
         var variableLocation = location
         
-        Task {
+        Task(priority: .background) {
             do {
                 try await savedLocationsRepository.add(variableLocation)
                 let weather = try await weatherRepository.getWeather(for: variableLocation)
+                #warning("not required for Apple geocoder")
                 let timeZone = try await timeZoneRepository.getTimeZone(for: variableLocation)
                 
                 await MainActor.run {
@@ -345,7 +347,7 @@ import OSLog
         let savedLocationsRepository = savedLocationsRepositoryFactory()
         let oldLocations = performLocalDelete(of: location)
         
-        Task {
+        Task(priority: .userInitiated) {
             do {
                 try await savedLocationsRepository.delete(location)
             } catch {
