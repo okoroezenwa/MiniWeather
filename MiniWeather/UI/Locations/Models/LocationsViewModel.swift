@@ -178,15 +178,21 @@ import OSLog
         
         Task(priority: .background) {
             let weather = try await weatherRepository.getWeather(for: location)
-            #warning("update for Apple geocoder since location already contains a time zone in that case")
-            let timeZone = try await timeZoneRepository.getTimeZone(for: location)
+            let timeZone: TimeZoneIdentifier? = try await {
+                if !location.timeZone.isEmpty {
+                    return nil
+                }
+                return try await timeZoneRepository.getTimeZone(for: location)
+            }()
             
             await MainActor.run {
                 // TODO: - replace once actor implementation is done
                 var tempWeather = weatherCache
                 tempWeather[location.fullName] = weather
                 self.weatherCache = tempWeather
-                completion(timeZone)
+                if let timeZone {
+                    completion(timeZone)
+                }
             }
         }
     }
@@ -298,12 +304,18 @@ import OSLog
             do {
                 try await savedLocationsRepository.add(variableLocation)
                 let weather = try await weatherRepository.getWeather(for: variableLocation)
-                #warning("not required for Apple geocoder")
-                let timeZone = try await timeZoneRepository.getTimeZone(for: variableLocation)
+                let timeZone: TimeZoneIdentifier? = try await {
+                    if !variableLocation.timeZone.isEmpty {
+                        return nil
+                    }
+                    return try await timeZoneRepository.getTimeZone(for: variableLocation)
+                }()
                 
                 await MainActor.run {
                     // TODO: - replace once actor implementation is done
-                    variableLocation.timeZone = timeZone.name
+                    if let timeZone {
+                        variableLocation.timeZone = timeZone.name
+                    }
                     
                     if let index = locations.firstIndex(of: location) {
                         var tempLocations = locations

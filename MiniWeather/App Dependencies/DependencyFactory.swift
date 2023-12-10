@@ -181,12 +181,19 @@ final class DependencyFactory {
         )
     }
     
+    private func makeAppleWeatherService() -> WeatherService {
+        AppleWeatherService(
+            service: .shared
+        )
+    }
+    
     private func makePreferredWeatherService() -> WeatherService {
         let preferredService: Service = Settings.currentValue(for: Settings.weatherProvider) ?? .default
         
-        #warning("Change this after implementing WeatherKit")
         switch preferredService {
-            case .apple, .openWeatherMap:
+            case .apple:
+                return makeAppleWeatherService()
+            case .openWeatherMap:
                 return makeOpenWeatherMapWeatherService()
             case .apiNinjas:
                 return makeAPINinjasWeatherService()
