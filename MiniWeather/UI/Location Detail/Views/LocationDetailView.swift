@@ -28,10 +28,6 @@ struct LocationDetailView: View {
             Text((weather?.tempString() ?? "--") + "°")
                 .font(.system(size: 200, weight: .light, design: .rounded))
         }
-        #if os(iOS)
-        .navigationBarTitleDisplayMode(.large)
-        #endif
-        .navigationTitle("Details")
     }
 }
 

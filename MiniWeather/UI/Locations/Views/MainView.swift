@@ -84,6 +84,10 @@ struct MainView: View {
                         weather: viewModel.weather(for: location)
                     )
                     .preferredColorScheme(colorScheme)
+                    #if os(iOS)
+                    .navigationBarTitleDisplayMode(.large)
+                    #endif
+                    .navigationTitle("Details")
                 }
             }
             .toolbarBackground(.thinMaterial, for: .automatic)

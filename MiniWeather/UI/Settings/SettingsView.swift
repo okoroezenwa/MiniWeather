@@ -100,7 +100,7 @@ struct SettingsView: View {
                 } header: {
                     Text("Services")
                 } footer: {
-                    Text("Weather provided by API-Ninjas is always returned in Metric unis.")
+                    Text("Weather provided by API-Ninjas is always returned in Metric units.")
                 }
                 
                 Section("API Keys") {
