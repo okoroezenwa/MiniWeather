@@ -7,63 +7,6 @@
 
 import SwiftUI
 
-struct Settings {
-    static let appTheme = "appTheme"
-    static let unitsOfMeasure = "unitsOfMeasure"
-    static let geocoderService = "geocoderService"
-    static let weatherProvider = "weatherProvider"
-    static let apiNinjasKey = "apiNinjasKey"
-    static let openWeatherMapKey = "openWeatherMapKey"
-    
-    static func currentValue<Value: DefaultPresenting & RawRepresentable<String>>(for key: String) -> Value? {
-        guard let rawValue = UserDefaults.standard.string(forKey: key), let value = Value(rawValue: rawValue) else {
-            return nil
-        }
-        return value
-    }
-}
-
-protocol DefaultPresenting<Value> {
-    associatedtype Value
-    static var `default`: Value { get }
-}
-
-enum Theme: String, CaseIterable, Identifiable, DefaultPresenting {
-    case light = "Light"
-    case dark = "Dark"
-    case system = "Use System"
-    
-    var id: Self {
-        self
-    }
-    
-    static let `default`: Theme = .system
-}
-
-enum Service: String, CaseIterable, Identifiable, DefaultPresenting {
-    case apple = "Apple"
-    case apiNinjas = "API-Ninjas"
-    case openWeatherMap = "OpenWeatherMap"
-    
-    var id: Self {
-        self
-    }
-    
-    static let `default`: Service = .apple
-}
-
-enum UnitOfMeasure: String, CaseIterable, Identifiable, DefaultPresenting {
-    case metric = "Metric"
-    case imperial = "Imperial"
-    case hybrid = "Hybrid"
-    
-    var id: Self {
-        self
-    }
-    
-    static let `default`: UnitOfMeasure = .metric
-}
-
 struct SettingsView: View {
     @AppStorage(Settings.appTheme) private var theme = Theme.default
     @AppStorage(Settings.geocoderService) private var geocoderService = Service.default
@@ -72,6 +15,11 @@ struct SettingsView: View {
     @AppStorage(Settings.apiNinjasKey) private var apiNinjasKey = ""
     @AppStorage(Settings.openWeatherMapKey) private var openWeatherMapKey = ""
     private var dismiss: () -> ()
+    private let unitsFooter = """
+    Metric: °C • m/s • mm • m • deg • hPa
+    Imperial: °F • mph • in • ft • deg • psi
+    Scientific: K • m/s • mm • m • deg • hPa
+    """
     
     init(dismiss: @escaping () -> Void) {
         self.dismiss = dismiss
@@ -80,19 +28,23 @@ struct SettingsView: View {
     var body: some View {
         NavigationStack {
             Form {
-                Section("Appearance") {
+                Section {
                     SettingsPicker(title: "Theme", selection: $theme.animation())
+                } header: {
+                    Text("Appearance")
+                } footer: {
+                    Text("Choosing \"Default\" will follow the current system theme.")
                 }
                 
                 Section {
                     SettingsPicker(title: "Units", selection: $unitsOfMeasure)
+                        .disabled(weatherProvider == .apiNinjas)
                 } header: {
                     Text("General")
                 } footer: {
-                    Text("Changing units may require a refresh of existing weather info.")
+                    Text(unitsFooter)
                 }
-                .disabled(weatherProvider == .apiNinjas)
-
+                
                 Section {
                     SettingsPicker(title: "Geocoder", selection: $geocoderService)
                     
@@ -103,10 +55,14 @@ struct SettingsView: View {
                     Text("Weather provided by API-Ninjas is always returned in Metric units.")
                 }
                 
-                Section("API Keys") {
+                Section {
                     LabeledTextField(title: "API-Ninjas", description: "API-Ninjas API key entry", prompt: "Enter API Key", text: $apiNinjasKey)
                     
                     LabeledTextField(title: "OpenWeatherMap", description: "OpenWeatherMap API key entry", prompt: "Enter API Key", text: $openWeatherMapKey)
+                } header: {
+                    Text("API Keys")
+                } footer: {
+                    Text("API Keys are required to use third-party services.")
                 }
                 
                 Section("Providers") {

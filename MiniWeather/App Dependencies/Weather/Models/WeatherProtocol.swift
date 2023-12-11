@@ -22,7 +22,7 @@ protocol WeatherProtocol: Sendable {
 
 extension WeatherProtocol {
     func tempString() -> String {
-        String(temperature)
+        temperature.formatted(.number) + preferredTemperatureSymbol()
     }
     
     func minTempString() -> String {
@@ -34,6 +34,73 @@ extension WeatherProtocol {
     }
     
     func getMinMaxTempString() -> String {
-        "H \(maximumTemperature)° • L \(minimumTemperature)°"
+        "H \(maximumTemperature)\(preferredTemperatureSymbol()) • L \(minimumTemperature)\(preferredTemperatureSymbol())"
+    }
+}
+
+// MARK: - Preferred Units
+extension WeatherProtocol {
+    func currentUnitsPreference() -> UnitOfMeasure {
+        Settings.currentValue(for: Settings.unitsOfMeasure)
+    }
+    
+    func preferredTemperatureUnit() -> UnitTemperature {
+        switch currentUnitsPreference() {
+            case .metric:
+                return .celsius
+            case .imperial:
+                return .fahrenheit
+            case .scientific:
+                return .kelvin
+        }
+    }
+    
+    func preferredTemperatureSymbol() -> String {
+        switch currentUnitsPreference() {
+            case .metric, .imperial:
+                return "°"
+            case .scientific:
+                return ""
+        }
+    }
+    
+    func preferredSpeedUnit() -> UnitSpeed {
+        switch currentUnitsPreference() {
+            case .metric, .scientific:
+                return .metersPerSecond
+            case .imperial:
+                return .milesPerHour
+        }
+    }
+    
+    func preferredAngleUnit() -> UnitAngle {
+        .degrees
+    }
+    
+    func preferredStandardDistanceUnit() -> UnitLength {
+        switch currentUnitsPreference() {
+            case .metric, .scientific:
+                return .meters
+            case .imperial:
+                return .feet
+        }
+    }
+    
+    func preferredMinorDistanceUnit() -> UnitLength {
+        switch currentUnitsPreference() {
+            case .metric, .scientific:
+                return .millimeters
+            case .imperial:
+                return .inches
+        }
+    }
+    
+    func preferredPressureUnit() -> UnitPressure {
+        switch currentUnitsPreference() {
+            case .metric, .scientific:
+                return .hectopascals
+            case .imperial:
+                return .poundsForcePerSquareInch
+        }
     }
 }

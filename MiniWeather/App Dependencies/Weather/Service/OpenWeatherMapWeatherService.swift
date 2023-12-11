@@ -50,7 +50,7 @@ struct OpenWeatherMapWeatherService: WeatherService {
         }
         
         switch unit {
-            case .hybrid: 
+            case .scientific: 
                 return "standard"
             case .metric, .imperial:
                 return unit.rawValue.lowercased()

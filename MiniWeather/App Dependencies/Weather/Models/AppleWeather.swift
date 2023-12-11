@@ -11,19 +11,19 @@ import WeatherKit
 #warning("Maybe not a good idea?")
 extension Weather: WeatherProtocol, @unchecked Sendable {
     var temperature: Int {
-        Int(currentWeather.temperature.converted(to: .celsius).value)
+        Int(currentWeather.temperature.converted(to: preferredTemperatureUnit()).value)
     }
     
     var feelsLike: Int {
-        Int(currentWeather.apparentTemperature.converted(to: .celsius).value)
+        Int(currentWeather.apparentTemperature.converted(to: preferredTemperatureUnit()).value)
     }
     
     var minimumTemperature: Int {
-        Int(dailyForecast.first?.lowTemperature.converted(to: .celsius).value ?? 0)
+        Int(dailyForecast.first?.lowTemperature.converted(to: preferredTemperatureUnit()).value ?? 0)
     }
     
     var maximumTemperature: Int {
-        Int(dailyForecast.first?.highTemperature.converted(to: .celsius).value ?? 0)
+        Int(dailyForecast.first?.highTemperature.converted(to: preferredTemperatureUnit()).value ?? 0)
     }
     
     var humidity: Double {
@@ -31,11 +31,11 @@ extension Weather: WeatherProtocol, @unchecked Sendable {
     }
     
     var windSpeed: Double {
-        currentWeather.wind.speed.converted(to: .kilometersPerHour).value
+        currentWeather.wind.speed.converted(to: preferredSpeedUnit()).value
     }
     
     var windDegrees: Double {
-        currentWeather.wind.direction.converted(to: .degrees).value
+        currentWeather.wind.direction.converted(to: preferredAngleUnit()).value
     }
     
     var sunrise: Int {

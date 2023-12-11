@@ -127,7 +127,7 @@ final class DependencyFactory {
     }
     
     private func makePreferredGeocoderService() -> GeocoderService {
-        let preferredService: Service = Settings.currentValue(for: Settings.geocoderService) ?? .default
+        let preferredService: Service = Settings.currentValue(for: Settings.geocoderService)
         
         switch preferredService {
             case .apple:
@@ -154,7 +154,7 @@ final class DependencyFactory {
     }
     
     private func makePreferredTimeZoneService() -> TimeZoneService {
-        let preferredService: Service = Settings.currentValue(for: Settings.geocoderService) ?? .default
+        let preferredService: Service = Settings.currentValue(for: Settings.geocoderService)
         
         switch preferredService {
             case .apple, .openWeatherMap:
@@ -188,7 +188,7 @@ final class DependencyFactory {
     }
     
     private func makePreferredWeatherService() -> WeatherService {
-        let preferredService: Service = Settings.currentValue(for: Settings.weatherProvider) ?? .default
+        let preferredService: Service = Settings.currentValue(for: Settings.weatherProvider)
         
         switch preferredService {
             case .apple:
