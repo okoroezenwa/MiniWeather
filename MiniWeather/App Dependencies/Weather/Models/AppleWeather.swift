@@ -10,51 +10,49 @@ import WeatherKit
 
 #warning("Maybe not a good idea?")
 extension Weather: WeatherProtocol, @unchecked Sendable {
-    var temperature: Int {
-        Int(currentWeather.temperature.converted(to: preferredTemperatureUnit()).value)
+    var temperature: Measurement<UnitTemperature> {
+        currentWeather.temperature
     }
     
-    var feelsLike: Int {
-        Int(currentWeather.apparentTemperature.converted(to: preferredTemperatureUnit()).value)
+    var apparentTemperature: Measurement<UnitTemperature> {
+        currentWeather.apparentTemperature
     }
     
-    var minimumTemperature: Int {
-        Int(dailyForecast.first?.lowTemperature.converted(to: preferredTemperatureUnit()).value ?? 0)
+    var minimumTemperature: Measurement<UnitTemperature> {
+        guard let dailyForecast = dailyForecast.first else {
+            fatalError("Daily weather missing for Apple Weather")
+        }
+        return dailyForecast.lowTemperature
     }
     
-    var maximumTemperature: Int {
-        Int(dailyForecast.first?.highTemperature.converted(to: preferredTemperatureUnit()).value ?? 0)
+    var maximumTemperature: Measurement<UnitTemperature> {
+        guard let dailyForecast = dailyForecast.first else {
+            fatalError("Daily weather missing for Apple Weather")
+        }
+        return dailyForecast.highTemperature
     }
     
     var humidity: Double {
         currentWeather.humidity
     }
     
-    var windSpeed: Double {
-        currentWeather.wind.speed.converted(to: preferredSpeedUnit()).value
+    var windSpeed: Measurement<UnitSpeed> {
+        currentWeather.wind.speed
     }
     
-    var windDegrees: Double {
-        currentWeather.wind.direction.converted(to: preferredAngleUnit()).value
+    var windDirection: Measurement<UnitAngle> {
+        currentWeather.wind.direction
     }
     
-    var sunrise: Int {
-        guard let sunrise = dailyForecast.first?.sun.sunrise else {
-            return 0
-        }
-        
-        return Int(sunrise.timeIntervalSince1970)
+    var sunrise: Date? {
+        dailyForecast.first?.sun.sunrise
     }
     
-    var sunset: Int {
-        guard let sunrise = dailyForecast.first?.sun.sunset else {
-            return 0
-        }
-        
-        return Int(sunrise.timeIntervalSince1970)
+    var sunset: Date? {
+        dailyForecast.first?.sun.sunset
     }
     
-    var cloudPercentage: Int {
-        Int(currentWeather.cloudCover * 100)
+    var cloudPercentage: Double {
+        currentWeather.cloudCover * 100
     }
 }

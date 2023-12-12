@@ -19,15 +19,15 @@ struct UniversalConstants {
     )
     
     static let weather = APINinjasWeather(
-        temperature: 20,
-        feelsLike: 19,
-        minimumTemperature: 16,
-        maximumTemperature: 23,
+        temperature: .init(value: 20, unit: .celsius),
+        apparentTemperature: .init(value: 19, unit: .celsius),
+        minimumTemperature: .init(value: 16, unit: .celsius),
+        maximumTemperature: .init(value: 23, unit: .celsius),
         humidity: 87,
-        windSpeed: 10,
-        windDegrees: 210,
-        sunrise: 1615616341,
-        sunset: 1615658463,
+        windSpeed: .init(value: 10, unit: .kilometersPerHour),
+        windDirection: .init(value: 210, unit: .degrees),
+        sunrise: .init(timeIntervalSince1970: 1615616341),
+        sunset: .init(timeIntervalSince1970: 1615658463),
         cloudPercentage: 75
     )
 }

@@ -177,7 +177,7 @@ final class DependencyFactory {
             parser: makeStandardDataParser(),
             timeZoneDatastore: makeMemoryDatastore(),
             networkService: makeStandardNetworkService(),
-            stringPreferenceProvider: makeMainStringPreferenceProvider()
+            apiKeysProvider: makeMainStringPreferenceProvider()
         )
     }
     

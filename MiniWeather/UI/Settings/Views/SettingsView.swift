@@ -33,7 +33,7 @@ struct SettingsView: View {
                 } header: {
                     Text("Appearance")
                 } footer: {
-                    Text("Choosing \"Default\" will follow the current system theme.")
+                    Text("\'Default\' will follow the current system theme.")
                 }
                 
                 Section {

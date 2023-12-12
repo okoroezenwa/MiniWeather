@@ -77,7 +77,7 @@ struct MainView: View {
             .navigationTitle("Locations")
             .navigationDestination(for: Location.self) { [weak viewModel] location in
                 if let viewModel {
-                    LocationDetailView(
+                    WeatherView(
                         viewModel: .init(
                             location: location
                         ),
@@ -87,7 +87,7 @@ struct MainView: View {
                     #if os(iOS)
                     .navigationBarTitleDisplayMode(.large)
                     #endif
-                    .navigationTitle("Details")
+                    .navigationTitle("Weather")
                 }
             }
             .toolbarBackground(.thinMaterial, for: .automatic)

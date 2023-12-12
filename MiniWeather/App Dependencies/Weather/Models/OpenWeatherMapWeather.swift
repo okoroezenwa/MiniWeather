@@ -33,25 +33,26 @@ struct OpenWeatherMapWeather: Codable {
 
 // MARK: - WeatherProtocol Conformance 😮‍💨
 extension OpenWeatherMapWeather: WeatherProtocol {
-    var temperature: Int {
+    
+    var temperature: Measurement<UnitTemperature> {
         switch currentWeather.temperature {
             case .first(let temperature):
-                return Int(temperature)
+                return temperature
             case .second(_):
                 fatalError("We should not be getting the non-current weather case here")
         }
     }
     
-    var feelsLike: Int {
+    var apparentTemperature: Measurement<UnitTemperature> {
         switch currentWeather.feelsLike {
             case .first(let temperature):
-                return Int(temperature)
+                return temperature
             case .second(_):
                 fatalError("We should not be getting the non-current weather case here")
         }
     }
     
-    var minimumTemperature: Int {
+    var minimumTemperature: Measurement<UnitTemperature> {
         guard let temperature = dailyForecast.first?.temperature else {
             fatalError("Daily weather missing for OpenWeatherMap")
         }
@@ -62,11 +63,11 @@ extension OpenWeatherMapWeather: WeatherProtocol {
                 guard let minimum = temperature.minimum else {
                     fatalError("Minimum temperature missing for daily weather")
                 }
-                return Int(minimum)
+                return minimum
         }
     }
     
-    var maximumTemperature: Int {
+    var maximumTemperature: Measurement<UnitTemperature> {
         guard let temperature = dailyForecast.first?.temperature else {
             fatalError("Daily weather missing for OpenWeatherMap")
         }
@@ -77,7 +78,7 @@ extension OpenWeatherMapWeather: WeatherProtocol {
                 guard let maximum = temperature.maximum else {
                     fatalError("Maximum temperature missing for daily weather")
                 }
-                return Int(maximum)
+                return maximum
         }
     }
     
@@ -88,21 +89,21 @@ extension OpenWeatherMapWeather: WeatherProtocol {
         return humidity
     }
     
-    var windSpeed: Double {
+    var windSpeed: Measurement<UnitSpeed> {
         guard let windSpeed = currentWeather.windSpeed else {
             fatalError("Wind speed missing for OpenWeatherMap")
         }
         return windSpeed
     }
     
-    var windDegrees: Double {
+    var windDirection: Measurement<UnitAngle> {
         guard let windDirection = currentWeather.windDirection else {
             fatalError("Wind direction missing for OpenWeatherMap")
         }
         return windDirection
     }
     
-    var sunrise: Int {
+    var sunrise: Date? {
         guard let sunrise = currentWeather.sunrise else {
             fatalError("Sunrise info missing for current weather")
         }
@@ -110,7 +111,7 @@ extension OpenWeatherMapWeather: WeatherProtocol {
         return sunrise
     }
     
-    var sunset: Int {
+    var sunset: Date? {
         guard let sunset = currentWeather.sunset else {
             fatalError("Sunset info missing for current weather")
         }
@@ -118,7 +119,7 @@ extension OpenWeatherMapWeather: WeatherProtocol {
         return sunset
     }
     
-    var cloudPercentage: Int {
+    var cloudPercentage: Double {
         currentWeather.clouds
     }
 }
