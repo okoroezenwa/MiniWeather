@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import WeatherKit
 
 struct WeatherForecast: Codable {
     enum CodingKeys: String, CodingKey {

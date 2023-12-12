@@ -124,6 +124,64 @@ extension OpenWeatherMapWeather: WeatherProtocol {
     }
     
     var symbol: String {
-        "cloud"
+        guard let title = currentWeather.weather.first?.title, let description = currentWeather.weather.first?.description else {
+            return ""
+        }
+        switch (title, description) {
+            case ("Thunderstorm", _): 
+                return "cloud.bolt.rain"
+            case ("Drizzle", _):
+                return "cloud.drizzle"
+            case ("Rain", "freezing rain"),
+                ("Snow", _):
+                return "snowflake"
+            case ("Rain", let description):
+                switch description {
+                    case "light rain",
+                        "moderate rain":
+                        return "cloud.sun.rain"
+                    case "light intensity shower rain",
+                        "shower rain",
+                        "ragged shower rain":
+                        return "cloud.rain"
+                    case "heavy intensity shower rain",
+                        "heavy intensity rain",
+                        "very heavy rain",
+                        "extreme rain":
+                        return "cloud.heavyrain"
+                    default:
+                        return "cloud.rain"
+                }
+            case ("Atmosphere", let description):
+                switch description {
+                    case "smoke":
+                        return "smoke"
+                    case "haze":
+                        return "sun.haze"
+                    case "sand/dust whirls",
+                        "dust":
+                        return "sun.dust"
+                    case "tornado":
+                        return "tornado"
+                    default:
+                        return "cloud.fog"
+                }
+            case ("Clear", _):
+                return "sun.max"
+            case ("Clouds", let description):
+                switch description {
+                    case "few clouds":
+                        return "cloud.sun"
+                    case "scattered clouds":
+                        return "cloud"
+                    case "broken clouds",
+                        "overcast clouds":
+                        return "smoke"
+                    default:
+                        return "cloud"
+                }
+            default:
+                return ""
+        }
     }
 }

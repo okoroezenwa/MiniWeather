@@ -61,9 +61,14 @@ struct LocationCell: View {
             
             Spacer()
             
-            Image(systemName: (weather?.symbol ?? "cloud") + ".fill")
-                .font(.system(size: 16))
-                .padding(.trailing, 4)
+            if let weather, !weather.symbol.isEmpty {
+                Image(systemName: weather.symbol)
+                    .font(.system(size: 16))
+                    .padding(.trailing, 4)
+                    .symbolRenderingMode(.multicolor)
+            } else {
+                Text("--")
+            }
         }
         .overlay {
             Text(weather?.getMinMaxTempString() ?? "-- • --")

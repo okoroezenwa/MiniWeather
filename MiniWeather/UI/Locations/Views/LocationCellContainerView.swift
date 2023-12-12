@@ -21,7 +21,7 @@ struct LocationCellContainerView<Content: View>: View {
     }
     
     var body: some View {
-        VStack(spacing: 12) {
+        VStack(spacing: 10) {
             content
         }
         .padding(.top, topPading)
