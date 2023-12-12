@@ -79,4 +79,8 @@ struct APINinjasWeather: Decodable {
     }
 }
 
-extension APINinjasWeather: WeatherProtocol { }
+extension APINinjasWeather: WeatherProtocol {
+    var symbol: String {
+        "cloud"
+    }
+}

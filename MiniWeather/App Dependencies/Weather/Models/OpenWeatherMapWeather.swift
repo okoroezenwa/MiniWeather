@@ -122,4 +122,8 @@ extension OpenWeatherMapWeather: WeatherProtocol {
     var cloudPercentage: Double {
         currentWeather.clouds
     }
+    
+    var symbol: String {
+        "cloud"
+    }
 }
