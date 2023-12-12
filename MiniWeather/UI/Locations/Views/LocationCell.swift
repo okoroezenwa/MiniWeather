@@ -62,9 +62,7 @@ struct LocationCell: View {
             Spacer()
             
             Image(systemName: (weather?.symbol ?? "cloud") + ".fill")
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(width: 17)
+                .font(.system(size: 16))
                 .padding(.trailing, 4)
         }
         .overlay {
