@@ -55,4 +55,8 @@ extension Weather: WeatherProtocol, @unchecked Sendable {
     var cloudPercentage: Double {
         currentWeather.cloudCover * 100
     }
+    
+    var symbol: String {
+        currentWeather.symbolName
+    }
 }

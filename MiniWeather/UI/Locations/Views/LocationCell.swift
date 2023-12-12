@@ -61,13 +61,15 @@ struct LocationCell: View {
             
             Spacer()
             
+            Image(systemName: (weather?.symbol ?? "cloud") + ".fill")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 17)
+                .padding(.trailing, 4)
+        }
+        .overlay {
             Text(weather?.getMinMaxTempString() ?? "-- • --")
                 .font(.system(size: 12))
-                .foregroundStyle(!shouldDisplayAsLoading ? .secondary : .quaternary)
-            
-            Spacer()
-            
-            Label("1d", systemImage: "arrow.triangle.2.circlepath")
                 .foregroundStyle(!shouldDisplayAsLoading ? .secondary : .quaternary)
         }
         .font(.system(size: 12))

@@ -18,6 +18,7 @@ protocol WeatherProtocol: Sendable {
     var sunrise: Date? { get }
     var sunset: Date? { get }
     var cloudPercentage: Double { get }
+    var symbol: String { get }
 }
 
 extension WeatherProtocol {
