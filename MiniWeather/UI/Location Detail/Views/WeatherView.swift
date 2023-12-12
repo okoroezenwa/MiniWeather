@@ -1,5 +1,5 @@
 //
-//  LocationDetailView.swift
+//  WeatherView.swift
 //  MiniWeather
 //
 //  Created by Ezenwa Okoro on 07/11/2023.
@@ -11,7 +11,7 @@ struct LocationDetailViewViewModel {
     var location: Location
 }
 
-struct LocationDetailView: View {
+struct WeatherView: View {
     let viewModel: LocationDetailViewViewModel
     @Binding var weather: WeatherProtocol?
     @Environment(\.colorScheme) var colorScheme
@@ -25,14 +25,16 @@ struct LocationDetailView: View {
                         .ignoresSafeArea(.all)
                 }
             
-            Text((weather?.tempString() ?? "--") + "°")
+            Text(weather?.tempString(withUnit: true) ?? "--")
                 .font(.system(size: 200, weight: .light, design: .rounded))
+                .lineLimit(1)
+                .minimumScaleFactor(0.5)
         }
     }
 }
 
 #Preview {
-    LocationDetailView(
+    WeatherView(
         viewModel:
             .init(
                 location: UniversalConstants.location

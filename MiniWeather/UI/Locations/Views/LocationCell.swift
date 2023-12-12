@@ -8,11 +8,12 @@
 import SwiftUI
 
 struct LocationCell: View {
+    @Environment(\.timeFormatter) private var timeFormatter
+    @AppStorage(Settings.unitsOfMeasure) private var unitOfMeasure = UnitOfMeasure.default
     private let location: Location?
     private let weather: WeatherProtocol?
     private let isCurrentLocation: Bool
     private let shouldDisplayAsLoading: Bool
-    @Environment(\.timeFormatter) var timeFormatter
     
     init(location: Location?, weather: WeatherProtocol?, isCurrentLocation: Bool, shouldDisplayAsLoading: Bool) {
         self.location = location
@@ -45,7 +46,7 @@ struct LocationCell: View {
             
             Spacer(minLength: 8)
             
-            Text((weather?.temperature.formatted(.number) ?? "--") + "°")
+            Text(weather?.tempString() ?? "--")
                 .foregroundStyle(!shouldDisplayAsLoading ? .primary : .quaternary)
                 .font(.system(size: 45, weight: .ultraLight))
         }
@@ -70,6 +71,7 @@ struct LocationCell: View {
                 .foregroundStyle(!shouldDisplayAsLoading ? .secondary : .quaternary)
         }
         .font(.system(size: 12))
+        .id(unitOfMeasure)
     }
     
     private func locationImage() -> Image {
