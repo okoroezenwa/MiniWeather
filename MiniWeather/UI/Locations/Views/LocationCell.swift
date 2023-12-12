@@ -62,7 +62,7 @@ struct LocationCell: View {
             Spacer()
             
             if let weather, !weather.symbol.isEmpty {
-                Image(systemName: weather.symbol)
+                Image(systemName: weather.symbol + ".fill")
                     .font(.system(size: 16))
                     .padding(.trailing, 4)
                     .symbolRenderingMode(.multicolor)
