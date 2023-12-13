@@ -14,6 +14,8 @@ struct SettingsView: View {
     @AppStorage(Settings.unitsOfMeasure) private var unitsOfMeasure = UnitOfMeasure.default
     @AppStorage(Settings.apiNinjasKey) private var apiNinjasKey = ""
     @AppStorage(Settings.openWeatherMapKey) private var openWeatherMapKey = ""
+    @AppStorage(Settings.showLocationsUnits) private var showLocationsUnits = false
+    @AppStorage(Settings.showWeatherViewMap) private var showWeatherViewMap = true
     private var dismiss: () -> ()
     private let unitsFooter = """
     Metric: °C • m/s • mm • m • deg • hPa
@@ -43,6 +45,14 @@ struct SettingsView: View {
                     Text("General")
                 } footer: {
                     Text(unitsFooter)
+                }
+                
+                Section("Locations View") {
+                    Toggle("Show Units", isOn: $showLocationsUnits)
+                }
+                
+                Section("Weather View") {
+                    Toggle("Show Map View", isOn: $showWeatherViewMap)
                 }
                 
                 Section {
