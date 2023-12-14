@@ -1,5 +1,5 @@
 //
-//  LocationCellContainerView.swift
+//  MaterialView.swift
 //  MiniWeather
 //
 //  Created by Ezenwa Okoro on 07/12/2023.
@@ -7,24 +7,29 @@
 
 import SwiftUI
 
-struct LocationCellContainerView<Content: View>: View {
+struct MaterialView<Content: View>: View {
     @Environment(\.colorScheme) var colorScheme
-    private let topPading: CGFloat = 16
+    private let topPadding: CGFloat
     private let bottomPadding: CGFloat
-    private let leadingPadding: CGFloat = 16
-    private let trailingPadding: CGFloat = 16
+    private let leadingPadding: CGFloat
+    private let trailingPadding: CGFloat
+    private let spacing: CGFloat
     private let content: Content
     
-    init(bottomPadding: CGFloat, @ViewBuilder content: () -> Content) {
+    init(spacing: CGFloat = 10, topPadding: CGFloat = 16, bottomPadding: CGFloat = 16, leadingPadding: CGFloat = 16, trailingPadding: CGFloat = 16,  @ViewBuilder content: () -> Content) {
+        self.topPadding = topPadding
         self.bottomPadding = bottomPadding
+        self.leadingPadding = leadingPadding
+        self.trailingPadding = trailingPadding
+        self.spacing = spacing
         self.content = content()
     }
     
     var body: some View {
-        VStack(spacing: 10) {
+        VStack(spacing: spacing) {
             content
         }
-        .padding(.top, topPading)
+        .padding(.top, topPadding)
         .padding(.leading, leadingPadding)
         .padding(.bottom, bottomPadding)
         .padding(.trailing, trailingPadding)
@@ -35,7 +40,7 @@ struct LocationCellContainerView<Content: View>: View {
 }
 
 #Preview {
-    LocationCellContainerView(bottomPadding: 16) {
+    MaterialView(bottomPadding: 16) {
         LocationCell(
             location: UniversalConstants.location,
             weather: UniversalConstants.weather,

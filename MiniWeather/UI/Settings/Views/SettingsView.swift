@@ -16,6 +16,7 @@ struct SettingsView: View {
     @AppStorage(Settings.openWeatherMapKey) private var openWeatherMapKey = ""
     @AppStorage(Settings.showLocationsUnits) private var showLocationsUnits = false
     @AppStorage(Settings.showWeatherViewMap) private var showWeatherViewMap = true
+    @AppStorage(Settings.showWeatherViewUnits) private var showWeatherViewUnits = false
     private var dismiss: () -> ()
     private let unitsFooter = """
     Metric: °C • m/s • mm • m • deg • hPa
@@ -49,10 +50,15 @@ struct SettingsView: View {
                 
                 Section("Locations View") {
                     Toggle("Show Units", isOn: $showLocationsUnits)
+                        .tint(nil)
                 }
                 
                 Section("Weather View") {
+                    Toggle("Show Units", isOn: $showWeatherViewUnits)
+                        .tint(nil)
+                    
                     Toggle("Show Map View", isOn: $showWeatherViewMap)
+                        .tint(nil)
                 }
                 
                 Section {
@@ -84,6 +90,7 @@ struct SettingsView: View {
                 }
             }
             .navigationTitle("Settings")
+            #if os(iOS)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
@@ -92,6 +99,7 @@ struct SettingsView: View {
                     }
                 }
             }
+            #endif
         }
     }
 }

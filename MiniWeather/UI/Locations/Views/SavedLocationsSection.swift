@@ -23,7 +23,7 @@ struct SavedLocationsSection: View {
     var body: some View {
         ForEach(viewModel.locations) { location in
             NavigationLink(value: location) {
-                LocationCellContainerView(bottomPadding: 12) {
+                MaterialView(bottomPadding: 12) {
                     LocationCell(
                         location: location,
                         weather: viewModel.weather(location).wrappedValue,
