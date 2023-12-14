@@ -184,4 +184,12 @@ extension OpenWeatherMapWeather: WeatherProtocol {
                 return ""
         }
     }
+    
+    var condition: String {
+        currentWeather.weather.first?.title.capitalized ?? ""
+    }
+    
+    var summary: String {
+        currentWeather.weather.first?.description.capitalized ?? ""
+    }
 }

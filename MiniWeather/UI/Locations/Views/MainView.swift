@@ -79,7 +79,8 @@ struct MainView: View {
                 if let viewModel {
                     WeatherView(
                         viewModel: .init(
-                            location: location
+                            location: location, 
+                            isCurrentLocation: location.id == viewModel.currentLocation?.id
                         ),
                         weather: viewModel.weather(for: location)
                     )

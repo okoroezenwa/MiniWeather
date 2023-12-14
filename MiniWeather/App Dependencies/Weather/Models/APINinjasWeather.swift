@@ -83,4 +83,12 @@ extension APINinjasWeather: WeatherProtocol {
     var symbol: String {
         "cloud"
     }
+    
+    var condition: String {
+        "Unknown"
+    }
+    
+    var summary: String {
+        "API-Ninjas does not return a summary."
+    }
 }

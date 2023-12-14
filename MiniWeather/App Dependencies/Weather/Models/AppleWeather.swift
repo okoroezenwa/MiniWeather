@@ -59,4 +59,12 @@ extension Weather: WeatherProtocol, @unchecked Sendable {
     var symbol: String {
         currentWeather.symbolName
     }
+    
+    var condition: String {
+        currentWeather.condition.description.capitalized
+    }
+    
+    var summary: String {
+        currentWeather.condition.description
+    }
 }
