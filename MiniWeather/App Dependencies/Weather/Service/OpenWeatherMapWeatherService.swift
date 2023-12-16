@@ -35,7 +35,7 @@ struct OpenWeatherMapWeatherService: WeatherService {
             let data = try await networkService.getData(from: weatherRequest)
             let weather: OpenWeatherMapWeather = try parser.decode(data)
             try timeZoneDatastore.store(
-                TimeZoneIdentifier(name: weather.timezone),
+                TimeZoneIdentifier(name: weather.timezone, offset: weather.timezoneOffset),
                 withKey: .timeZone(name: location.fullName)
             )
             return weather

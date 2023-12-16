@@ -24,7 +24,7 @@ struct Location: Codable, Identifiable, Hashable {
     let state: String?
     let country: String
     var nickname: String
-    var timeZone: String
+    var timeZone: TimeZone?
     let longitude: Double
     let latitude: Double
     
@@ -34,7 +34,7 @@ struct Location: Codable, Identifiable, Hashable {
          state: String?,
          country: String,
          nickname: String,
-         timeZone: String,
+         timeZone: TimeZone?,
          latitide: Double,
          longitude: Double
     ) {
@@ -49,7 +49,7 @@ struct Location: Codable, Identifiable, Hashable {
         self.latitude = latitide
     }
     
-    init<LocationObject: LocationProtocol>(locationObject: LocationObject, timeZoneIdentifier: String) {
+    init<LocationObject: LocationProtocol>(locationObject: LocationObject, timeZone: TimeZone?) {
         let city = locationObject.city
         self.city = city
         self.nickname = city
@@ -57,7 +57,7 @@ struct Location: Codable, Identifiable, Hashable {
         self.country = locationObject.countryName
         self.latitude = locationObject.latitude
         self.longitude = locationObject.longitude
-        self.timeZone = timeZoneIdentifier
+        self.timeZone = timeZone
         self.id = UUID()
         self.timestamp = .now
     }
@@ -83,12 +83,12 @@ extension Location: LocationProtocol {
 
 // Convenience functions for Location
 extension Location {
-    var actualTimeZone: TimeZone {
-        return TimeZone(identifier: timeZone) ?? .autoupdatingCurrent
-    }
+//    var actualTimeZone: TimeZone {
+//        return TimeZone(identifier: timeZone) ?? .autoupdatingCurrent
+//    }
     
     func currentDateString(with formatter: DateFormatter) -> String {
-        formatter.timeZone = actualTimeZone
+        formatter.timeZone = timeZone//actualTimeZone
         return formatter.string(from: Date.now)
     }
     

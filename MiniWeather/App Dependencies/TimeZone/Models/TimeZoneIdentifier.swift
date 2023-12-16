@@ -10,7 +10,9 @@ import Foundation
 struct TimeZoneIdentifier: Codable {
     enum CodingKeys: String, CodingKey {
         case name = "timezone"
+        case offset
     }
     
     let name: String
+    let offset: Int?
 }

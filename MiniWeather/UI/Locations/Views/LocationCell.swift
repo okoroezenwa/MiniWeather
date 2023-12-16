@@ -63,10 +63,10 @@ struct LocationCell: View {
             Spacer()
             
             if let weather, !weather.symbol.isEmpty {
-                Image(systemName: weather.symbol + ".fill")
+                Image(unfilledSymbol: weather.symbol)
                     .font(.system(size: 16))
                     .padding(.trailing, 4)
-                    .symbolRenderingMode(.multicolor)
+                    .symbolRenderingMode(.hierarchical)
             } else {
                 Text("--")
             }

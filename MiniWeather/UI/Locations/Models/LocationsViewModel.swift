@@ -137,9 +137,9 @@ import OSLog
                     
                     let weather = try await weatherRepository.getWeather(for: location)
                     
-                    if location.timeZone.isEmpty {
-                        let timeZone = try await timeZoneRepository.getTimeZone(for: location)
-                        location.timeZone = timeZone.name
+                    if location.timeZone == nil {
+                        let timeZoneIdentifier = try await timeZoneRepository.getTimeZone(for: location)
+                        location.timeZone = .from(identifier: timeZoneIdentifier)
                     }
                     
                     try self.currentLocationRepositoryFactory().saveCurrentLocation(location)
@@ -179,7 +179,7 @@ import OSLog
         Task(priority: .background) {
             let weather = try await weatherRepository.getWeather(for: location)
             let timeZone: TimeZoneIdentifier? = try await {
-                if !location.timeZone.isEmpty {
+                if location.timeZone != nil {
                     return nil
                 }
                 return try await timeZoneRepository.getTimeZone(for: location)
@@ -304,8 +304,8 @@ import OSLog
             do {
                 try await savedLocationsRepository.add(variableLocation)
                 let weather = try await weatherRepository.getWeather(for: variableLocation)
-                let timeZone: TimeZoneIdentifier? = try await {
-                    if !variableLocation.timeZone.isEmpty {
+                let timeZoneIdentifier: TimeZoneIdentifier? = try await {
+                    if variableLocation.timeZone != nil {
                         return nil
                     }
                     return try await timeZoneRepository.getTimeZone(for: variableLocation)
@@ -313,8 +313,8 @@ import OSLog
                 
                 await MainActor.run {
                     // TODO: - replace once actor implementation is done
-                    if let timeZone {
-                        variableLocation.timeZone = timeZone.name
+                    if let timeZoneIdentifier {
+                        variableLocation.timeZone = .from(identifier: timeZoneIdentifier)
                     }
                     
                     if let index = locations.firstIndex(of: location) {

@@ -88,7 +88,7 @@ struct MainView: View {
                     #if os(iOS)
                     .navigationBarTitleDisplayMode(.large)
                     #endif
-                    .navigationTitle("Weather")
+                    .navigationTitle(location.nickname)
                 }
             }
             .toolbarBackground(.thinMaterial, for: .automatic)
