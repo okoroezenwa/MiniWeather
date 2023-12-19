@@ -9,19 +9,16 @@ import Foundation
 
 extension Date {
     /**
-     Converts from the origin time zone to the detination time zone.
+     Converts the current date to the date in the given time zone.
      
-     The destination time zone will probably be the current time zone.
-     
-     - parameters:
-        - timeZone: The time zone for the date object.
-        - destinationTimeZone: The time zone to be converted to.
+     - parameter timeZone: The time zone for the date to be converted to.
+     - Returns: The current date in the given time zone.
      */
-    func convert(from timeZone: TimeZone, to destinationTimeZone: TimeZone) -> Date {
+    func `in`(timeZone: TimeZone?) -> Date {
         let calendar = Calendar.current
-        var components = calendar.dateComponents(in: timeZone, from: self)
-        components.timeZone = destinationTimeZone
-        return calendar.date(from: components)!
+        var components = calendar.dateComponents(in: timeZone ?? .autoupdatingCurrent, from: self)
+        components.timeZone = .autoupdatingCurrent
+        return calendar.date(from: components) ?? .now
     }
 }
 

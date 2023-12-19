@@ -91,7 +91,6 @@ struct SettingsView: View {
             }
             .navigationTitle("Settings")
             #if os(iOS)
-            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("Done") {
