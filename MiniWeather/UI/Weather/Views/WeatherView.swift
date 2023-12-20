@@ -59,7 +59,7 @@ struct WeatherView: View {
                         MinuteForecastCard(forecast: minuteForecast)
                     }
                     
-                    DailyForecastCard(timeZone: viewModel.location.timeZone, temperatureUnit: weather.preferredTemperatureUnit(), collection: weather.dailyForecast)
+                    DailyForecastCard(timeZone: .from(identifier: viewModel.location.timeZoneIdentifier ?? .empty), temperatureUnit: weather.preferredTemperatureUnit(), collection: weather.dailyForecast)
                     
                     PrecipitationCard(weather: weather)
                     
@@ -86,30 +86,30 @@ struct WeatherView: View {
             return []
         }
         
-        var items = weather.hourlyForecast[firstIndex...(firstIndex + 24)].map{ HourlyForecastCard.Item(hourWeather: $0, unit: weather.preferredTemperatureUnit(), temperatureSymbol: weather.preferredTemperatureSymbol(), timeZone: viewModel.location.timeZone, isForecast: true) }
+        var items = weather.hourlyForecast[firstIndex...(firstIndex + 24)].map{ HourlyForecastCard.Item(hourWeather: $0, unit: weather.preferredTemperatureUnit(), temperatureSymbol: weather.preferredTemperatureSymbol(), timeZone: .from(identifier: viewModel.location.timeZoneIdentifier ?? .empty), isForecast: true) }
         
         if let date = weather.sunrise, let index = items.firstIndex(where: { Calendar.autoupdatingCurrent.isDate(date, equalTo: $0.date, toGranularity: .hour) }) {
             let indexAfter = items.index(after: index)
-            let item = HourlyForecastCard.Item(unit: weather.preferredTemperatureUnit(), temperatureSymbol: weather.preferredTemperatureSymbol(), imageName: "sunrise", title: date.in(timeZone: viewModel.location.timeZone).formatted(date: .omitted, time: .shortened), bottomText: "Sunrise", isForecast: false, date: date)
+            let item = HourlyForecastCard.Item(unit: weather.preferredTemperatureUnit(), temperatureSymbol: weather.preferredTemperatureSymbol(), imageName: "sunrise", title: date.in(timeZone: .from(identifier: viewModel.location.timeZoneIdentifier ?? .empty)).formatted(date: .omitted, time: .shortened), bottomText: "Sunrise", isForecast: false, date: date)
             items.insert(item, at: indexAfter)
         }
         
         if let date = weather.sunset, let index = items.firstIndex(where: { Calendar.autoupdatingCurrent.isDate(date, equalTo: $0.date, toGranularity: .hour) }) {
             let indexAfter = items.index(after: index)
-            let item = HourlyForecastCard.Item(unit: weather.preferredTemperatureUnit(), temperatureSymbol: weather.preferredTemperatureSymbol(), imageName: "sunset", title: date.in(timeZone: viewModel.location.timeZone).formatted(date: .omitted, time: .shortened), bottomText: "Sunset", isForecast: false, date: date)
+            let item = HourlyForecastCard.Item(unit: weather.preferredTemperatureUnit(), temperatureSymbol: weather.preferredTemperatureSymbol(), imageName: "sunset", title: date.in(timeZone: .from(identifier: viewModel.location.timeZoneIdentifier ?? .empty)).formatted(date: .omitted, time: .shortened), bottomText: "Sunset", isForecast: false, date: date)
             items.insert(item, at: indexAfter)
         }
         
         if let first = weather.dailyForecast.first(where: { Calendar.autoupdatingCurrent.isDateInTomorrow($0.date) }) {
             if let date = first.sun.sunrise, let index = items.firstIndex(where: { Calendar.autoupdatingCurrent.isDate(date, equalTo: $0.date, toGranularity: .hour) }) {
                 let indexAfter = items.index(after: index)
-                let item = HourlyForecastCard.Item(unit: weather.preferredTemperatureUnit(), temperatureSymbol: weather.preferredTemperatureSymbol(), imageName: "sunrise", title: date.in(timeZone: viewModel.location.timeZone).formatted(date: .omitted, time: .shortened), bottomText: "Sunrise", isForecast: false, date: date)
+                let item = HourlyForecastCard.Item(unit: weather.preferredTemperatureUnit(), temperatureSymbol: weather.preferredTemperatureSymbol(), imageName: "sunrise", title: date.in(timeZone: .from(identifier: viewModel.location.timeZoneIdentifier ?? .empty)).formatted(date: .omitted, time: .shortened), bottomText: "Sunrise", isForecast: false, date: date)
                 items.insert(item, at: indexAfter)
             }
             
             if let date = first.sun.sunset, let index = items.firstIndex(where: { Calendar.autoupdatingCurrent.isDate(date, equalTo: $0.date, toGranularity: .hour) }) {
                 let indexAfter = items.index(after: index)
-                let item = HourlyForecastCard.Item(unit: weather.preferredTemperatureUnit(), temperatureSymbol: weather.preferredTemperatureSymbol(), imageName: "sunset", title: date.in(timeZone: viewModel.location.timeZone).formatted(date: .omitted, time: .shortened), bottomText: "Sunset", isForecast: false, date: date)
+                let item = HourlyForecastCard.Item(unit: weather.preferredTemperatureUnit(), temperatureSymbol: weather.preferredTemperatureSymbol(), imageName: "sunset", title: date.in(timeZone: .from(identifier: viewModel.location.timeZoneIdentifier ?? .empty)).formatted(date: .omitted, time: .shortened), bottomText: "Sunset", isForecast: false, date: date)
                 items.insert(item, at: indexAfter)
             }
         }

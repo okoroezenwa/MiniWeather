@@ -137,9 +137,9 @@ import OSLog
                     
                     let weather = try await weatherRepository.getWeather(for: location)
                     
-                    if location.timeZone == nil {
+                    if location.timeZoneIdentifier == nil {
                         let timeZoneIdentifier = try await timeZoneRepository.getTimeZone(for: location)
-                        location.timeZone = .from(identifier: timeZoneIdentifier)
+                        location.timeZoneIdentifier = timeZoneIdentifier
                     }
                     
                     try self.currentLocationRepositoryFactory().saveCurrentLocation(location)
@@ -179,7 +179,7 @@ import OSLog
         Task(priority: .background) {
             let weather = try await weatherRepository.getWeather(for: location)
             let timeZone: TimeZoneIdentifier? = try await {
-                if location.timeZone != nil {
+                if location.timeZoneIdentifier != nil {
                     return nil
                 }
                 return try await timeZoneRepository.getTimeZone(for: location)
@@ -305,7 +305,7 @@ import OSLog
                 try await savedLocationsRepository.add(variableLocation)
                 let weather = try await weatherRepository.getWeather(for: variableLocation)
                 let timeZoneIdentifier: TimeZoneIdentifier? = try await {
-                    if variableLocation.timeZone != nil {
+                    if variableLocation.timeZoneIdentifier != nil {
                         return nil
                     }
                     return try await timeZoneRepository.getTimeZone(for: variableLocation)
@@ -314,7 +314,7 @@ import OSLog
                 await MainActor.run {
                     // TODO: - replace once actor implementation is done
                     if let timeZoneIdentifier {
-                        variableLocation.timeZone = .from(identifier: timeZoneIdentifier)
+                        variableLocation.timeZoneIdentifier = timeZoneIdentifier
                     }
                     
                     if let index = locations.firstIndex(of: location) {

@@ -149,7 +149,8 @@ final class DependencyFactory {
     
     private func makeOpenWeatherMapTimeZoneService() -> TimeZoneService {
         OpenWeatherMapTimeZoneService(
-            cache: makeMemoryDatastore()
+            cache: makeMemoryDatastore(),
+            geocoder: CLGeocoder()
         )
     }
     

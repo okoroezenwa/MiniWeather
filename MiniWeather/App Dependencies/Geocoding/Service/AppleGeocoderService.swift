@@ -9,6 +9,7 @@ import Foundation
 import CoreLocation
 
 struct AppleGeocoderService: GeocoderService {
+    #warning("Make a protocol for this")
     private let geocoder: CLGeocoder
     
     init(geocoder: CLGeocoder) {
@@ -18,7 +19,7 @@ struct AppleGeocoderService: GeocoderService {
     func getLocations(named searchText: String) async throws -> [Location] {
         do {
             let placemarks = try await geocoder.geocodeAddressString(searchText)
-            return placemarks.map { Location(locationObject: $0, timeZone: $0.timeZone) }
+            return placemarks.map { Location(locationObject: $0, timeZone: .init(timeZone: $0.timeZone)) }
         } catch let error {
             throw error
         }
@@ -29,7 +30,7 @@ struct AppleGeocoderService: GeocoderService {
             let placemarks = try await geocoder.reverseGeocodeLocation(
                 .init(latitude: coordinates.latitude, longitude: coordinates.longitude)
             )
-            return placemarks.map { Location(locationObject: $0, timeZone: $0.timeZone) }
+            return placemarks.map { Location(locationObject: $0, timeZone: .init(timeZone: $0.timeZone)) }
         } catch let error {
             throw error
         }
