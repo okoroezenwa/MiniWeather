@@ -10,7 +10,7 @@ import CoreLocation
 
 extension CLPlacemark: LocationProtocol {
     var city: String {
-        locality ?? "Unknown City"
+        locality ?? name ?? "Unknown City"
     }
     
     var state: String? {

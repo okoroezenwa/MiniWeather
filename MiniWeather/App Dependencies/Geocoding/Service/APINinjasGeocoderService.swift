@@ -28,7 +28,7 @@ struct APINinjasGeocoderService: GeocoderService {
         do {
             let data = try await networkService.getData(from: locationsRequest)
             let locations: [APINinjasLocation] = try parser.decode(data)
-            return locations.map { Location(locationObject: $0, timeZoneIdentifier: "") }
+            return locations.map { Location(locationObject: $0, timeZone: nil) }
         } catch {
             throw error
         }
@@ -48,7 +48,7 @@ struct APINinjasGeocoderService: GeocoderService {
             let locations: [APINinjasTemporaryLocation] = try parser.decode(data)
             return locations
                 .map { APINinjasLocation(tempLocation: $0, coordinates: coordinates) }
-                .map { Location(locationObject: $0, timeZoneIdentifier: "") }
+                .map { Location(locationObject: $0, timeZone: nil) }
         } catch {
             throw error
         }

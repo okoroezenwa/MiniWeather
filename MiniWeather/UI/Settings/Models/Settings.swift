@@ -14,6 +14,9 @@ struct Settings {
     static let weatherProvider = "weatherProvider"
     static let apiNinjasKey = "apiNinjasKey"
     static let openWeatherMapKey = "openWeatherMapKey"
+    static let showLocationsUnits = "showLocationsUnits"
+    static let showWeatherViewMap = "showWeatherViewMap"
+    static let showWeatherViewUnits = "showWeatherViewUnits"
     
     /// The current value of the given settings key.
     static func currentValue<Value: DefaultPresenting & RawRepresentable<String>>(for key: String) -> Value {

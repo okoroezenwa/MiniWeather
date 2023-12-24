@@ -137,9 +137,9 @@ import OSLog
                     
                     let weather = try await weatherRepository.getWeather(for: location)
                     
-                    if location.timeZone.isEmpty {
-                        let timeZone = try await timeZoneRepository.getTimeZone(for: location)
-                        location.timeZone = timeZone.name
+                    if location.timeZoneIdentifier == nil {
+                        let timeZoneIdentifier = try await timeZoneRepository.getTimeZone(for: location)
+                        location.timeZoneIdentifier = timeZoneIdentifier
                     }
                     
                     try self.currentLocationRepositoryFactory().saveCurrentLocation(location)
@@ -179,7 +179,7 @@ import OSLog
         Task(priority: .background) {
             let weather = try await weatherRepository.getWeather(for: location)
             let timeZone: TimeZoneIdentifier? = try await {
-                if !location.timeZone.isEmpty {
+                if location.timeZoneIdentifier != nil {
                     return nil
                 }
                 return try await timeZoneRepository.getTimeZone(for: location)
@@ -302,21 +302,21 @@ import OSLog
         
         Task(priority: .background) {
             do {
-                try await savedLocationsRepository.add(variableLocation)
                 let weather = try await weatherRepository.getWeather(for: variableLocation)
-                let timeZone: TimeZoneIdentifier? = try await {
-                    if !variableLocation.timeZone.isEmpty {
+                let timeZoneIdentifier: TimeZoneIdentifier? = try await {
+                    if variableLocation.timeZoneIdentifier != nil {
                         return nil
                     }
                     return try await timeZoneRepository.getTimeZone(for: variableLocation)
                 }()
                 
+                if let timeZoneIdentifier {
+                    variableLocation.timeZoneIdentifier = timeZoneIdentifier
+                }
+                try await savedLocationsRepository.add(variableLocation)
+                
                 await MainActor.run {
                     // TODO: - replace once actor implementation is done
-                    if let timeZone {
-                        variableLocation.timeZone = timeZone.name
-                    }
-                    
                     if let index = locations.firstIndex(of: location) {
                         var tempLocations = locations
                         tempLocations[index] = variableLocation

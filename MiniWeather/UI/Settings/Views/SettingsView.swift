@@ -14,6 +14,9 @@ struct SettingsView: View {
     @AppStorage(Settings.unitsOfMeasure) private var unitsOfMeasure = UnitOfMeasure.default
     @AppStorage(Settings.apiNinjasKey) private var apiNinjasKey = ""
     @AppStorage(Settings.openWeatherMapKey) private var openWeatherMapKey = ""
+    @AppStorage(Settings.showLocationsUnits) private var showLocationsUnits = false
+    @AppStorage(Settings.showWeatherViewMap) private var showWeatherViewMap = true
+    @AppStorage(Settings.showWeatherViewUnits) private var showWeatherViewUnits = false
     private var dismiss: () -> ()
     private let unitsFooter = """
     Metric: °C • m/s • mm • m • deg • hPa
@@ -45,6 +48,19 @@ struct SettingsView: View {
                     Text(unitsFooter)
                 }
                 
+                Section("Locations View") {
+                    Toggle("Show Units", isOn: $showLocationsUnits)
+                        .tint(nil)
+                }
+                
+                Section("Weather View") {
+                    Toggle("Show Units", isOn: $showWeatherViewUnits)
+                        .tint(nil)
+                    
+                    Toggle("Show Map View", isOn: $showWeatherViewMap)
+                        .tint(nil)
+                }
+                
                 Section {
                     SettingsPicker(title: "Geocoder", selection: $geocoderService)
                     
@@ -74,7 +90,7 @@ struct SettingsView: View {
                 }
             }
             .navigationTitle("Settings")
-            .navigationBarTitleDisplayMode(.inline)
+            #if os(iOS)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("Done") {
@@ -82,6 +98,7 @@ struct SettingsView: View {
                     }
                 }
             }
+            #endif
         }
     }
 }

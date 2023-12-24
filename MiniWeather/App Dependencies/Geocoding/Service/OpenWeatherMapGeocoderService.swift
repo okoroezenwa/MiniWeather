@@ -31,7 +31,7 @@ struct OpenWeatherMapGeocoderService: GeocoderService {
         do {
             let data = try await networkService.getData(from: locationsRequest)
             let locations: [OpenWeatherMapLocation] = try parser.decode(data)
-            return locations.map { Location(locationObject: $0, timeZoneIdentifier: "") }
+            return locations.map { Location(locationObject: $0, timeZone: nil) }
         } catch {
             throw error
         }
@@ -51,7 +51,7 @@ struct OpenWeatherMapGeocoderService: GeocoderService {
             let data = try await networkService.getData(from: locationsRequest)
             let locations: [OpenWeatherMapLocation] = try parser.decode(data)
             return locations
-                .map { Location(locationObject: $0, timeZoneIdentifier: "") }
+                .map { Location(locationObject: $0, timeZone: nil) }
         } catch {
             throw error
         }
