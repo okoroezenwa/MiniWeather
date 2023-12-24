@@ -9,13 +9,8 @@ import SwiftUI
 import WeatherKit
 import MapKit
 
-struct LocationDetailViewViewModel {
-    var location: Location
-    let isCurrentLocation: Bool
-}
-
 struct WeatherView: View {
-    let viewModel: LocationDetailViewViewModel
+    let viewModel: WeatherViewModel
     @Binding var weather: WeatherProtocol?
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.timeFormatter) var timeFormatter
@@ -50,26 +45,36 @@ struct WeatherView: View {
                     AlertCard(alerts: alerts)
                 }
                 
-                TemperatureCard(weather: weather, location: viewModel.location)
+                TemperatureCard(formattedTemperature: weather.tempString(withUnit: false), unit: showWeatherViewUnits ? weather.preferredTemperatureUnitLetter() : "", imageName: weather.symbol, items: viewModel.getTemperatureCardItems(weather))
+                
+                if let _ = weather.hourlyItems {
+                    HourlyForecastCard(items: viewModel.getHourlyCardItems(weather))
+                }
                 
                 if let weather = weather as? Weather {
-                    HourlyForecastCard(items: getHourlyItems(weather))
-                    
                     if weather.availability.minuteAvailability == .available, let minuteForecast = weather.minuteForecast, !minuteForecast.isEmpty {
                         MinuteForecastCard(forecast: minuteForecast)
                     }
                     
                     DailyForecastCard(timeZone: .from(identifier: viewModel.location.timeZoneIdentifier ?? .empty), temperatureUnit: weather.preferredTemperatureUnit(), collection: weather.dailyForecast)
-                    
-                    PrecipitationCard(weather: weather)
-                    
-                    WindAndPressureCard(weather: weather)
-                    
-                    VisibilityCard(weather: weather)
-                    
-                    UVIndexCard(weather: weather)
-                    
-                    SunAndMoonCard(weather: weather)
+                }
+                
+                PrecipitationCard(value: weather.precipitation?.value, unit: weather.preferredMinorDistanceUnit(), items: viewModel.getPrecipitationCardItems(weather))
+                
+                WindAndPressureCard(value: weather.windSpeed.converted(to: weather.preferredSpeedUnit()).value, unit: weather.preferredSpeedUnit(), items: viewModel.getWindAndPressureCarditems(weather))
+                
+                if let visibility = weather.visibility {
+                    VisibilityCard(value: visibility.converted(to: .kilometers), visibility: .visibility(from: visibility.converted(to: .meters).value), unit: .kilometers)
+                }
+                
+                UVIndexCard(formattedValue: weather.formattedUVIndex(), category: weather.uvInfo?.category ?? "Unknown")
+                
+                SunAndMoonCard(
+                    items: viewModel.getSunAndMoonCardItems(weather, colorScheme: colorScheme)
+                ) {
+                    WeatherCardGridView(
+                        items: viewModel.getSunAndMoonWeatherCardItems(weather)
+                    )
                 }
                 
                 if showWeatherViewMap {
@@ -78,43 +83,7 @@ struct WeatherView: View {
             }
             .padding(.horizontal, 16)
         }
-        .safeAreaPadding(.top, 16)
-    }
-    
-    private func getHourlyItems(_ weather: Weather) -> [HourlyForecastCard.Item] {
-        guard let firstIndex = weather.hourlyForecast.firstIndex(where: { Calendar.autoupdatingCurrent.isDate($0.date, equalTo: .now, toGranularity: .hour) }) else {
-            return []
-        }
-        
-        var items = weather.hourlyForecast[firstIndex...(firstIndex + 24)].map{ HourlyForecastCard.Item(hourWeather: $0, unit: weather.preferredTemperatureUnit(), temperatureSymbol: weather.preferredTemperatureSymbol(), timeZone: .from(identifier: viewModel.location.timeZoneIdentifier ?? .empty), isForecast: true) }
-        
-        if let date = weather.sunrise, let index = items.firstIndex(where: { Calendar.autoupdatingCurrent.isDate(date, equalTo: $0.date, toGranularity: .hour) }) {
-            let indexAfter = items.index(after: index)
-            let item = HourlyForecastCard.Item(unit: weather.preferredTemperatureUnit(), temperatureSymbol: weather.preferredTemperatureSymbol(), imageName: "sunrise", title: date.in(timeZone: .from(identifier: viewModel.location.timeZoneIdentifier ?? .empty)).formatted(date: .omitted, time: .shortened), bottomText: "Sunrise", isForecast: false, date: date)
-            items.insert(item, at: indexAfter)
-        }
-        
-        if let date = weather.sunset, let index = items.firstIndex(where: { Calendar.autoupdatingCurrent.isDate(date, equalTo: $0.date, toGranularity: .hour) }) {
-            let indexAfter = items.index(after: index)
-            let item = HourlyForecastCard.Item(unit: weather.preferredTemperatureUnit(), temperatureSymbol: weather.preferredTemperatureSymbol(), imageName: "sunset", title: date.in(timeZone: .from(identifier: viewModel.location.timeZoneIdentifier ?? .empty)).formatted(date: .omitted, time: .shortened), bottomText: "Sunset", isForecast: false, date: date)
-            items.insert(item, at: indexAfter)
-        }
-        
-        if let first = weather.dailyForecast.first(where: { Calendar.autoupdatingCurrent.isDateInTomorrow($0.date) }) {
-            if let date = first.sun.sunrise, let index = items.firstIndex(where: { Calendar.autoupdatingCurrent.isDate(date, equalTo: $0.date, toGranularity: .hour) }) {
-                let indexAfter = items.index(after: index)
-                let item = HourlyForecastCard.Item(unit: weather.preferredTemperatureUnit(), temperatureSymbol: weather.preferredTemperatureSymbol(), imageName: "sunrise", title: date.in(timeZone: .from(identifier: viewModel.location.timeZoneIdentifier ?? .empty)).formatted(date: .omitted, time: .shortened), bottomText: "Sunrise", isForecast: false, date: date)
-                items.insert(item, at: indexAfter)
-            }
-            
-            if let date = first.sun.sunset, let index = items.firstIndex(where: { Calendar.autoupdatingCurrent.isDate(date, equalTo: $0.date, toGranularity: .hour) }) {
-                let indexAfter = items.index(after: index)
-                let item = HourlyForecastCard.Item(unit: weather.preferredTemperatureUnit(), temperatureSymbol: weather.preferredTemperatureSymbol(), imageName: "sunset", title: date.in(timeZone: .from(identifier: viewModel.location.timeZoneIdentifier ?? .empty)).formatted(date: .omitted, time: .shortened), bottomText: "Sunset", isForecast: false, date: date)
-                items.insert(item, at: indexAfter)
-            }
-        }
-        
-        return items
+        .safeAreaPadding(.top, 8)
     }
 }
 
@@ -123,8 +92,7 @@ struct WeatherView: View {
         WeatherView(
             viewModel:
                     .init(
-                        location: UniversalConstants.location,
-                        isCurrentLocation: true
+                        location: UniversalConstants.location
                     ),
             weather: .init(
                 get: { UniversalConstants.weather },

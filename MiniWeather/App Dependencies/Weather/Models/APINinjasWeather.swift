@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import WeatherKit
 
 /// The API-Ninjas weather object.
 struct APINinjasWeather: Decodable {
@@ -80,6 +81,26 @@ struct APINinjasWeather: Decodable {
 }
 
 extension APINinjasWeather: WeatherProtocol {
+    var civilDawn: Date? {
+        nil
+    }
+    
+    var civilDusk: Date? {
+        nil
+    }
+    
+    var moonrise: Date? {
+        nil
+    }
+    
+    var nextDayMoonset: Date? {
+        nil
+    }
+    
+    var moonPhase: MoonPhase? {
+        nil
+    }
+    
     var symbol: String {
         "cloud"
     }
@@ -90,5 +111,70 @@ extension APINinjasWeather: WeatherProtocol {
     
     var summary: String {
         "API-Ninjas does not return a summary."
+    }
+    
+    var uvInfo: (index: Either<Int, Double>, category: String)? {
+        nil
+    }
+    
+    var visibility: Measurement<UnitLength>? {
+        nil
+    }
+    
+    var windGust: Measurement<UnitSpeed>? {
+        nil
+    }
+    
+    var windCompassDirection: Wind.CompassDirection? {
+        compassDirection(from: windDirection.value)
+    }
+    
+    var pressure: Measurement<UnitPressure>? {
+        nil
+    }
+    
+    var pressureTrend: PressureTrend? {
+        nil
+    }
+    
+    var precipitation: Measurement<UnitLength>? {
+        nil
+    }
+    
+    var precipitationChance: Double? {
+        nil
+    }
+    
+    var precipitationIntensity: Measurement<UnitSpeed>? {
+        nil
+    }
+    
+    var dewPoint: Measurement<UnitTemperature>? {
+        nil
+    }
+    
+    var nextDaySunrise: Date? {
+        nil
+    }
+    
+    var nextDaySunset: Date? {
+        nil
+    }
+    
+    var hourlyItems: [HourlyItemConvertible]? {
+        nil
+    }
+    
+    var originalTimeZone: TimeZone {
+        .autoupdatingCurrent
+    }
+    
+    func getCelestialBodyProgress(start: Date?, end: Date?, in timeZone: TimeZone?) -> Double {
+        guard let timeZone, let start = start?.from(timeZone: .gmt, to: timeZone).timeIntervalSince1970, let end = end?.from(timeZone: .gmt, to: timeZone).timeIntervalSince1970 else {
+            return 0
+        }
+        
+        let now = Date.now.in(timeZone: timeZone).timeIntervalSince1970
+        return min(1, max(0, (now - start) / (end - start)))
     }
 }

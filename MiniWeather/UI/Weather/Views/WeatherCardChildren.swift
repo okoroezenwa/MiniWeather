@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct WeatherCardGridView: View {
-    private let items: [[Item]]
+    private let items: [[WeatherCardGridViewItem.Model]]
     
-    init(items: [[Item]]) {
+    init(items: [[WeatherCardGridViewItem.Model]]) {
         self.items = items
     }
     
@@ -23,21 +23,6 @@ struct WeatherCardGridView: View {
                     }
                 }
             }
-        }
-    }
-    
-    struct Item: Hashable, Identifiable {
-        let imageName: String
-        let value: String
-        let header: String
-        let angle: Double
-        let id = UUID()
-        
-        init(imageName: String, value: String, header: String, angle: Double = 0) {
-            self.imageName = imageName
-            self.value = value
-            self.header = header
-            self.angle = angle
         }
     }
 }
@@ -55,12 +40,10 @@ struct WeatherCardTitleSubtitleView: View {
         HStack {
             VStack(alignment: .leading, spacing: 2) {
                 Text(title)
-                    .font(.system(size: 17, weight: .semibold))
+                    .font(.system(size: 16, weight: .semibold, design: .rounded))
                 
                 Text(subtitle)
-                    .font(
-                        .system(size: 15)
-                    )
+                    .font(.system(size: 14, weight: .medium, design: .rounded))
                     .foregroundStyle(.secondary)
             }
             
@@ -70,9 +53,9 @@ struct WeatherCardTitleSubtitleView: View {
 }
 
 struct WeatherCardGridViewItem: View {
-    private let item: WeatherCardGridView.Item
+    private let item: Model
     
-    init(item: WeatherCardGridView.Item) {
+    init(item: Model) {
         self.item = item
     }
     
@@ -94,14 +77,28 @@ struct WeatherCardGridViewItem: View {
             
             VStack(alignment: .leading, spacing: 2) {
                 Text(item.header)
-                    .font(.system(size: 15))
                     .foregroundStyle(.secondary)
                 
                 Text(item.value)
-                    .font(.system(size: 15, weight: .semibold))
             }
+            .font(.system(size: 14, weight: .medium, design: .rounded))
             
             Spacer()
+        }
+    }
+    
+    struct Model: Hashable, Identifiable {
+        let imageName: String
+        let value: String
+        let header: String
+        let angle: Double
+        let id = UUID()
+        
+        init(imageName: String, value: String, header: String, angle: Double = 0) {
+            self.imageName = imageName
+            self.value = value
+            self.header = header
+            self.angle = angle
         }
     }
 }

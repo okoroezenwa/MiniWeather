@@ -9,20 +9,22 @@ import SwiftUI
 import WeatherKit
 
 struct VisibilityCard: View {
-    private let weather: Weather
+    private let value: Measurement<UnitLength>
     private let visibility: WeatherVisibility
+    private let unit: UnitLength
     
-    init(weather: Weather) {
-        self.weather = weather
-        self.visibility = WeatherVisibility.visibility(from: weather.currentWeather.visibility.value)
+    init(value: Measurement<UnitLength>, visibility: WeatherVisibility, unit: UnitLength) {
+        self.value = value
+        self.visibility = visibility
+        self.unit = unit
     }
     
     var body: some View {
         WeatherCard(
             title: "visibility",
-            imageName: "road.lanes",
-            value: weather.currentWeather.visibility.converted(to: .kilometers).value.formatted(.number.precision(.fractionLength(1))),
-            unit: "km"
+            imageName: "eye.fill",
+            value: value.converted(to: unit).value.formatted(.number.precision(.fractionLength(1))),
+            unit: unit.symbol
         ) {
             WeatherCardTitleSubtitleView(
                 title: visibility.rawValue,
@@ -62,11 +64,11 @@ extension VisibilityCard {
         func subtitle() -> String {
             switch self {
                 case .extremelyLow, .veryLow:
-                    return "It is best to stay indoors until conditions improve."
+                    return "It is best to stay indoors."
                 case .low:
                     return "Take caution when venturing out."
                 case .average:
-                    return "Moderate risk from moving bikes and vehicles."
+                    return "Moderate risk from moving vehicles."
                 case .good, .excellent:
                     return "Conditions are good to go!"
             }

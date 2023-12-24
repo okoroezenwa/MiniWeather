@@ -34,14 +34,14 @@ struct HourlyForecastCard: View {
                                     Text("Now")
                                         .opacity(isNow ? 1 : 0)
                                     
-                                    Text(item.title)
+                                    Text(item.time)
                                         .opacity(isNow ? 0 : 1)
                                 }
                                 
                                 Image(unfilledSymbol: item.imageName)
                                     .symbolRenderingMode(.hierarchical)
                                 
-                                Text(item.bottomText)
+                                Text(item.temperature)
                             }
                             .padding(8)
                             .font(.system(size: 14, weight: .medium, design: .rounded))
@@ -61,29 +61,121 @@ struct HourlyForecastCard: View {
         let unit: UnitTemperature
         let temperatureSymbol: String
         let imageName: String
-        let title: String
-        let bottomText: String
-        let isForecast: Bool
+        let time: String
+        let temperature: String
         let date: Date
         
-        init(unit: UnitTemperature, temperatureSymbol: String, imageName: String, title: String, bottomText: String, isForecast: Bool, date: Date) {
+        init(unit: UnitTemperature, temperatureSymbol: String, imageName: String, time: String, temperature: String, date: Date) {
             self.unit = unit
             self.temperatureSymbol = temperatureSymbol
             self.imageName = imageName
-            self.title = title
-            self.bottomText = bottomText
-            self.isForecast = isForecast
+            self.time = time
+            self.temperature = temperature
             self.date = date
         }
         
-        init(hourWeather: HourWeather, unit: UnitTemperature, temperatureSymbol: String, timeZone: TimeZone?, isForecast: Bool) {
-            self.title = hourWeather.date.in(timeZone: timeZone).formatted(.dateTime.hour())
+        init(hourWeather: HourWeather, unit: UnitTemperature, temperatureSymbol: String, timeZone: TimeZone?) {
+            self.time = hourWeather.date.in(timeZone: timeZone).formatted(.dateTime.hour())
             self.unit = unit
             self.temperatureSymbol = temperatureSymbol
             self.imageName = hourWeather.symbolName
-            self.isForecast = isForecast
-            self.bottomText = hourWeather.temperature.converted(to: unit).value.formatted(.number.precision(.fractionLength(0))) + temperatureSymbol
+            self.temperature = hourWeather.temperature.converted(to: unit).value.formatted(.number.precision(.fractionLength(0))) + temperatureSymbol
             self.date = hourWeather.date
+        }
+    }
+}
+
+#warning("Organise later")
+protocol HourlyItemConvertible {
+    var date: Date { get }
+    func asItem(unit: UnitTemperature, temperatureSymbol: String, timeZone: TimeZone) -> HourlyForecastCard.Item
+}
+
+extension HourWeather: HourlyItemConvertible {
+    func asItem(unit: UnitTemperature, temperatureSymbol: String, timeZone: TimeZone) -> HourlyForecastCard.Item {
+        .init(unit: unit, temperatureSymbol: temperatureSymbol, imageName: symbolName, time: date.in(timeZone: timeZone).formatted(.dateTime.hour()), temperature: temperature.converted(to: unit).value.formatted(.number.precision(.fractionLength(0))) + temperatureSymbol, date: date)
+    }
+}
+
+extension WeatherForecast: HourlyItemConvertible {
+    var currentTemperature: Measurement<UnitTemperature> {
+        switch temperature {
+            case .first(let temperature):
+                return temperature
+            case .second(_):
+                fatalError("We should not be getting the non-current weather case here")
+        }
+    }
+    
+    var date: Date {
+        Date(timeIntervalSince1970: unixTime)
+    }
+    
+    func asItem(unit: UnitTemperature, temperatureSymbol: String, timeZone: TimeZone) -> HourlyForecastCard.Item {
+        .init(unit: unit, temperatureSymbol: temperatureSymbol, imageName: getSymbol(), time: date.from(timeZone: .autoupdatingCurrent, to: timeZone).formatted(.dateTime.hour()), temperature: currentTemperature.converted(to: unit).value.formatted(.number.precision(.fractionLength(0))) + temperatureSymbol, date: date)
+    }
+}
+
+extension WeatherForecast {
+    func getSymbol() -> String {
+        guard let title = weather.first?.title, let description = weather.first?.description else {
+            return ""
+        }
+        switch (title, description) {
+            case ("Thunderstorm", _):
+                return "cloud.bolt.rain"
+            case ("Drizzle", _):
+                return "cloud.drizzle"
+            case ("Rain", "freezing rain"),
+                ("Snow", _):
+                return "snowflake"
+            case ("Rain", let description):
+                switch description {
+                    case "light rain",
+                        "moderate rain":
+                        return "cloud.sun.rain"
+                    case "light intensity shower rain",
+                        "shower rain",
+                        "ragged shower rain":
+                        return "cloud.rain"
+                    case "heavy intensity shower rain",
+                        "heavy intensity rain",
+                        "very heavy rain",
+                        "extreme rain":
+                        return "cloud.heavyrain"
+                    default:
+                        return "cloud.rain"
+                }
+            case ("Atmosphere", let description):
+                switch description {
+                    case "smoke":
+                        return "smoke"
+                    case "haze":
+                        return "sun.haze"
+                    case "sand/dust whirls",
+                        "dust":
+                        return "sun.dust"
+                    case "tornado":
+                        return "tornado"
+                    default:
+                        return "cloud.fog"
+                }
+            case ("Clear", _):
+                return "sun.max"
+            case ("Clouds", let description):
+                switch description {
+                    case "few clouds":
+                        return "cloud.sun"
+                    case "scattered clouds":
+                        return "cloud"
+                    case "broken clouds",
+                        "overcast clouds":
+                        return "smoke"
+                    default:
+                        return "cloud"
+                }
+            default:
+                return ""
         }
     }
 }

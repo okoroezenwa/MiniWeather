@@ -9,22 +9,24 @@ import SwiftUI
 import WeatherKit
 
 struct UVIndexCard: View {
-    private let weather: Weather
+    private let formattedValue: String
+    private let category: String
     
-    init(weather: Weather) {
-        self.weather = weather
+    init(formattedValue: String, category: String) {
+        self.formattedValue = formattedValue
+        self.category = category
     }
     
     var body: some View {
         WeatherCard(
             title: "uv index",
             imageName: "sun.max.trianglebadge.exclamationmark.fill",
-            value: weather.currentWeather.uvIndex.value.formatted(),
+            value: formattedValue,
             unit: "UVI"
         ) {
             WeatherCardTitleSubtitleView(
-                title: weather.currentWeather.uvIndex.category.description,
-                subtitle: (weather.currentWeather.uvIndex.category.description.lowercased() + " risk of harm from UV rays").sentenceCased
+                title: category,
+                subtitle: (category.lowercased() + " risk of harm from UV rays").sentenceCased
             )
         }
     }

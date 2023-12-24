@@ -11,31 +11,28 @@ import WeatherKit
 struct TemperatureCard: View {
     @AppStorage(Settings.showWeatherViewUnits) var showWeatherViewUnits = false
     @Environment(\.timeFormatter) var timeFormatter
-    private let weather: WeatherProtocol
-    private let location: Location
+    private let formattedTemperature: String
+    private let unit: String
+    private let imageName: String
+    private let items: [[WeatherCardGridViewItem.Model]]
     
-    init(weather: WeatherProtocol, location: Location) {
-        self.weather = weather
-        self.location = location
+    init(formattedTemperature: String, unit: String, imageName: String, items: [[WeatherCardGridViewItem.Model]]) {
+        self.formattedTemperature = formattedTemperature
+        self.unit = unit
+        self.imageName = imageName
+        self.items = items
     }
     
     var body: some View {
         WeatherCard(
             title: "temperature",
-            imageName: weather.symbol,
-            value: weather.tempString(withUnit: false),
-            unit: showWeatherViewUnits ? weather.preferredTemperatureUnitLetter() : ""
+            imageName: imageName,
+            value: formattedTemperature,
+            unit: unit
         ) {
             WeatherCardGridView(
-                items: [
-                    .init(imageName: "thermometer.high", value: weather.maxTempString(), header: "High"),
-                    .init(imageName: "thermometer.and.liquid.waves", value: weather.condition, header: "Condition"),
-                    .init(imageName: "thermometer.low", value: weather.minTempString(), header: "Low"),
-                    .init(imageName: "thermometer.variable.and.figure", value: weather.apparentTemperature.value.formatted(.number.precision(.fractionLength(0))) + weather.preferredTemperatureSymbol(), header: "Feels Like")
-                ].chunked(into: 2)
+                items: items
             )
-        } trailingHeaderView: {
-            WeatherCardTrailingHeaderTextView(text: location.currentDateString(with: timeFormatter))
         }
     }
 }

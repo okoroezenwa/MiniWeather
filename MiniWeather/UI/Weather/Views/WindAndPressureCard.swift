@@ -9,35 +9,26 @@ import SwiftUI
 import WeatherKit
 
 struct WindAndPressureCard: View {
-    private let weather: Weather
+    private let value: Double
+    private let unit: UnitSpeed
+    private let items: [[WeatherCardGridViewItem.Model]]
     
-    init(weather: Weather) {
-        self.weather = weather
+    init(value: Double, unit: UnitSpeed, items: [[WeatherCardGridViewItem.Model]]) {
+        self.value = value
+        self.unit = unit
+        self.items = items
     }
     
     var body: some View {
         WeatherCard(
             title: "wind & pressure",
             imageName: "fan.fill",
-            value: weather.currentWeather.wind.speed.converted(to: weather.preferredSpeedUnit()).value.formatted(.number.precision(.fractionLength(1))),
-            unit: weather.preferredSpeedUnit().symbol
+            value: value.formatted(.number.precision(.fractionLength(1))),
+            unit: unit.symbol
         ) {
             WeatherCardGridView(
-                items: [
-                    .init(imageName: "wind", value: (weather.currentWeather.wind.gust?.converted(to: weather.preferredSpeedUnit()).value.formatted(.number.precision(.fractionLength(1))) ?? "--") + weather.preferredSpeedUnit().symbol, header: "Gusts"),
-                    .init(imageName: "arrow.up", value: weather.currentWeather.wind.compassDirection.abbreviation, header: "Direction", angle: requiredAngle(from: weather.currentWeather.wind.direction.converted(to: .degrees).value)),
-                    .init(imageName: "barometer", value: weather.currentWeather.pressure.converted(to: weather.preferredPressureUnit()).value.formatted(.number.precision(.fractionLength(0))) + weather.preferredPressureUnit().symbol, header: "Pressure"),
-                    .init(imageName: "chart.line.uptrend.xyaxis", value: weather.currentWeather.pressureTrend.description, header: "Pressure Trend")
-                ].chunked(into: 2)
+                items: items
             )
-        }
-    }
-    
-    private func requiredAngle(from angle: Double) -> Double {
-        if angle < 180 {
-            return angle + 180
-        } else {
-            return 360 - angle
         }
     }
 }

@@ -302,7 +302,6 @@ import OSLog
         
         Task(priority: .background) {
             do {
-                try await savedLocationsRepository.add(variableLocation)
                 let weather = try await weatherRepository.getWeather(for: variableLocation)
                 let timeZoneIdentifier: TimeZoneIdentifier? = try await {
                     if variableLocation.timeZoneIdentifier != nil {
@@ -311,12 +310,13 @@ import OSLog
                     return try await timeZoneRepository.getTimeZone(for: variableLocation)
                 }()
                 
+                if let timeZoneIdentifier {
+                    variableLocation.timeZoneIdentifier = timeZoneIdentifier
+                }
+                try await savedLocationsRepository.add(variableLocation)
+                
                 await MainActor.run {
                     // TODO: - replace once actor implementation is done
-                    if let timeZoneIdentifier {
-                        variableLocation.timeZoneIdentifier = timeZoneIdentifier
-                    }
-                    
                     if let index = locations.firstIndex(of: location) {
                         var tempLocations = locations
                         tempLocations[index] = variableLocation

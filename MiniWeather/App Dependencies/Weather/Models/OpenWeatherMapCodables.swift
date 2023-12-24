@@ -34,32 +34,32 @@ struct WeatherForecast: Codable {
         case weather
     }
     
-    let unixTime: Int
+    let unixTime: TimeInterval
     let sunrise: Date?
     let sunset: Date?
-    let moonrise: Int?
-    let moonset: Int?
+    let moonrise: Date?
+    let moonset: Date?
     let moonPhase: Double?
     let summary: String?
     let temperature: DualValueDecodable<Measurement<UnitTemperature>, Temperature> // Daily uses Temperature, others use Double
     let feelsLike: DualValueDecodable<Measurement<UnitTemperature>, Temperature> // Daily uses Temperature, others use Double
-    let pressure: Double?
+    let pressure: Measurement<UnitPressure>?
     let humidity: Double?
-    let dewPoint: Double?
+    let dewPoint: Measurement<UnitTemperature>?
     let uvIndex: Double?
     let clouds: Double
-    let visibility: Double?
+    let visibility: Measurement<UnitLength>?
     let windSpeed: Measurement<UnitSpeed>?
-    let windGust: Double?
+    let windGust: Measurement<UnitSpeed>?
     let windDirection: Measurement<UnitAngle>?
     let probabilityOfPrecipitation: Double?
-    let rain: DualValueDecodable<Double, HourReading>? // Daily uses Double, others use HourReading
+    let rain: Measurement<UnitLength>?
     let snow: DualValueDecodable<Double, HourReading>? // Daily uses Double, others use HourReading
     let weather: [WeatherCondition]
     
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.unixTime = try container.decode(Int.self, forKey: .unixTime)
+        self.unixTime = try container.decode(TimeInterval.self, forKey: .unixTime)
         
         let sunrise = try container.decodeIfPresent(TimeInterval.self, forKey: .sunrise)
         if let sunrise {
@@ -75,8 +75,20 @@ struct WeatherForecast: Codable {
             self.sunset = nil
         }
         
-        self.moonrise = try container.decodeIfPresent(Int.self, forKey: .moonrise)
-        self.moonset = try container.decodeIfPresent(Int.self, forKey: .moonset)
+        let moonrise = try container.decodeIfPresent(TimeInterval.self, forKey: .moonrise)
+        if let moonrise {
+            self.moonrise = Date(timeIntervalSince1970: moonrise)
+        } else {
+            self.moonrise = nil
+        }
+        
+        let moonset = try container.decodeIfPresent(TimeInterval.self, forKey: .moonset)
+        if let moonset {
+            self.moonset = Date(timeIntervalSince1970: moonset)
+        } else {
+            self.moonset = nil
+        }
+        
         self.moonPhase = try container.decodeIfPresent(Double.self, forKey: .moonPhase)
         self.summary = try container.decodeIfPresent(String.self, forKey: .summary)
         
@@ -100,12 +112,37 @@ struct WeatherForecast: Codable {
             }
         }()
         
-        self.pressure = try container.decodeIfPresent(Double.self, forKey: .pressure)
-        self.humidity = try container.decodeIfPresent(Double.self, forKey: .humidity)
-        self.dewPoint = try container.decodeIfPresent(Double.self, forKey: .dewPoint)
+        let pressure = try container.decodeIfPresent(Double.self, forKey: .pressure)
+        if let pressure {
+            self.pressure = Measurement(value: pressure, unit: .hectopascals)
+        } else {
+            self.pressure = nil
+        }
+        
+        let humidity = try container.decodeIfPresent(Double.self, forKey: .humidity)
+        if let humidity {
+            self.humidity = humidity / 100
+        } else {
+            self.humidity = nil
+        }
+        
+        let dewPoint = try container.decodeIfPresent(Double.self, forKey: .dewPoint)
+        if let dewPoint {
+            self.dewPoint = Measurement(value: dewPoint, unit: .celsius)
+        } else {
+            self.dewPoint = nil
+        }
+        
         self.clouds = try container.decode(Double.self, forKey: .clouds)
         self.uvIndex = try container.decodeIfPresent(Double.self, forKey: .uvIndex)
-        self.visibility = try container.decodeIfPresent(Double.self, forKey: .visibility)
+        
+        let visibility = try container.decodeIfPresent(Double.self, forKey: .visibility)
+        if let visibility {
+            self.visibility = Measurement(value: visibility, unit: .meters)
+        } else {
+            self.visibility = nil
+        }
+        
         let windSpeed = try container.decodeIfPresent(Double.self, forKey: .windSpeed)
         if let windSpeed {
             self.windSpeed = Measurement(value: windSpeed, unit: .metersPerSecond)
@@ -113,7 +150,13 @@ struct WeatherForecast: Codable {
             self.windSpeed = nil
         }
         
-        self.windGust = try container.decodeIfPresent(Double.self, forKey: .windGust)
+        let windGust = try container.decodeIfPresent(Double.self, forKey: .windGust)
+        if let windGust {
+            self.windGust = Measurement(value: windGust, unit: .metersPerSecond)
+        } else {
+            self.windGust = nil
+        }
+        
         let windDirection = try container.decodeIfPresent(Double.self, forKey: .windDirection)
         if let windDirection {
             self.windDirection = Measurement(value: windDirection, unit: .degrees)
@@ -122,7 +165,23 @@ struct WeatherForecast: Codable {
         }
         
         self.probabilityOfPrecipitation = try container.decodeIfPresent(Double.self, forKey: .probabilityOfPrecipitation)
-        self.rain = try container.decodeIfPresent(DualValueDecodable<Double, HourReading>.self, forKey: .rain)
+        let rain = try container.decodeIfPresent(DualValueDecodable<Double, HourReading>.self, forKey: .rain)
+        if let rain {
+            switch rain {
+                // Daily uses Double, others use HourReading
+                case .first(let rain):
+                    self.rain = Measurement(value: rain, unit: .millimeters)
+                case .second(let reading):
+                    if let hourReading = reading.hourReading {
+                        self.rain = Measurement(value: hourReading, unit: .millimeters)
+                    } else {
+                        self.rain = nil
+                    }
+            }
+        } else {
+            self.rain = nil
+        }
+        
         self.snow = try container.decodeIfPresent(DualValueDecodable<Double, HourReading>.self, forKey: .snow)
         self.weather = try container.decode([WeatherCondition].self, forKey: .weather)
     }

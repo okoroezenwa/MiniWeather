@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import WeatherKit
 
 struct OpenWeatherMapWeather: Codable {
     enum CodingKeys: String, CodingKey {
@@ -23,7 +24,7 @@ struct OpenWeatherMapWeather: Codable {
     let longitude: Double
     let latitude: Double
     let timezone: String
-    var timezoneOffset: Int
+    let timezoneOffset: Int
     let currentWeather: WeatherForecast
     let minutelyForecast: [Precipitation]?
     let hourlyForecast: [WeatherForecast]
@@ -33,7 +34,6 @@ struct OpenWeatherMapWeather: Codable {
 
 // MARK: - WeatherProtocol Conformance 😮‍💨
 extension OpenWeatherMapWeather: WeatherProtocol {
-    
     var temperature: Measurement<UnitTemperature> {
         switch currentWeather.temperature {
             case .first(let temperature):
@@ -104,19 +104,54 @@ extension OpenWeatherMapWeather: WeatherProtocol {
     }
     
     var sunrise: Date? {
-        guard let sunrise = currentWeather.sunrise else {
-            fatalError("Sunrise info missing for current weather")
-        }
-        
-        return sunrise
+        today()?.sunrise
     }
     
     var sunset: Date? {
-        guard let sunset = currentWeather.sunset else {
-            fatalError("Sunset info missing for current weather")
+        today()?.sunset
+    }
+    
+    var civilDawn: Date? {
+        nil
+    }
+    
+    var civilDusk: Date? {
+        nil
+    }
+    
+    var moonrise: Date? {
+        today()?.moonrise
+    }
+    
+    var nextDayMoonset: Date? {
+        tomorrow()?.moonset
+    }
+    
+    var moonPhase: MoonPhase? {
+        guard let moonPhase = tomorrow()?.moonPhase else {
+            return nil
         }
         
-        return sunset
+        switch moonPhase {
+            case 0, 1:
+                return .new
+            case 0.25:
+                return .firstQuarter
+            case 0.5:
+                return .full
+            case 0.75:
+                return .lastQuarter
+            case let x where x > 0 && x < 0.25:
+                return .waxingCrescent
+            case let x where x > 0.25 && x < 0.5:
+                return .waxingGibbous
+            case let x where x > 0.5 && x < 0.75:
+                return .waningGibbous
+            case let x where x > 0.75 && x < 1:
+                return .waningCrescent
+            default:
+                fatalError("Not within the given list of values for moon phase by OpenWeatherMaps")
+        }
     }
     
     var cloudPercentage: Double {
@@ -124,65 +159,7 @@ extension OpenWeatherMapWeather: WeatherProtocol {
     }
     
     var symbol: String {
-        guard let title = currentWeather.weather.first?.title, let description = currentWeather.weather.first?.description else {
-            return ""
-        }
-        switch (title, description) {
-            case ("Thunderstorm", _): 
-                return "cloud.bolt.rain"
-            case ("Drizzle", _):
-                return "cloud.drizzle"
-            case ("Rain", "freezing rain"),
-                ("Snow", _):
-                return "snowflake"
-            case ("Rain", let description):
-                switch description {
-                    case "light rain",
-                        "moderate rain":
-                        return "cloud.sun.rain"
-                    case "light intensity shower rain",
-                        "shower rain",
-                        "ragged shower rain":
-                        return "cloud.rain"
-                    case "heavy intensity shower rain",
-                        "heavy intensity rain",
-                        "very heavy rain",
-                        "extreme rain":
-                        return "cloud.heavyrain"
-                    default:
-                        return "cloud.rain"
-                }
-            case ("Atmosphere", let description):
-                switch description {
-                    case "smoke":
-                        return "smoke"
-                    case "haze":
-                        return "sun.haze"
-                    case "sand/dust whirls",
-                        "dust":
-                        return "sun.dust"
-                    case "tornado":
-                        return "tornado"
-                    default:
-                        return "cloud.fog"
-                }
-            case ("Clear", _):
-                return "sun.max"
-            case ("Clouds", let description):
-                switch description {
-                    case "few clouds":
-                        return "cloud.sun"
-                    case "scattered clouds":
-                        return "cloud"
-                    case "broken clouds",
-                        "overcast clouds":
-                        return "smoke"
-                    default:
-                        return "cloud"
-                }
-            default:
-                return ""
-        }
+        currentWeather.getSymbol()
     }
     
     var condition: String {
@@ -191,5 +168,122 @@ extension OpenWeatherMapWeather: WeatherProtocol {
     
     var summary: String {
         currentWeather.weather.first?.description.capitalized ?? ""
+    }
+    
+    var uvInfo: (index: Either<Int, Double>, category: String)? {
+        guard let index = currentWeather.uvIndex, let category = UVIndex.ExposureCategory.allCases.first(where: { $0.rangeValue.contains(Int(index)) }) else {
+            return nil
+        }
+        return (.second(index), category.description)
+    }
+    
+    var visibility: Measurement<UnitLength>? {
+        currentWeather.visibility
+    }
+    
+    var windGust: Measurement<UnitSpeed>? {
+        currentWeather.windGust
+    }
+    
+    var windCompassDirection: Wind.CompassDirection? {
+        compassDirection(from: windDirection.value)
+    }
+    
+    var pressure: Measurement<UnitPressure>? {
+        currentWeather.pressure
+    }
+    
+    var pressureTrend: PressureTrend? {
+        nil
+    }
+    
+    var precipitation: Measurement<UnitLength>? {
+        today()?.rain ?? .init(value: 0, unit: .millimeters)
+    }
+    
+    var precipitationChance: Double? {
+        today()?.probabilityOfPrecipitation
+    }
+    
+    var precipitationIntensity: Measurement<UnitSpeed>? {
+        nil
+    }
+    
+    var dewPoint: Measurement<UnitTemperature>? {
+        currentWeather.dewPoint
+    }
+    
+    var nextDaySunrise: Date? {
+        tomorrow()?.sunrise
+    }
+    
+    var nextDaySunset: Date? {
+        tomorrow()?.sunset
+    }
+    
+    var hourlyItems: [HourlyItemConvertible]? {
+        hourlyForecast
+    }
+    
+    var originalTimeZone: TimeZone {
+        .autoupdatingCurrent
+    }
+    
+    func getCelestialBodyProgress(start: Date?, end: Date?, in timeZone: TimeZone?) -> Double {
+        guard let timeZone, let start = start?.from(timeZone: originalTimeZone, to: timeZone).timeIntervalSince1970, let end = end?.from(timeZone: originalTimeZone, to: timeZone).timeIntervalSince1970 else {
+            return 0
+        }
+        
+        let now = Date.now.in(timeZone: timeZone).timeIntervalSince1970
+        return min(1, max(0, (now - start) / (end - start)))
+    }
+}
+
+extension OpenWeatherMapWeather {
+    func timeZone() -> TimeZone? {
+        TimeZone(secondsFromGMT: timezoneOffset) ?? TimeZone(identifier: timezone)
+    }
+    
+    func today() -> WeatherForecast? {
+        dailyForecast.first { forecast in
+            guard let date = getDate(from: forecast.unixTime) else {
+                return false
+            }
+            return Calendar.autoupdatingCurrent.isDateInToday(date)
+        }
+    }
+    
+    func tomorrow() -> WeatherForecast? {
+        dailyForecast.first { forecast in
+            guard let date = getDate(from: forecast.unixTime) else {
+                return false
+            }
+            return Calendar.autoupdatingCurrent.isDateInTomorrow(date)
+        }
+    }
+    
+    func thisHour() -> WeatherForecast? {
+        hourlyForecast.first { forecast in
+            guard let date = getDate(from: forecast.unixTime) else {
+                return false
+            }
+            return Calendar.autoupdatingCurrent.isDate(date, equalTo: .now.in(timeZone: timeZone()), toGranularity: .hour)
+        }
+    }
+    
+    func nextHour() -> WeatherForecast? {
+        guard let thisHour = thisHour(), let index = hourlyForecast.firstIndex(where: { thisHour.unixTime.isEqual(to: $0.unixTime) }), index != hourlyForecast.endIndex else {
+            return nil
+        }
+        let nextIndex = hourlyForecast.index(after: index)
+        return hourlyForecast[nextIndex]
+    }
+    
+    func getDate(from seconds: TimeInterval) -> Date? {
+        guard let timeZone = timeZone() else {
+            return nil
+        }
+        
+        return Date.init(timeIntervalSince1970: seconds).from(timeZone: originalTimeZone, to: timeZone)
     }
 }

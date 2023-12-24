@@ -20,5 +20,12 @@ extension Date {
         components.timeZone = .autoupdatingCurrent
         return calendar.date(from: components) ?? .now
     }
+    
+    func from(timeZone: TimeZone, to destination: TimeZone) -> Date {
+        let calendar = Calendar.current
+        var components = calendar.dateComponents(in: destination, from: self)
+        components.timeZone = timeZone
+        return calendar.date(from: components) ?? .now
+    }
 }
 

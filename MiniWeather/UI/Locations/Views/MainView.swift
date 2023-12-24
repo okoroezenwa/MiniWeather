@@ -20,55 +20,9 @@ struct MainView: View {
     var body: some View {
         NavigationSplitView {
             LocationsView(hasSearchResults: viewModel.hasSearchResults()) { dismissSearch in
-                LocationSearchResultsView(searchResults: viewModel.searchResults) { [weak viewModel] location in
-                    guard let viewModel else {
-                        return false
-                    }
-                    return !viewModel.locations.contains(where: { location.fullName == $0.fullName  })
-                } addLocation: { [weak viewModel] location in
-                    viewModel?.add(location)
-                } dismissSearch: {
-                    dismissSearch()
-                }
+                locationsSearchView(dismissSearch)
             } gridView: {
-                LocationsGridView(hasLocations: !viewModel.locations.isEmpty) {
-                    SectionContainerView {
-                        CurrentLocationSection(
-                            viewModel: .init(
-                                currentLocation: viewModel.currentLocation,
-                                weather: {
-                                    guard let location = viewModel.currentLocation else {
-                                        return nil
-                                    }
-                                    return viewModel.weather(for: location).wrappedValue
-                                }(),
-                                authorisationStatus: viewModel.status, 
-                                shouldDisplayAsLoading: viewModel.shouldDisplayProgressIndicator(),
-                                notDetermined: { [weak viewModel] in
-                                    viewModel?.refreshCurrentLocation(requestingAuthorisation: true)
-                                }
-                            )
-                        )
-                    } header: {
-                            CurrentLocationSectionHeader(
-                                shouldShowProgressView: viewModel.shouldDisplayProgressIndicator()
-                            )
-                    }
-                } savedLocationsSection: {
-                    SectionContainerView {
-                        SavedLocationsSection(
-                            viewModel: .init(
-                                locations: viewModel.locations
-                            ) { location in
-                                viewModel.weather(for: location)
-                            } onDelete: { [weak viewModel] location in
-                                viewModel?.delete(location)
-                            }
-                        )
-                    } header: {
-                        SavedLocationsSectionHeader()
-                    }
-                }
+                locationsGridView()
             }
             .searchable(text: $viewModel.searchText, prompt: "Search City Name")
             .background {
@@ -77,18 +31,7 @@ struct MainView: View {
             .navigationTitle("Locations")
             .navigationDestination(for: Location.self) { [weak viewModel] location in
                 if let viewModel {
-                    WeatherView(
-                        viewModel: .init(
-                            location: location, 
-                            isCurrentLocation: location.id == viewModel.currentLocation?.id
-                        ),
-                        weather: viewModel.weather(for: location)
-                    )
-                    .preferredColorScheme(colorScheme)
-                    #if os(iOS)
-                    .navigationBarTitleDisplayMode(.large)
-                    #endif
-                    .navigationTitle(location.nickname)
+                    weatherView(location, viewModel: viewModel)
                 }
             }
             .toolbarBackground(.thinMaterial, for: .automatic)
@@ -142,6 +85,80 @@ struct MainView: View {
                 }
             }
         }
+    }
+    
+    private func locationsSearchView(_ dismissSearch: @escaping () -> Void) -> some View {
+        LocationSearchResultsView(searchResults: viewModel.searchResults) { [weak viewModel] location in
+            guard let viewModel else {
+                return false
+            }
+            return !viewModel.locations.contains(where: { location.fullName == $0.fullName  })
+        } addLocation: { [weak viewModel] location in
+            viewModel?.add(location)
+        } dismissSearch: {
+            dismissSearch()
+        }
+    }
+    
+    private func locationsGridView() -> some View {
+        LocationsGridView(hasLocations: !viewModel.locations.isEmpty) {
+            SectionContainerView {
+                CurrentLocationSection(
+                    viewModel: .init(
+                        currentLocation: viewModel.currentLocation,
+                        weather: {
+                            guard let location = viewModel.currentLocation else {
+                                return nil
+                            }
+                            return viewModel.weather(for: location).wrappedValue
+                        }(),
+                        authorisationStatus: viewModel.status,
+                        shouldDisplayAsLoading: viewModel.shouldDisplayProgressIndicator(),
+                        notDetermined: { [weak viewModel] in
+                            viewModel?.refreshCurrentLocation(requestingAuthorisation: true)
+                        }
+                    )
+                )
+            } header: {
+                CurrentLocationSectionHeader(
+                    shouldShowProgressView: viewModel.shouldDisplayProgressIndicator()
+                )
+            }
+        } savedLocationsSection: {
+            SectionContainerView {
+                SavedLocationsSection(
+                    viewModel: .init(
+                        locations: viewModel.locations
+                    ) { location in
+                        viewModel.weather(for: location)
+                    } onDelete: { [weak viewModel] location in
+                        viewModel?.delete(location)
+                    }
+                )
+            } header: {
+                SavedLocationsSectionHeader()
+            }
+        }
+    }
+    
+    private func weatherView(_ location: Location, viewModel: LocationsViewModel) -> some View {
+        WeatherView(
+            viewModel: .init(
+                location: location
+            ),
+            weather: viewModel.weather(for: location)
+        )
+        .preferredColorScheme(colorScheme)
+        #if os(iOS)
+        .navigationBarTitleDisplayMode(.large)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                WeatherCardTrailingHeaderTextView(text: Date.now.in(timeZone: .from(identifier: location.timeZoneIdentifier ?? .empty)).formatted(date: .omitted, time: .shortened))
+                    .padding(.trailing, 8)
+            }
+        }
+        #endif
+        .navigationTitle(location.nickname)
     }
     
     private func background(for colorScheme: ColorScheme) -> some View {
