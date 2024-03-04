@@ -57,18 +57,27 @@ final class MainLocationManagerDelegate: NSObject, LocationManagerDelegate {
     
     // MARK: - CLLocationManagerDelegate
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
-        guard case let status = manager.authorizationStatus, status != .notDetermined else {
-            return
+        let status = manager.authorizationStatus
+        switch status {
+            case .notDetermined:
+                return
+            case .authorizedAlways, .authorizedWhenInUse, .restricted, .denied:
+                locationAuthorisationCheckedContinuation?.resume(returning: status)
+                locationAuthorisationCheckedContinuation = nil
+            @unknown default:
+                locationAuthorisationCheckedContinuation?.resume(returning: status)
+                locationAuthorisationCheckedContinuation = nil
         }
-        locationAuthorisationCheckedContinuation?.resume(returning: status)
-        locationAuthorisationCheckedContinuation = nil
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        if let last = locations.last {
-            userLocationCheckedThrowingContinuation?.resume(returning: last.coordinate)
+        guard let last = locations.last else {
+            userLocationCheckedThrowingContinuation?.resume(throwing: LocationError.notFound)
             userLocationCheckedThrowingContinuation = nil
+            return
         }
+        userLocationCheckedThrowingContinuation?.resume(returning: last.coordinate)
+        userLocationCheckedThrowingContinuation = nil
         manager.stopUpdatingLocation()
     }
     
@@ -76,6 +85,10 @@ final class MainLocationManagerDelegate: NSObject, LocationManagerDelegate {
         userLocationCheckedThrowingContinuation?.resume(throwing: error)
         userLocationCheckedThrowingContinuation = nil
         manager.stopUpdatingLocation()
+    }
+    
+    deinit {
+        userLocationCheckedThrowingContinuation?.resume(throwing: CancellationError())
     }
 }
 
