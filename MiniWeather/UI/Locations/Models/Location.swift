@@ -8,6 +8,7 @@
 import Foundation
 import CoreLocation
 
+/// The protocol to which all Location objects conform.
 protocol LocationProtocol {
     var city: String { get }
     var state: String? { get }

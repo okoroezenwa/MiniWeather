@@ -8,6 +8,7 @@
 import Foundation
 import WeatherKit
 
+/// The protocol to which all Weather objects conform.
 protocol WeatherProtocol: Sendable {
     var temperature: Measurement<UnitTemperature> { get }
     var apparentTemperature: Measurement<UnitTemperature> { get }
