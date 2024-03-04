@@ -38,7 +38,6 @@ struct SunAndMoonCard<Content: View>: View {
 }
 
 struct ArcView: View {
-    #warning("Use ProgressView + custom style instead?")
     let item: Item
     let background: some ShapeStyle = .quaternary.opacity(0.15)
     
