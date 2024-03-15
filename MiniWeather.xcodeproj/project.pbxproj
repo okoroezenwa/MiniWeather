@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		BE13464D2B2B283B00A07631 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE13464C2B2B283B00A07631 /* String+Extensions.swift */; };
+		BE23F96F2BA4489100A85C8C /* AsynchronousTestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE23F96E2BA4489100A85C8C /* AsynchronousTestHelpers.swift */; };
+		BE23F9762BA497E500A85C8C /* StandardDataParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE23F9752BA497E500A85C8C /* StandardDataParserTests.swift */; };
 		BE248C392B248D46007E32FD /* PreferencesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE248C382B248D46007E32FD /* PreferencesProvider.swift */; };
 		BE248C3E2B25F043007E32FD /* AppleWeather.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE248C3D2B25F043007E32FD /* AppleWeather.swift */; };
 		BE248C402B25FA05007E32FD /* AppleWeatherService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE248C3F2B25FA05007E32FD /* AppleWeatherService.swift */; };
@@ -52,8 +54,10 @@
 		BE5384E52B345ED900895109 /* WeatherViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE5384E42B345ED900895109 /* WeatherViewModel.swift */; };
 		BE5561E82B17CAF900AB97FE /* CloudKeyValueDatastoreUpdateHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE5561E72B17CAF900AB97FE /* CloudKeyValueDatastoreUpdateHandler.swift */; };
 		BE570EEF2B21A44800A43B96 /* LocationSearchResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE570EEE2B21A44800A43B96 /* LocationSearchResultsView.swift */; };
+		BE622BBC2B9C6C3200E963E1 /* MockURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE622BBB2B9C6C3200E963E1 /* MockURLProtocol.swift */; };
 		BE62AF2F2AFA26D600BEEBFA /* WeatherView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE62AF2E2AFA26D600BEEBFA /* WeatherView.swift */; };
 		BE62AF322AFA2A0000BEEBFA /* UniversalConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE62AF312AFA2A0000BEEBFA /* UniversalConstants.swift */; };
+		BE65CFAD2B95FBC400D7AE98 /* MockWeather.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE65CFAC2B95FBC400D7AE98 /* MockWeather.swift */; };
 		BE71B80F2ACE9F2B003AA99C /* MiniWeatherApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE71B80E2ACE9F2B003AA99C /* MiniWeatherApp.swift */; };
 		BE71B8112ACE9F2B003AA99C /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE71B8102ACE9F2B003AA99C /* MainView.swift */; };
 		BE71B8132ACE9F2B003AA99C /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE71B8122ACE9F2B003AA99C /* Location.swift */; };
@@ -70,6 +74,7 @@
 		BE928F172B177D5C0083CC96 /* KeyValueStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE928F162B177D5C0083CC96 /* KeyValueStore.swift */; };
 		BE928F1B2B1799610083CC96 /* CloudKeyValueDatastore.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE928F1A2B1799610083CC96 /* CloudKeyValueDatastore.swift */; };
 		BE9F20F82AD0624A00CDC9F4 /* MainLocationsSearchRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9F20F72AD0624A00CDC9F4 /* MainLocationsSearchRepository.swift */; };
+		BEC47B382B8E4A9700BF39FD /* MiniWeatherTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEC47B372B8E4A9700BF39FD /* MiniWeatherTests.swift */; };
 		BECC197C2B2C860600A30ACE /* TimeZone+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BECC197B2B2C860600A30ACE /* TimeZone+Extensions.swift */; };
 		BECC197E2B2D071800A30ACE /* Image+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BECC197D2B2D071800A30ACE /* Image+Extensions.swift */; };
 		BECC19802B2D098000A30ACE /* Calendar+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BECC197F2B2D098000A30ACE /* Calendar+Extensions.swift */; };
@@ -95,6 +100,8 @@
 		BED750BB2B16116A00E2CF9E /* MainCurrentLocationRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED750BA2B16116A00E2CF9E /* MainCurrentLocationRepository.swift */; };
 		BED750BD2B161FEF00E2CF9E /* CurrentLocationProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED750BC2B161FEF00E2CF9E /* CurrentLocationProvider.swift */; };
 		BED750C12B16218800E2CF9E /* MainCurrentLocationProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED750C02B16218800E2CF9E /* MainCurrentLocationProvider.swift */; };
+		BED77EC42BA3433400877FE0 /* StandardNetworkServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED77EC32BA3433400877FE0 /* StandardNetworkServiceTests.swift */; };
+		BED77EC62BA34D4700877FE0 /* MockRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED77EC52BA34D4700877FE0 /* MockRequest.swift */; };
 		BEE949052B30BFAB0074507E /* MapCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE949042B30BFAB0074507E /* MapCard.swift */; };
 		BEE949072B30C4290074507E /* SunAndMoonCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE949062B30C4290074507E /* SunAndMoonCard.swift */; };
 		BEE949092B30E1260074507E /* MinuteForecastCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE949082B30E1260074507E /* MinuteForecastCard.swift */; };
@@ -122,8 +129,20 @@
 		BEFE25672B06918200AB5DED /* LocationAuthorisationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFE25662B06918200AB5DED /* LocationAuthorisationCell.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		BEC47B392B8E4A9700BF39FD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BE71B8032ACE9F2B003AA99C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BE71B80A2ACE9F2B003AA99C;
+			remoteInfo = MiniWeather;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		BE13464C2B2B283B00A07631 /* String+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
+		BE23F96E2BA4489100A85C8C /* AsynchronousTestHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AsynchronousTestHelpers.swift; sourceTree = "<group>"; };
+		BE23F9752BA497E500A85C8C /* StandardDataParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandardDataParserTests.swift; sourceTree = "<group>"; };
 		BE248C382B248D46007E32FD /* PreferencesProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesProvider.swift; sourceTree = "<group>"; };
 		BE248C3D2B25F043007E32FD /* AppleWeather.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleWeather.swift; sourceTree = "<group>"; };
 		BE248C3F2B25FA05007E32FD /* AppleWeatherService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleWeatherService.swift; sourceTree = "<group>"; };
@@ -168,8 +187,10 @@
 		BE5384E42B345ED900895109 /* WeatherViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherViewModel.swift; sourceTree = "<group>"; };
 		BE5561E72B17CAF900AB97FE /* CloudKeyValueDatastoreUpdateHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudKeyValueDatastoreUpdateHandler.swift; sourceTree = "<group>"; };
 		BE570EEE2B21A44800A43B96 /* LocationSearchResultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSearchResultsView.swift; sourceTree = "<group>"; };
+		BE622BBB2B9C6C3200E963E1 /* MockURLProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockURLProtocol.swift; sourceTree = "<group>"; };
 		BE62AF2E2AFA26D600BEEBFA /* WeatherView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherView.swift; sourceTree = "<group>"; };
 		BE62AF312AFA2A0000BEEBFA /* UniversalConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UniversalConstants.swift; sourceTree = "<group>"; };
+		BE65CFAC2B95FBC400D7AE98 /* MockWeather.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockWeather.swift; sourceTree = "<group>"; };
 		BE71B80B2ACE9F2B003AA99C /* MiniWeather.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MiniWeather.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE71B80E2ACE9F2B003AA99C /* MiniWeatherApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiniWeatherApp.swift; sourceTree = "<group>"; };
 		BE71B8102ACE9F2B003AA99C /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
@@ -189,6 +210,8 @@
 		BE928F162B177D5C0083CC96 /* KeyValueStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyValueStore.swift; sourceTree = "<group>"; };
 		BE928F1A2B1799610083CC96 /* CloudKeyValueDatastore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudKeyValueDatastore.swift; sourceTree = "<group>"; };
 		BE9F20F72AD0624A00CDC9F4 /* MainLocationsSearchRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainLocationsSearchRepository.swift; sourceTree = "<group>"; };
+		BEC47B352B8E4A9700BF39FD /* MiniWeatherTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MiniWeatherTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		BEC47B372B8E4A9700BF39FD /* MiniWeatherTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiniWeatherTests.swift; sourceTree = "<group>"; };
 		BECC197B2B2C860600A30ACE /* TimeZone+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TimeZone+Extensions.swift"; sourceTree = "<group>"; };
 		BECC197D2B2D071800A30ACE /* Image+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Image+Extensions.swift"; sourceTree = "<group>"; };
 		BECC197F2B2D098000A30ACE /* Calendar+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Calendar+Extensions.swift"; sourceTree = "<group>"; };
@@ -214,6 +237,8 @@
 		BED750BA2B16116A00E2CF9E /* MainCurrentLocationRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCurrentLocationRepository.swift; sourceTree = "<group>"; };
 		BED750BC2B161FEF00E2CF9E /* CurrentLocationProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentLocationProvider.swift; sourceTree = "<group>"; };
 		BED750C02B16218800E2CF9E /* MainCurrentLocationProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCurrentLocationProvider.swift; sourceTree = "<group>"; };
+		BED77EC32BA3433400877FE0 /* StandardNetworkServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandardNetworkServiceTests.swift; sourceTree = "<group>"; };
+		BED77EC52BA34D4700877FE0 /* MockRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockRequest.swift; sourceTree = "<group>"; };
 		BEE949042B30BFAB0074507E /* MapCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapCard.swift; sourceTree = "<group>"; };
 		BEE949062B30C4290074507E /* SunAndMoonCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SunAndMoonCard.swift; sourceTree = "<group>"; };
 		BEE949082B30E1260074507E /* MinuteForecastCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MinuteForecastCard.swift; sourceTree = "<group>"; };
@@ -249,9 +274,41 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		BEC47B322B8E4A9700BF39FD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		BE23F9702BA4973400A85C8C /* Component Tests */ = {
+			isa = PBXGroup;
+			children = (
+				BE23F9722BA4977E00A85C8C /* Parser */,
+				BE23F9712BA4973F00A85C8C /* Network */,
+			);
+			path = "Component Tests";
+			sourceTree = "<group>";
+		};
+		BE23F9712BA4973F00A85C8C /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				BED77EC32BA3433400877FE0 /* StandardNetworkServiceTests.swift */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		BE23F9722BA4977E00A85C8C /* Parser */ = {
+			isa = PBXGroup;
+			children = (
+				BE23F9752BA497E500A85C8C /* StandardDataParserTests.swift */,
+			);
+			path = Parser;
+			sourceTree = "<group>";
+		};
 		BE248C3C2B24BA5C007E32FD /* Preferences */ = {
 			isa = PBXGroup;
 			children = (
@@ -555,6 +612,7 @@
 			isa = PBXGroup;
 			children = (
 				BE71B80D2ACE9F2B003AA99C /* MiniWeather */,
+				BEC47B362B8E4A9700BF39FD /* MiniWeatherTests */,
 				BE71B80C2ACE9F2B003AA99C /* Products */,
 			);
 			sourceTree = "<group>";
@@ -563,6 +621,7 @@
 			isa = PBXGroup;
 			children = (
 				BE71B80B2ACE9F2B003AA99C /* MiniWeather.app */,
+				BEC47B352B8E4A9700BF39FD /* MiniWeatherTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -607,6 +666,17 @@
 				BE75A3612B163B5E0041ED46 /* MainSavedLocationsRepository.swift */,
 			);
 			path = Repository;
+			sourceTree = "<group>";
+		};
+		BEC47B362B8E4A9700BF39FD /* MiniWeatherTests */ = {
+			isa = PBXGroup;
+			children = (
+				BEC47B372B8E4A9700BF39FD /* MiniWeatherTests.swift */,
+				BED77EC22BA3422F00877FE0 /* Mock Objects */,
+				BE23F9702BA4973400A85C8C /* Component Tests */,
+				BE23F96E2BA4489100A85C8C /* AsynchronousTestHelpers.swift */,
+			);
+			path = MiniWeatherTests;
 			sourceTree = "<group>";
 		};
 		BECDADD12B23757300CA2EAB /* Settings */ = {
@@ -728,6 +798,16 @@
 			path = "Saved Locations";
 			sourceTree = "<group>";
 		};
+		BED77EC22BA3422F00877FE0 /* Mock Objects */ = {
+			isa = PBXGroup;
+			children = (
+				BE65CFAC2B95FBC400D7AE98 /* MockWeather.swift */,
+				BE622BBB2B9C6C3200E963E1 /* MockURLProtocol.swift */,
+				BED77EC52BA34D4700877FE0 /* MockRequest.swift */,
+			);
+			path = "Mock Objects";
+			sourceTree = "<group>";
+		};
 		BEF4E7E02ACF41A10043BE93 /* Locations */ = {
 			isa = PBXGroup;
 			children = (
@@ -802,6 +882,24 @@
 			productReference = BE71B80B2ACE9F2B003AA99C /* MiniWeather.app */;
 			productType = "com.apple.product-type.application";
 		};
+		BEC47B342B8E4A9700BF39FD /* MiniWeatherTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BEC47B3D2B8E4A9700BF39FD /* Build configuration list for PBXNativeTarget "MiniWeatherTests" */;
+			buildPhases = (
+				BEC47B312B8E4A9700BF39FD /* Sources */,
+				BEC47B322B8E4A9700BF39FD /* Frameworks */,
+				BEC47B332B8E4A9700BF39FD /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				BEC47B3A2B8E4A9700BF39FD /* PBXTargetDependency */,
+			);
+			name = MiniWeatherTests;
+			productName = MiniWeatherTests;
+			productReference = BEC47B352B8E4A9700BF39FD /* MiniWeatherTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -809,11 +907,15 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1500;
+				LastSwiftUpdateCheck = 1510;
 				LastUpgradeCheck = 1500;
 				TargetAttributes = {
 					BE71B80A2ACE9F2B003AA99C = {
 						CreatedOnToolsVersion = 15.0;
+					};
+					BEC47B342B8E4A9700BF39FD = {
+						CreatedOnToolsVersion = 15.1;
+						TestTargetID = BE71B80A2ACE9F2B003AA99C;
 					};
 				};
 			};
@@ -831,6 +933,7 @@
 			projectRoot = "";
 			targets = (
 				BE71B80A2ACE9F2B003AA99C /* MiniWeather */,
+				BEC47B342B8E4A9700BF39FD /* MiniWeatherTests */,
 			);
 		};
 /* End PBXProject section */
@@ -842,6 +945,13 @@
 			files = (
 				BE71B8182ACE9F2C003AA99C /* Preview Assets.xcassets in Resources */,
 				BE71B8152ACE9F2C003AA99C /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BEC47B332B8E4A9700BF39FD /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -966,7 +1076,29 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		BEC47B312B8E4A9700BF39FD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BE65CFAD2B95FBC400D7AE98 /* MockWeather.swift in Sources */,
+				BE23F96F2BA4489100A85C8C /* AsynchronousTestHelpers.swift in Sources */,
+				BED77EC42BA3433400877FE0 /* StandardNetworkServiceTests.swift in Sources */,
+				BE23F9762BA497E500A85C8C /* StandardDataParserTests.swift in Sources */,
+				BEC47B382B8E4A9700BF39FD /* MiniWeatherTests.swift in Sources */,
+				BE622BBC2B9C6C3200E963E1 /* MockURLProtocol.swift in Sources */,
+				BED77EC62BA34D4700877FE0 /* MockRequest.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		BEC47B3A2B8E4A9700BF39FD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = BE71B80A2ACE9F2B003AA99C /* MiniWeather */;
+			targetProxy = BEC47B392B8E4A9700BF39FD /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		BE71B81B2ACE9F2C003AA99C /* Debug */ = {
@@ -1162,6 +1294,44 @@
 			};
 			name = Release;
 		};
+		BEC47B3B2B8E4A9700BF39FD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = P75398C8MB;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.okoroezenwa.MiniWeatherTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MiniWeather.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/MiniWeather";
+			};
+			name = Debug;
+		};
+		BEC47B3C2B8E4A9700BF39FD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = P75398C8MB;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.okoroezenwa.MiniWeatherTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MiniWeather.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/MiniWeather";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1179,6 +1349,15 @@
 			buildConfigurations = (
 				BE71B81E2ACE9F2C003AA99C /* Debug */,
 				BE71B81F2ACE9F2C003AA99C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BEC47B3D2B8E4A9700BF39FD /* Build configuration list for PBXNativeTarget "MiniWeatherTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BEC47B3B2B8E4A9700BF39FD /* Debug */,
+				BEC47B3C2B8E4A9700BF39FD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
