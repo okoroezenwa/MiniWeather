@@ -287,8 +287,8 @@
 		BE23F9702BA4973400A85C8C /* Component Tests */ = {
 			isa = PBXGroup;
 			children = (
-				BE23F9722BA4977E00A85C8C /* Parser */,
 				BE23F9712BA4973F00A85C8C /* Network */,
+				BE23F9722BA4977E00A85C8C /* Parser */,
 			);
 			path = "Component Tests";
 			sourceTree = "<group>";
@@ -307,6 +307,25 @@
 				BE23F9752BA497E500A85C8C /* StandardDataParserTests.swift */,
 			);
 			path = Parser;
+			sourceTree = "<group>";
+		};
+		BE23F9772BA5D72E00A85C8C /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				BE7DA7862AEA6E540016047C /* Request.swift */,
+				BE4FE4A72AEC1EC900A381FD /* HTTPMethod.swift */,
+				BE4FE4A92AEC1F1000A381FD /* NetworkError.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		BE23F9782BA5D73800A85C8C /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				BE4FE4A52AEC1E2500A381FD /* NetworkService.swift */,
+				BE7DA77C2AE6B42A0016047C /* StandardNetworkService.swift */,
+			);
+			path = Service;
 			sourceTree = "<group>";
 		};
 		BE248C3C2B24BA5C007E32FD /* Preferences */ = {
@@ -394,11 +413,8 @@
 		BE4FE4A42AEC1E1200A381FD /* Network */ = {
 			isa = PBXGroup;
 			children = (
-				BE7DA7862AEA6E540016047C /* Request.swift */,
-				BE4FE4A72AEC1EC900A381FD /* HTTPMethod.swift */,
-				BE4FE4A92AEC1F1000A381FD /* NetworkError.swift */,
-				BE4FE4A52AEC1E2500A381FD /* NetworkService.swift */,
-				BE7DA77C2AE6B42A0016047C /* StandardNetworkService.swift */,
+				BE23F9772BA5D72E00A85C8C /* Models */,
+				BE23F9782BA5D73800A85C8C /* Service */,
 			);
 			path = Network;
 			sourceTree = "<group>";

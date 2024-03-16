@@ -16,6 +16,12 @@ protocol LocationProtocol {
     var longitude: Double { get }
 }
 
+protocol PartialLocationProtocol {
+    var city: String { get }
+    var state: String? { get }
+    var countryName: String { get }
+}
+
 /// The Location object.
 struct Location: Codable, Identifiable, Hashable {
     let id: UUID
