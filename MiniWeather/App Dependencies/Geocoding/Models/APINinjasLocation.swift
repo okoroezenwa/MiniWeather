@@ -18,10 +18,10 @@ struct APINinjasLocation: Decodable, LocationProtocol {
         case latitude
     }
     
-    init(tempLocation: APINinjasTemporaryLocation, coordinates: CLLocationCoordinate2D) {
+    init(tempLocation: PartialLocationProtocol, coordinates: CLLocationCoordinate2D) {
         self.city = tempLocation.city
         self.state = tempLocation.state
-        self.country = tempLocation.country
+        self.country = tempLocation.countryName
         self.longitude = coordinates.longitude
         self.latitude = coordinates.latitude
     }
@@ -33,7 +33,7 @@ struct APINinjasLocation: Decodable, LocationProtocol {
     let state: String?
 }
 
-struct APINinjasTemporaryLocation: Decodable {
+struct APINinjasTemporaryLocation: Decodable, PartialLocationProtocol {
     enum CodingKeys: String, CodingKey {
         case city = "name"
         case state
@@ -43,6 +43,7 @@ struct APINinjasTemporaryLocation: Decodable {
     let city: String
     let country: String
     let state: String?
+    var countryName: String { country }
 }
 
 extension APINinjasLocation {

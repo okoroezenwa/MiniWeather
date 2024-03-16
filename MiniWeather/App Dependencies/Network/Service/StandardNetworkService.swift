@@ -17,7 +17,7 @@ struct StandardNetworkService: NetworkService {
     func getData(from request: Request) async throws -> Data {
         do {
             let (data, response) = try await urlSession.data(for: request.createURLRequest())
-            // TODO: - More response code handling
+            #warning("Handle different ranges/values of response codes and finalise NetworkError cases")
             guard let response = response as? HTTPURLResponse, (200...299).contains(response.statusCode) else {
                 throw NetworkError.invalidResponse
             }
