@@ -3,6 +3,6 @@ WeatherNow re-done in SwiftUI and incorporating feedback from the WeatherNow sub
 
 ## Goals
 - [x] Clean, testable code using Repositoy-Service pattern.
-- [ ] Unit Tests
+- [x] Unit Tests
 - [x] Location list with temperature display
 - [x] Full screen/Detail weather info for a location
