@@ -7,7 +7,7 @@
 
 import Foundation
 
-/// The object required to make an API rquest within a Service.
+/// The object used to make an API request within a Service.
 protocol Request {
     var host: String { get }
     var path: String { get }

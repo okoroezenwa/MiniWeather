@@ -107,19 +107,19 @@ final class DependencyFactory {
     }
     
     private func makeAppleGeocoderService() -> GeocoderService {
-        AppleGeocoderService(geocoder: .init())
+        AppleGeocoderService<CLPlacemark>(geocoder: CLGeocoder())
     }
     
     private func makeAPINinjasGeocoderService() -> GeocoderService {
-        APINinjasGeocoderService(
-            parser: makeStandardDataParser(), 
+        APINinjasGeocoderService<APINinjasLocation, APINinjasTemporaryLocation>(
+            parser: makeStandardDataParser(),
             networkService: makeStandardNetworkService(), 
             apiKeysProvider: makeMainStringPreferenceProvider()
         )
     }
     
     private func makeOpenWeatherMapGeocoderService() -> GeocoderService {
-        OpenWeatherMapGeocoderService(
+        OpenWeatherMapGeocoderService<OpenWeatherMapLocation>(
             parser: makeStandardDataParser(),
             networkService: makeStandardNetworkService(),
             apiKeysProvider: makeMainStringPreferenceProvider()

@@ -8,7 +8,7 @@
 import Foundation
 import CoreLocation
 
-extension CLPlacemark: LocationProtocol {
+extension CLPlacemark: TimeZoneLocationProtocol {
     var city: String {
         locality ?? name ?? "Unknown City"
     }
