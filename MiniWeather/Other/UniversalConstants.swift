@@ -13,7 +13,7 @@ struct UniversalConstants {
         state: "FCT",
         country: "Nigeria",
         nickname: "Home",
-        timeZone: .init(timeZone: TimeZone.autoupdatingCurrent),
+        timeZone: .init(timeZone: .gmt),
         latitide: 0,
         longitude: 0
     )

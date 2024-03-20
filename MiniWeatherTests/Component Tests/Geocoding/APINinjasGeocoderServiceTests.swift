@@ -40,7 +40,7 @@ final class APINinjasGeocoderServiceTests: XCTestCase {
         // Given
         let mockRequest = MockRequest(sessionReturnType: .other("APINNamedSuccess"))
         let url = try mockRequest.createURLRequest().url!
-        MockURLProtocol.stub(url: url, data: try JSONEncoder().encode([MockLocation()]), response: HTTPURLResponse(url: url, statusCode: 200, httpVersion: nil, headerFields: nil), error: nil)
+        MockURLProtocol.stub(url: url, data: try JSONEncoder().encode([MockLocation()]), response: .success(url), error: nil)
         let name = "Test"
         
         // When
