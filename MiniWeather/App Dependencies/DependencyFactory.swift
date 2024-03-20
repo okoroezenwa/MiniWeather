@@ -8,6 +8,7 @@
 import Foundation
 import CoreLocation
 import OSLog
+import WeatherKit
 
 /// The singleton object through which all app dependencies are retrieved.
 final class DependencyFactory {
@@ -167,15 +168,15 @@ final class DependencyFactory {
     }
     
     private func makeAPINinjasWeatherService() -> WeatherService {
-        APINinjasWeatherService(
-            parser: makeStandardDataParser(), 
+        APINinjasWeatherService<APINinjasWeather>(
+            parser: makeStandardDataParser(),
             networkService: makeStandardNetworkService(),
             apiKeysProvider: makeMainStringPreferenceProvider()
         )
     }
     
     private func makeOpenWeatherMapWeatherService() -> WeatherService {
-        OpenWeatherMapWeatherService(
+        OpenWeatherMapWeatherService<OpenWeatherMapWeather>(
             parser: makeStandardDataParser(),
             timeZoneDatastore: makeMemoryDatastore(),
             networkService: makeStandardNetworkService(),
@@ -184,8 +185,8 @@ final class DependencyFactory {
     }
     
     private func makeAppleWeatherService() -> WeatherService {
-        AppleWeatherService(
-            service: .shared
+        AppleWeatherService<WeatherKit.Weather>(
+            provider: WeatherKit.WeatherService.shared
         )
     }
     

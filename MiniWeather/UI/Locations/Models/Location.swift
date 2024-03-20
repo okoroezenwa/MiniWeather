@@ -106,11 +106,4 @@ extension Location {
         }
         return true
     }
-    
-    func coordinates() -> CLLocationCoordinate2D {
-        .init(
-            latitude: latitude,
-            longitude: longitude
-        )
-    }
 }

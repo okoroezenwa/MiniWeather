@@ -8,21 +8,23 @@
 import Foundation
 import CoreLocation
 
-struct OpenWeatherMapWeatherService: WeatherService {
+struct OpenWeatherMapWeatherService<T: TimeZoneWeatherProtocol & Decodable>: WeatherService {
     private let parser: DataParser
     private let timeZoneDatastore: Datastore
     private let networkService: NetworkService
     private let apiKeysProvider: StringPreferenceProvider
+    private let weatherRequest: Request?
     
-    init(parser: DataParser, timeZoneDatastore: Datastore, networkService: NetworkService, apiKeysProvider: StringPreferenceProvider) {
+    init(parser: DataParser, timeZoneDatastore: Datastore, networkService: NetworkService, apiKeysProvider: StringPreferenceProvider, weatherRequest: Request? = nil) {
         self.parser = parser
         self.timeZoneDatastore = timeZoneDatastore
         self.networkService = networkService
         self.apiKeysProvider = apiKeysProvider
+        self.weatherRequest = weatherRequest
     }
     
     func getWeather(for location: Location) async throws -> WeatherProtocol {
-        let weatherRequest = OpenWeatherMapWeatherRequest(
+        let weatherRequest = weatherRequest ?? OpenWeatherMapWeatherRequest(
             queryItems: [
                 "lat": String(location.coordinates().latitude),
                 "lon": String(location.coordinates().longitude),
@@ -33,7 +35,7 @@ struct OpenWeatherMapWeatherService: WeatherService {
         
         do {
             let data = try await networkService.getData(from: weatherRequest)
-            let weather: OpenWeatherMapWeather = try parser.decode(data)
+            let weather: T = try parser.decode(data)
             try timeZoneDatastore.store(
                 TimeZoneIdentifier(name: weather.timezone, offset: weather.timezoneOffset),
                 withKey: .timeZone(name: location.fullName)

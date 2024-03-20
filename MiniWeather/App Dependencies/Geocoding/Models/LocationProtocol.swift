@@ -17,6 +17,15 @@ protocol LocationProtocol {
     var longitude: Double { get }
 }
 
+extension LocationProtocol {
+    func coordinates() -> CLLocationCoordinate2D {
+        .init(
+            latitude: latitude,
+            longitude: longitude
+        )
+    }
+}
+
 protocol PartialLocationProtocol {
     var city: String { get }
     var state: String? { get }
@@ -24,11 +33,11 @@ protocol PartialLocationProtocol {
 }
 
 protocol TimeZoneLocationProtocol: LocationProtocol {
-    var city: String { get }
-    var state: String? { get }
-    var countryName: String { get }
-    var latitude: Double { get }
-    var longitude: Double { get }
+//    var city: String { get }
+//    var state: String? { get }
+//    var countryName: String { get }
+//    var latitude: Double { get }
+//    var longitude: Double { get }
     var timeZone: TimeZone? { get }
 }
 
