@@ -17,7 +17,7 @@ final class DependencyFactory {
             MainLocationManagerDelegate(
                 locationManager: CLLocationManager()
             ),
-        temporaryStore: TemporaryStore(), 
+        temporaryStore: StandardTemporaryStore(), 
         cloudDatastoreUpdateHandler:
             CloudKeyValueDatastoreUpdateHandler(
                 cloudStore: NSUbiquitousKeyValueStore.default,

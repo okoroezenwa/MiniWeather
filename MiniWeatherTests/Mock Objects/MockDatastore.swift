@@ -20,7 +20,7 @@ final class MockDatastore: Datastore {
             throw DatastoreError.notFound
         }
         
-        guard let storable = dict[key] as? Storable else {
+        guard let storable = item as? Storable else {
             throw TypeError.typeMismatch
         }
         
