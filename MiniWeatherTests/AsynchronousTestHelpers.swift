@@ -60,3 +60,30 @@ func XCTAssertNoThrowAsync<T>(
 
     }
 }
+
+func XCTAssertAsync(
+    _ expression: @autoclosure () async throws -> Bool,
+    _ message: @autoclosure () -> String = "",
+    file: StaticString = #filePath,
+    line: UInt = #line
+) async {
+    do {
+        let bool = try await expression()
+        if !bool {
+            let customMessage = message()
+            if customMessage.isEmpty {
+                XCTFail("The expression was false", file: file, line: line)
+            } else {
+                XCTFail(customMessage, file: file, line: line)
+            }
+        }
+    } catch {
+        let customMessage = message()
+        if customMessage.isEmpty {
+            XCTFail("An error was thrown: \(error)", file: file, line: line)
+        } else {
+            XCTFail("\(customMessage): \(error)", file: file, line: line)
+        }
+        
+    }
+}

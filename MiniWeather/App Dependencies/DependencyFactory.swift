@@ -8,6 +8,7 @@
 import Foundation
 import CoreLocation
 import OSLog
+import WeatherKit
 
 /// The singleton object through which all app dependencies are retrieved.
 final class DependencyFactory {
@@ -16,7 +17,7 @@ final class DependencyFactory {
             MainLocationManagerDelegate(
                 locationManager: CLLocationManager()
             ),
-        temporaryStore: TemporaryStore(), 
+        temporaryStore: StandardTemporaryStore(), 
         cloudDatastoreUpdateHandler:
             CloudKeyValueDatastoreUpdateHandler(
                 cloudStore: NSUbiquitousKeyValueStore.default,
@@ -107,19 +108,19 @@ final class DependencyFactory {
     }
     
     private func makeAppleGeocoderService() -> GeocoderService {
-        AppleGeocoderService(geocoder: .init())
+        AppleGeocoderService<CLPlacemark>(geocoder: CLGeocoder())
     }
     
     private func makeAPINinjasGeocoderService() -> GeocoderService {
-        APINinjasGeocoderService(
-            parser: makeStandardDataParser(), 
+        APINinjasGeocoderService<APINinjasLocation, APINinjasTemporaryLocation>(
+            parser: makeStandardDataParser(),
             networkService: makeStandardNetworkService(), 
             apiKeysProvider: makeMainStringPreferenceProvider()
         )
     }
     
     private func makeOpenWeatherMapGeocoderService() -> GeocoderService {
-        OpenWeatherMapGeocoderService(
+        OpenWeatherMapGeocoderService<OpenWeatherMapLocation>(
             parser: makeStandardDataParser(),
             networkService: makeStandardNetworkService(),
             apiKeysProvider: makeMainStringPreferenceProvider()
@@ -148,9 +149,10 @@ final class DependencyFactory {
     }
     
     private func makeOpenWeatherMapTimeZoneService() -> TimeZoneService {
-        OpenWeatherMapTimeZoneService(
+        OpenWeatherMapTimeZoneService<CLPlacemark>(
             cache: makeMemoryDatastore(),
-            geocoder: CLGeocoder()
+            geocoder: CLGeocoder(), 
+            weatherService: Settings.currentValue(for: Settings.weatherProvider)
         )
     }
     
@@ -166,15 +168,15 @@ final class DependencyFactory {
     }
     
     private func makeAPINinjasWeatherService() -> WeatherService {
-        APINinjasWeatherService(
-            parser: makeStandardDataParser(), 
+        APINinjasWeatherService<APINinjasWeather>(
+            parser: makeStandardDataParser(),
             networkService: makeStandardNetworkService(),
             apiKeysProvider: makeMainStringPreferenceProvider()
         )
     }
     
     private func makeOpenWeatherMapWeatherService() -> WeatherService {
-        OpenWeatherMapWeatherService(
+        OpenWeatherMapWeatherService<OpenWeatherMapWeather>(
             parser: makeStandardDataParser(),
             timeZoneDatastore: makeMemoryDatastore(),
             networkService: makeStandardNetworkService(),
@@ -183,8 +185,8 @@ final class DependencyFactory {
     }
     
     private func makeAppleWeatherService() -> WeatherService {
-        AppleWeatherService(
-            service: .shared
+        AppleWeatherService<WeatherKit.Weather>(
+            provider: WeatherKit.WeatherService.shared
         )
     }
     

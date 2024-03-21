@@ -46,6 +46,11 @@ protocol WeatherProtocol: Sendable {
     func getCelestialBodyProgress(start: Date?, end: Date?, in timeZone: TimeZone?) -> Double
 }
 
+protocol TimeZoneWeatherProtocol: WeatherProtocol {
+    var timezone: String { get }
+    var timezoneOffset: Int { get }
+}
+
 extension WeatherProtocol {
     func tempString(withUnit: Bool = false) -> String {
         Int(temperature.converted(to: preferredTemperatureUnit()).value).formatted(.number) + preferredTemperatureSymbol() + (withUnit ? preferredTemperatureUnitLetter() : "")

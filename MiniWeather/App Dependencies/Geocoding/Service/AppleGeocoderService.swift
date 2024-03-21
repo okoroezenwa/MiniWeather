@@ -8,17 +8,16 @@
 import Foundation
 import CoreLocation
 
-struct AppleGeocoderService: GeocoderService {
-    #warning("Make a protocol for this")
-    private let geocoder: CLGeocoder
+struct AppleGeocoderService<T: TimeZoneLocationProtocol>: GeocoderService {
+    private let geocoder: TimeZoneLocationGeocoder
     
-    init(geocoder: CLGeocoder) {
+    init(geocoder: TimeZoneLocationGeocoder) {
         self.geocoder = geocoder
     }
     
     func getLocations(named searchText: String) async throws -> [Location] {
         do {
-            let placemarks = try await geocoder.geocodeAddressString(searchText)
+            let placemarks: [T] = try await geocoder.getLocations(named: searchText)
             return placemarks.map { Location(locationObject: $0, timeZone: .init(timeZone: $0.timeZone)) }
         } catch let error {
             throw error
@@ -27,9 +26,7 @@ struct AppleGeocoderService: GeocoderService {
     
     func getLocations(at coordinates: CLLocationCoordinate2D) async throws -> [Location] {
         do {
-            let placemarks = try await geocoder.reverseGeocodeLocation(
-                .init(latitude: coordinates.latitude, longitude: coordinates.longitude)
-            )
+            let placemarks: [T] = try await geocoder.getLocations(at: .init(latitude: coordinates.latitude, longitude: coordinates.longitude))
             return placemarks.map { Location(locationObject: $0, timeZone: .init(timeZone: $0.timeZone)) }
         } catch let error {
             throw error

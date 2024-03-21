@@ -8,24 +8,24 @@
 import Foundation
 import CoreLocation
 
-struct OpenWeatherMapTimeZoneService: TimeZoneService {
+struct OpenWeatherMapTimeZoneService<T: TimeZoneLocationProtocol>: TimeZoneService {
     private let cache: Datastore
-    #warning("Make a protocol for this")
-    private let geocoder: CLGeocoder
+    private let geocoder: TimeZoneLocationGeocoder
+    private let weatherService: Service
     
-    init(cache: Datastore, geocoder: CLGeocoder) {
+    init(cache: Datastore, geocoder: TimeZoneLocationGeocoder, weatherService: Service) {
         self.cache = cache
         self.geocoder = geocoder
+        self.weatherService = weatherService
     }
     
     func getTimeZone(for location: Location) async throws -> TimeZoneIdentifier {
         do {
-            let currentService: Service = Settings.currentValue(for: Settings.weatherProvider)
-            if currentService == .openWeatherMap {
+            if weatherService == .openWeatherMap {
                 let timeZone: TimeZoneIdentifier = try cache.fetch(forKey: .timeZone(name: location.fullName))
                 return timeZone
             } else {
-                let placemarks = try await geocoder.reverseGeocodeLocation(.init(latitude: location.latitude, longitude: location.longitude))
+                let placemarks: [T] = try await geocoder.getLocations(at: .init(latitude: location.latitude, longitude: location.longitude))
                 let timeZone = TimeZoneIdentifier(timeZone: placemarks.first?.timeZone)
                 return timeZone
             }

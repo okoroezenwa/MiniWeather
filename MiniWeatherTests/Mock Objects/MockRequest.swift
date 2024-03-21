@@ -25,6 +25,8 @@ struct MockRequest: Request {
                 "failureURL"
             case .invalidResponse:
                 "invalidURL"
+            case .other(let urlString):
+                urlString
         }
     }
     
@@ -32,5 +34,5 @@ struct MockRequest: Request {
 }
 
 enum SessionReturnType {
-    case success, error, failure, invalidResponse
+    case success, error, failure, invalidResponse, other(String)
 }

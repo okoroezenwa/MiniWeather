@@ -12,15 +12,17 @@ struct APINinjasTimeZoneService: TimeZoneService {
     private let parser: DataParser
     private let networkService: NetworkService
     private let apiKeysProvider: StringPreferenceProvider
+    private let timeZoneRequest: Request?
     
-    init(parser: DataParser, networkService: NetworkService, apiKeysProvider: StringPreferenceProvider) {
+    init(parser: DataParser, networkService: NetworkService, apiKeysProvider: StringPreferenceProvider, timeZoneRequest: Request? = nil) {
         self.parser = parser
         self.networkService = networkService
         self.apiKeysProvider = apiKeysProvider
+        self.timeZoneRequest = timeZoneRequest
     }
     
     func getTimeZone(for location: Location) async throws -> TimeZoneIdentifier {
-        let timeZoneRequest = APINinjasTimeZoneRequest(
+        let timeZoneRequest = timeZoneRequest ?? APINinjasTimeZoneRequest(
             queryItems: [
                 "lat": String(location.latitude),
                 "lon": String(location.longitude)

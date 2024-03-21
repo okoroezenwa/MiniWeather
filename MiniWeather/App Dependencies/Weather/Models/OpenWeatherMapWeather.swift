@@ -33,7 +33,7 @@ struct OpenWeatherMapWeather: Codable {
 }
 
 // MARK: - WeatherProtocol Conformance 😮‍💨
-extension OpenWeatherMapWeather: WeatherProtocol {
+extension OpenWeatherMapWeather: TimeZoneWeatherProtocol {
     var temperature: Measurement<UnitTemperature> {
         switch currentWeather.temperature {
             case .first(let temperature):

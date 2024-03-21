@@ -8,21 +8,6 @@
 import Foundation
 import CoreLocation
 
-/// The protocol to which all Location objects conform.
-protocol LocationProtocol {
-    var city: String { get }
-    var state: String? { get }
-    var countryName: String { get }
-    var latitude: Double { get }
-    var longitude: Double { get }
-}
-
-protocol PartialLocationProtocol {
-    var city: String { get }
-    var state: String? { get }
-    var countryName: String { get }
-}
-
 /// The Location object.
 struct Location: Codable, Identifiable, Hashable {
     let id: UUID
@@ -120,12 +105,5 @@ extension Location {
             return false
         }
         return true
-    }
-    
-    func coordinates() -> CLLocationCoordinate2D {
-        .init(
-            latitude: latitude,
-            longitude: longitude
-        )
     }
 }

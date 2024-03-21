@@ -8,19 +8,23 @@
 import Foundation
 import CoreLocation
 
-struct OpenWeatherMapGeocoderService: GeocoderService {
+struct OpenWeatherMapGeocoderService<T: LocationProtocol & Decodable>: GeocoderService {
     private let parser: DataParser
     private let networkService: NetworkService
     private let apiKeysProvider: StringPreferenceProvider
+    private let geocodingRequest: Request?
+    private let reverseGeocodingRequest: Request?
     
-    init(parser: DataParser, networkService: NetworkService, apiKeysProvider: StringPreferenceProvider) {
+    init(parser: DataParser, networkService: NetworkService, apiKeysProvider: StringPreferenceProvider, geocodingRequest: Request? = nil, reverseGeocodingRequest: Request? = nil) {
         self.parser = parser
         self.networkService = networkService
         self.apiKeysProvider = apiKeysProvider
+        self.geocodingRequest = geocodingRequest
+        self.reverseGeocodingRequest = reverseGeocodingRequest
     }
     
     func getLocations(named searchText: String) async throws -> [Location] {
-        let locationsRequest = OpenWeatherMapGeocodingRequest(
+        let locationsRequest = geocodingRequest ?? OpenWeatherMapGeocodingRequest(
             queryItems: [
                 "q": searchText,
                 "limit": "5",
@@ -30,7 +34,7 @@ struct OpenWeatherMapGeocoderService: GeocoderService {
         
         do {
             let data = try await networkService.getData(from: locationsRequest)
-            let locations: [OpenWeatherMapLocation] = try parser.decode(data)
+            let locations: [T] = try parser.decode(data)
             return locations.map { Location(locationObject: $0, timeZone: nil) }
         } catch {
             throw error
@@ -38,7 +42,7 @@ struct OpenWeatherMapGeocoderService: GeocoderService {
     }
     
     func getLocations(at coordinates: CLLocationCoordinate2D) async throws -> [Location] {
-        let locationsRequest = OpenWeatherMapReverseGeocodingRequest(
+        let locationsRequest = reverseGeocodingRequest ?? OpenWeatherMapReverseGeocodingRequest(
             queryItems: [
                 "lat": "\(coordinates.latitude)",
                 "lon": "\(coordinates.longitude)",
@@ -49,7 +53,7 @@ struct OpenWeatherMapGeocoderService: GeocoderService {
         
         do {
             let data = try await networkService.getData(from: locationsRequest)
-            let locations: [OpenWeatherMapLocation] = try parser.decode(data)
+            let locations: [T] = try parser.decode(data)
             return locations
                 .map { Location(locationObject: $0, timeZone: nil) }
         } catch {

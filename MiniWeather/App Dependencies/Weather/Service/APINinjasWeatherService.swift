@@ -8,19 +8,21 @@
 import Foundation
 import CoreLocation
 
-struct APINinjasWeatherService: WeatherService {
+struct APINinjasWeatherService<T: WeatherProtocol & Decodable>: WeatherService {
     private let parser: DataParser
     private let networkService: NetworkService
     private let apiKeysProvider: StringPreferenceProvider
+    private let weatherRequest: Request?
     
-    init(parser: DataParser, networkService: NetworkService, apiKeysProvider: StringPreferenceProvider) {
+    init(parser: DataParser, networkService: NetworkService, apiKeysProvider: StringPreferenceProvider, weatherRequest: Request? = nil) {
         self.parser = parser
         self.networkService = networkService
         self.apiKeysProvider = apiKeysProvider
+        self.weatherRequest = weatherRequest
     }
     
     func getWeather(for location: Location) async throws -> WeatherProtocol {
-        let weatherRequest = APINinjasWeatherRequest(
+        let weatherRequest = weatherRequest ?? APINinjasWeatherRequest(
             queryItems: [
                 "lat": String(location.coordinates().latitude),
                 "lon": String(location.coordinates().longitude)
@@ -30,7 +32,7 @@ struct APINinjasWeatherService: WeatherService {
         
         do {
             let data = try await networkService.getData(from: weatherRequest)
-            let weather: APINinjasWeather = try parser.decode(data)
+            let weather: T = try parser.decode(data)
             return weather
         } catch {
             throw error
