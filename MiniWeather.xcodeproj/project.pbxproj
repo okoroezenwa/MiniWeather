@@ -19,6 +19,11 @@
 		BE170A032BAB862C00A44A52 /* OpenWeatherMapWeatherServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE170A022BAB862C00A44A52 /* OpenWeatherMapWeatherServiceTests.swift */; };
 		BE170A052BAB8B5800A44A52 /* MockWeatherProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE170A042BAB8B5800A44A52 /* MockWeatherProvider.swift */; };
 		BE170A072BAB8E9000A44A52 /* AppleWeatherServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE170A062BAB8E9000A44A52 /* AppleWeatherServiceTests.swift */; };
+		BE170A092BADC5F500A44A52 /* MockUserLocationAuthorisationProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE170A082BADC5F500A44A52 /* MockUserLocationAuthorisationProvider.swift */; };
+		BE170A0B2BADC72100A44A52 /* MockUserLocationCoordinatesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE170A0A2BADC72100A44A52 /* MockUserLocationCoordinatesProvider.swift */; };
+		BE170A0D2BADC8FC00A44A52 /* CLLocationCoordinate2D+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE170A0C2BADC8FC00A44A52 /* CLLocationCoordinate2D+Extensions.swift */; };
+		BE170A0F2BADCE5B00A44A52 /* MainCurrentLocationProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE170A0E2BADCE5B00A44A52 /* MainCurrentLocationProviderTests.swift */; };
+		BE170A122BAE237000A44A52 /* MainSavedLocationsProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE170A112BAE237000A44A52 /* MainSavedLocationsProviderTests.swift */; };
 		BE23F96F2BA4489100A85C8C /* AsynchronousTestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE23F96E2BA4489100A85C8C /* AsynchronousTestHelpers.swift */; };
 		BE23F9762BA497E500A85C8C /* StandardDataParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE23F9752BA497E500A85C8C /* StandardDataParserTests.swift */; };
 		BE23F97C2BA71E6C00A85C8C /* MockLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE23F97B2BA71E6C00A85C8C /* MockLocation.swift */; };
@@ -144,7 +149,7 @@
 		BEFE255C2B060EDD00AB5DED /* MainUserLocationAuthorisationRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFE255B2B060EDD00AB5DED /* MainUserLocationAuthorisationRepository.swift */; };
 		BEFE255E2B061D1300AB5DED /* APINinjasReverseGeocodingRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFE255D2B061D1300AB5DED /* APINinjasReverseGeocodingRequest.swift */; };
 		BEFE25612B06267A00AB5DED /* Broadcaster.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFE25602B06267A00AB5DED /* Broadcaster.swift */; };
-		BEFE25632B06273D00AB5DED /* UserLocationProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFE25622B06273D00AB5DED /* UserLocationProvider.swift */; };
+		BEFE25632B06273D00AB5DED /* UserLocationCoordinatesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFE25622B06273D00AB5DED /* UserLocationCoordinatesProvider.swift */; };
 		BEFE25652B06279100AB5DED /* UserLocationAuthorisationProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFE25642B06279100AB5DED /* UserLocationAuthorisationProvider.swift */; };
 		BEFE25672B06918200AB5DED /* LocationAuthorisationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFE25662B06918200AB5DED /* LocationAuthorisationCell.swift */; };
 /* End PBXBuildFile section */
@@ -172,6 +177,11 @@
 		BE170A022BAB862C00A44A52 /* OpenWeatherMapWeatherServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenWeatherMapWeatherServiceTests.swift; sourceTree = "<group>"; };
 		BE170A042BAB8B5800A44A52 /* MockWeatherProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockWeatherProvider.swift; sourceTree = "<group>"; };
 		BE170A062BAB8E9000A44A52 /* AppleWeatherServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleWeatherServiceTests.swift; sourceTree = "<group>"; };
+		BE170A082BADC5F500A44A52 /* MockUserLocationAuthorisationProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockUserLocationAuthorisationProvider.swift; sourceTree = "<group>"; };
+		BE170A0A2BADC72100A44A52 /* MockUserLocationCoordinatesProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockUserLocationCoordinatesProvider.swift; sourceTree = "<group>"; };
+		BE170A0C2BADC8FC00A44A52 /* CLLocationCoordinate2D+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CLLocationCoordinate2D+Extensions.swift"; sourceTree = "<group>"; };
+		BE170A0E2BADCE5B00A44A52 /* MainCurrentLocationProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCurrentLocationProviderTests.swift; sourceTree = "<group>"; };
+		BE170A112BAE237000A44A52 /* MainSavedLocationsProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainSavedLocationsProviderTests.swift; sourceTree = "<group>"; };
 		BE23F96E2BA4489100A85C8C /* AsynchronousTestHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AsynchronousTestHelpers.swift; sourceTree = "<group>"; };
 		BE23F9752BA497E500A85C8C /* StandardDataParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandardDataParserTests.swift; sourceTree = "<group>"; };
 		BE23F97B2BA71E6C00A85C8C /* MockLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockLocation.swift; sourceTree = "<group>"; };
@@ -301,7 +311,7 @@
 		BEFE255B2B060EDD00AB5DED /* MainUserLocationAuthorisationRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainUserLocationAuthorisationRepository.swift; sourceTree = "<group>"; };
 		BEFE255D2B061D1300AB5DED /* APINinjasReverseGeocodingRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APINinjasReverseGeocodingRequest.swift; sourceTree = "<group>"; };
 		BEFE25602B06267A00AB5DED /* Broadcaster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Broadcaster.swift; sourceTree = "<group>"; };
-		BEFE25622B06273D00AB5DED /* UserLocationProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserLocationProvider.swift; sourceTree = "<group>"; };
+		BEFE25622B06273D00AB5DED /* UserLocationCoordinatesProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserLocationCoordinatesProvider.swift; sourceTree = "<group>"; };
 		BEFE25642B06279100AB5DED /* UserLocationAuthorisationProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserLocationAuthorisationProvider.swift; sourceTree = "<group>"; };
 		BEFE25662B06918200AB5DED /* LocationAuthorisationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationAuthorisationCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -343,9 +353,27 @@
 			path = Weather;
 			sourceTree = "<group>";
 		};
+		BE170A102BADCE6D00A44A52 /* Current Location */ = {
+			isa = PBXGroup;
+			children = (
+				BE170A0E2BADCE5B00A44A52 /* MainCurrentLocationProviderTests.swift */,
+			);
+			path = "Current Location";
+			sourceTree = "<group>";
+		};
+		BE170A132BAEBD6300A44A52 /* Saved Locations */ = {
+			isa = PBXGroup;
+			children = (
+				BE170A112BAE237000A44A52 /* MainSavedLocationsProviderTests.swift */,
+			);
+			path = "Saved Locations";
+			sourceTree = "<group>";
+		};
 		BE23F9702BA4973400A85C8C /* Component Tests */ = {
 			isa = PBXGroup;
 			children = (
+				BE170A132BAEBD6300A44A52 /* Saved Locations */,
+				BE170A102BADCE6D00A44A52 /* Current Location */,
 				BE1709FF2BAB717F00A44A52 /* Weather */,
 				BE1709F82BAB106A00A44A52 /* TimeZone */,
 				BE23F9852BA74E7700A85C8C /* Geocoding */,
@@ -574,6 +602,7 @@
 				BE5384E22B335B5300895109 /* AppleWeatherExtensions.swift */,
 				BE23F9812BA74DE600A85C8C /* CLGeocoder+Extensions.swift */,
 				BE1709FD2BAB3C1E00A44A52 /* URLResponse+Extensions.swift */,
+				BE170A0C2BADC8FC00A44A52 /* CLLocationCoordinate2D+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -840,7 +869,7 @@
 		BED750B52B160CFC00E2CF9E /* Provider */ = {
 			isa = PBXGroup;
 			children = (
-				BEFE25622B06273D00AB5DED /* UserLocationProvider.swift */,
+				BEFE25622B06273D00AB5DED /* UserLocationCoordinatesProvider.swift */,
 			);
 			path = Provider;
 			sourceTree = "<group>";
@@ -904,6 +933,8 @@
 				BE1709F02BA9EFF400A44A52 /* MockTimeZoneLocationGeocoder.swift */,
 				BE1709F62BAAEF0600A44A52 /* MockDatastore.swift */,
 				BE170A042BAB8B5800A44A52 /* MockWeatherProvider.swift */,
+				BE170A082BADC5F500A44A52 /* MockUserLocationAuthorisationProvider.swift */,
+				BE170A0A2BADC72100A44A52 /* MockUserLocationCoordinatesProvider.swift */,
 			);
 			path = "Mock Objects";
 			sourceTree = "<group>";
@@ -1150,10 +1181,11 @@
 				BE62AF322AFA2A0000BEEBFA /* UniversalConstants.swift in Sources */,
 				BE4FE49D2AEC187000A381FD /* TimeZoneRepository.swift in Sources */,
 				BE4E41B92AFBE61C008B07D5 /* LocationsViewModel.swift in Sources */,
-				BEFE25632B06273D00AB5DED /* UserLocationProvider.swift in Sources */,
+				BEFE25632B06273D00AB5DED /* UserLocationCoordinatesProvider.swift in Sources */,
 				BE4FE4C62AEEC40700A381FD /* LocationCell.swift in Sources */,
 				BE71B8132ACE9F2B003AA99C /* Location.swift in Sources */,
 				BECDADCA2B220DC700CA2EAB /* SavedLocationsSection.swift in Sources */,
+				BE170A0D2BADC8FC00A44A52 /* CLLocationCoordinate2D+Extensions.swift in Sources */,
 				BE4FE4C12AEC4DE900A381FD /* APINinjasTimeZoneService.swift in Sources */,
 				BEF55F2E2B307E2F008B8319 /* WeatherCardChildren.swift in Sources */,
 				BE928F1B2B1799610083CC96 /* CloudKeyValueDatastore.swift in Sources */,
@@ -1183,12 +1215,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BE170A0F2BADCE5B00A44A52 /* MainCurrentLocationProviderTests.swift in Sources */,
 				BE23F9892BA788EF00A85C8C /* MockDataParser.swift in Sources */,
+				BE170A122BAE237000A44A52 /* MainSavedLocationsProviderTests.swift in Sources */,
 				BE23F97C2BA71E6C00A85C8C /* MockLocation.swift in Sources */,
 				BE170A032BAB862C00A44A52 /* OpenWeatherMapWeatherServiceTests.swift in Sources */,
 				BE23F98D2BA7922200A85C8C /* MockPartialLocation.swift in Sources */,
 				BE23F97E2BA746CD00A85C8C /* MockTimeZoneLocation.swift in Sources */,
 				BE65CFAD2B95FBC400D7AE98 /* MockWeather.swift in Sources */,
+				BE170A092BADC5F500A44A52 /* MockUserLocationAuthorisationProvider.swift in Sources */,
 				BE1709EF2BA9EDB900A44A52 /* AppleGeocoderServiceTests.swift in Sources */,
 				BE23F96F2BA4489100A85C8C /* AsynchronousTestHelpers.swift in Sources */,
 				BE170A052BAB8B5800A44A52 /* MockWeatherProvider.swift in Sources */,
@@ -1206,6 +1241,7 @@
 				BE1709F12BA9EFF400A44A52 /* MockTimeZoneLocationGeocoder.swift in Sources */,
 				BE1709FC2BAB3A2700A44A52 /* APINinjasTimeZoneServiceTests.swift in Sources */,
 				BE1709F72BAAEF0600A44A52 /* MockDatastore.swift in Sources */,
+				BE170A0B2BADC72100A44A52 /* MockUserLocationCoordinatesProvider.swift in Sources */,
 				BE170A072BAB8E9000A44A52 /* AppleWeatherServiceTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

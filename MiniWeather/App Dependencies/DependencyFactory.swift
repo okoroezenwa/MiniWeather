@@ -17,7 +17,7 @@ final class DependencyFactory {
             MainLocationManagerDelegate(
                 locationManager: CLLocationManager()
             ),
-        temporaryStore: StandardTemporaryStore(), 
+        temporaryStore: StandardTemporaryStore(),
         cloudDatastoreUpdateHandler:
             CloudKeyValueDatastoreUpdateHandler(
                 cloudStore: NSUbiquitousKeyValueStore.default,
@@ -203,7 +203,7 @@ final class DependencyFactory {
         }
     }
     
-    private func makeUserLocationProvider() -> UserLocationProvider {
+    private func makeUserLocationProvider() -> UserLocationCoordinatesProvider {
         locationManagerDelegate
     }
     
