@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-@main
+@main @MainActor
 struct MiniWeatherApp: App {
     @Environment(\.scenePhase) private var scenePhase
     @AppStorage(Settings.appTheme) private var theme = Theme.default
@@ -21,6 +21,16 @@ struct MiniWeatherApp: App {
         return formatter
     }()
     
+    let locationsViewModel = LocationsViewModel(
+        userLocationAuthorisationRepositoryFactory: DependencyFactory.shared.makeUserLocationAuthorisationRepository,
+        userLocationCoordinatesRepositoryFactory: DependencyFactory.shared.makeUserLocationCoordinatesRepository,
+        locationsRepositoryFactory: DependencyFactory.shared.makeLocationsSearchRepository,
+        weatherRepositoryFactory: DependencyFactory.shared.makeWeatherRepository,
+        timeZoneRepositoryFactory: DependencyFactory.shared.makeTimeZoneRepository,
+        currentLocationRepositoryFactory: DependencyFactory.shared.makeCurrentLocationRepository,
+        savedLocationsRepositoryFactory: DependencyFactory.shared.makeSavedLocationsRepository
+    )
+    
     init() {
         NSUbiquitousKeyValueStore.default.synchronize()
     }
@@ -28,7 +38,7 @@ struct MiniWeatherApp: App {
     var body: some Scene {
         WindowGroup {
             MainView(
-                viewModel: .shared
+                viewModel: locationsViewModel
             )
             .environment(\.timeFormatter, timeFormatter)
             .tint(.primary)
