@@ -9,4 +9,4 @@ import Foundation
 import CoreLocation
 
 /// An object that can return user location authorisation and the user's current location.
-protocol LocationManagerDelegate: CLLocationManagerDelegate, UserLocationAuthorisationProvider, UserLocationProvider { }
+protocol LocationManagerDelegate: CLLocationManagerDelegate, UserLocationAuthorisationProvider, UserLocationCoordinatesProvider { }

@@ -9,13 +9,18 @@ import Foundation
 @testable import MiniWeather
 
 final class MockDatastore: Datastore {
-    private var dict: [DatastoreKey: Any]
+    #warning("Replace nullability with encoder/decoder?")
+    private var dict: [DatastoreKey: Any]?
     
-    init(dict: [DatastoreKey : Any]) {
+    init(dict: [DatastoreKey : Any]?) {
         self.dict = dict
     }
     
     func fetch<Storable>(forKey key: MiniWeather.DatastoreKey) throws -> Storable where Storable : Decodable {
+        guard let dict else {
+            throw LocationError.notFound
+        }
+        
         guard let item = dict[key] else {
             throw DatastoreError.notFound
         }
@@ -28,6 +33,6 @@ final class MockDatastore: Datastore {
     }
     
     func store<Storable>(_ storable: Storable, withKey key: MiniWeather.DatastoreKey) throws where Storable : Encodable {
-        dict[key] = storable
+        dict?[key] = storable
     }
 }

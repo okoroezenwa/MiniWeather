@@ -33,11 +33,6 @@ protocol PartialLocationProtocol {
 }
 
 protocol TimeZoneLocationProtocol: LocationProtocol {
-//    var city: String { get }
-//    var state: String? { get }
-//    var countryName: String { get }
-//    var latitude: Double { get }
-//    var longitude: Double { get }
     var timeZone: TimeZone? { get }
 }
 

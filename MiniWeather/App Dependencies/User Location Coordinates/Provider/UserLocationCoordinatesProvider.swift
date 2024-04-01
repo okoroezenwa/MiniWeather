@@ -1,5 +1,5 @@
 //
-//  UserLocationProvider.swift
+//  UserLocationCoordinatesProvider.swift
 //  MiniWeather
 //
 //  Created by Ezenwa Okoro on 16/11/2023.
@@ -9,7 +9,7 @@ import Foundation
 import CoreLocation
 
 /// An object that can resolve and return the user's current location coordinates.
-protocol UserLocationProvider {
+protocol UserLocationCoordinatesProvider {
     /**
      Resolves and returns the user's current location coordinates.
      

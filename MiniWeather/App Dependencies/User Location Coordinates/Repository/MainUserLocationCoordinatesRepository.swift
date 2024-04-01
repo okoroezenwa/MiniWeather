@@ -9,9 +9,9 @@ import Foundation
 import CoreLocation
 
 struct MainUserLocationCoordinatesRepository: UserLocationCoordinatesRepository {
-    private let userLocationProvider: UserLocationProvider
+    private let userLocationProvider: UserLocationCoordinatesProvider
     
-    init(userLocationProvider: UserLocationProvider) {
+    init(userLocationProvider: UserLocationCoordinatesProvider) {
         self.userLocationProvider = userLocationProvider
     }
     
