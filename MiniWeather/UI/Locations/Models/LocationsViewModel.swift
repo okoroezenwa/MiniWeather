@@ -33,16 +33,6 @@ final class LocationsViewModel {
     var kvsCancellable: Cancellable?
     private var currentLocationNeedsRefresh = false
     
-//    static let shared = LocationsViewModel(
-//        userLocationAuthorisationRepositoryFactory: DependencyFactory.shared.makeUserLocationAuthorisationRepository,
-//        userLocationCoordinatesRepositoryFactory: DependencyFactory.shared.makeUserLocationCoordinatesRepository,
-//        locationsRepositoryFactory: DependencyFactory.shared.makeLocationsSearchRepository,
-//        weatherRepositoryFactory: DependencyFactory.shared.makeWeatherRepository,
-//        timeZoneRepositoryFactory: DependencyFactory.shared.makeTimeZoneRepository,
-//        currentLocationRepositoryFactory: DependencyFactory.shared.makeCurrentLocationRepository,
-//        savedLocationsRepositoryFactory: DependencyFactory.shared.makeSavedLocationsRepository
-//    )
-    
     init(
         userLocationAuthorisationRepositoryFactory: @escaping () -> UserLocationAuthorisationRepository,
         userLocationCoordinatesRepositoryFactory: @escaping () -> UserLocationCoordinatesRepository,

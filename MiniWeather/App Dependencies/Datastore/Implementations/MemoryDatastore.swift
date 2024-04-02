@@ -30,21 +30,3 @@ struct MemoryDatastore: Datastore {
         store.set(storable, forKey: key)
     }
 }
-
-#warning("Move elsewhere")
-protocol TemporaryStore {
-    func value(forKey key: DatastoreKey) -> Any?
-    func set(_ value: Any, forKey key: DatastoreKey)
-}
-
-final class StandardTemporaryStore: TemporaryStore {
-    private lazy var dictionary = [DatastoreKey: Any]()
-    
-    func value(forKey key: DatastoreKey) -> Any? {
-        dictionary[key]
-    }
-    
-    func set(_ value: Any, forKey key: DatastoreKey) {
-        dictionary[key] = value
-    }
-}

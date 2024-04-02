@@ -41,7 +41,8 @@ struct UserDefaultsDatastore: Datastore {
             let data = try encoder.encode(storable)
             store.set(data, forKey: key.rawValue)
         } catch {
-            
+            logger.error("\(error.localizedDescription, privacy: .public)")
+            throw error
         }
     }
 }
