@@ -178,6 +178,14 @@ struct MainView: View {
 
 #Preview {
     MainView(
-        viewModel: .shared
+        viewModel: LocationsViewModel(
+            userLocationAuthorisationRepositoryFactory: DependencyFactory.shared.makeUserLocationAuthorisationRepository,
+            userLocationCoordinatesRepositoryFactory: DependencyFactory.shared.makeUserLocationCoordinatesRepository,
+            locationsRepositoryFactory: DependencyFactory.shared.makeLocationsSearchRepository,
+            weatherRepositoryFactory: DependencyFactory.shared.makeWeatherRepository,
+            timeZoneRepositoryFactory: DependencyFactory.shared.makeTimeZoneRepository,
+            currentLocationRepositoryFactory: DependencyFactory.shared.makeCurrentLocationRepository,
+            savedLocationsRepositoryFactory: DependencyFactory.shared.makeSavedLocationsRepository
+        )
     )
 }
