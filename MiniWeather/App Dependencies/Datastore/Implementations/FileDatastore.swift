@@ -34,6 +34,7 @@ final class FileDatastore: Datastore {
     }
     
     func store<Storable: Encodable>(_ storable: Storable, withKey key: DatastoreKey) throws {
+        #warning("Use do-catch block")
         let data = try encoder.encode(storable)
         try cache.syncCache(data, key: key.rawValue)
     }
