@@ -1,0 +1,15 @@
+{
+  "originHash" : "77940252e00dd0f834c580401c0b81e9334a3331a27ab88a7691500047a38d88",
+  "pins" : [
+    {
+      "identity" : "diskcache",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Mobelux/DiskCache",
+      "state" : {
+        "revision" : "07c65d6d8c282bd95074c22f267050b6172a0278",
+        "version" : "2.1.0"
+      }
+    }
+  ],
+  "version" : 3
+}

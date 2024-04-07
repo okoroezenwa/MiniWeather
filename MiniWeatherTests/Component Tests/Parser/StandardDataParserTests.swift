@@ -13,7 +13,7 @@ final class StandardDataParserTests: XCTestCase {
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
-        sut = StandardDataParser(decoder: .init())
+        sut = StandardDataParser(decoder: JSONDecoder.init())
     }
 
     override func tearDownWithError() throws {
@@ -46,7 +46,7 @@ final class StandardDataParserTests: XCTestCase {
         
         // When
         do {
-            let response: ExampleJSON = try sut.decode(data)
+            let _: ExampleJSON = try sut.decode(data)
             XCTFail("An error should be thrown")
         } catch {
             parserError = error

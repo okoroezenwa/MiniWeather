@@ -11,7 +11,8 @@ import Combine
 import SwiftUI
 import OSLog
 
-@Observable @MainActor final class LocationsViewModel {
+@Observable @MainActor 
+final class LocationsViewModel {
     private let userLocationAuthorisationRepositoryFactory: () -> UserLocationAuthorisationRepository
     private let userLocationCoordinatesRepositoryFactory: () -> UserLocationCoordinatesRepository
     private let locationsRepositoryFactory: () -> LocationsSearchRepository
@@ -31,16 +32,6 @@ import OSLog
     private var searchSubject = PassthroughSubject<String, Never>()
     var kvsCancellable: Cancellable?
     private var currentLocationNeedsRefresh = false
-    
-    static let shared = LocationsViewModel(
-        userLocationAuthorisationRepositoryFactory: DependencyFactory.shared.makeUserLocationAuthorisationRepository,
-        userLocationCoordinatesRepositoryFactory: DependencyFactory.shared.makeUserLocationCoordinatesRepository,
-        locationsRepositoryFactory: DependencyFactory.shared.makeLocationsSearchRepository,
-        weatherRepositoryFactory: DependencyFactory.shared.makeWeatherRepository,
-        timeZoneRepositoryFactory: DependencyFactory.shared.makeTimeZoneRepository,
-        currentLocationRepositoryFactory: DependencyFactory.shared.makeCurrentLocationRepository,
-        savedLocationsRepositoryFactory: DependencyFactory.shared.makeSavedLocationsRepository
-    )
     
     init(
         userLocationAuthorisationRepositoryFactory: @escaping () -> UserLocationAuthorisationRepository,

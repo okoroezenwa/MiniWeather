@@ -46,7 +46,6 @@ final class AppleGeocoderServiceTests: XCTestCase {
     
     func test_getLocationAt_LocationsReturnedSuccessfully() async throws {
         // Given
-        let name = "Test"
         let coordinates = CLLocationCoordinate2D(latitude: 0, longitude: 0)
         
         // When
@@ -58,7 +57,6 @@ final class AppleGeocoderServiceTests: XCTestCase {
     
     func test_getLocationAt_ErrorReturned() async throws {
         // Given
-        let name = "Test"
         let coordinates = CLLocationCoordinate2D(latitude: 0, longitude: 0)
         
         // When

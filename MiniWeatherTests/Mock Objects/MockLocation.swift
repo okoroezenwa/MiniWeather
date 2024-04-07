@@ -15,3 +15,5 @@ struct MockLocation: LocationProtocol, Codable {
     var latitude: Double = 0
     var longitude: Double = 0
 }
+
+extension MockLocation: Equatable { }

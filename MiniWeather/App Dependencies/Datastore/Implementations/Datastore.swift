@@ -23,7 +23,7 @@ protocol Datastore {
      
      - Parameters:
         - object: The Storable object to store.
-        - key: The key to be used to identify the object.
+        - key: The key used to identify the object.
      */
     func store<Storable: Encodable>(_ storable: Storable, withKey key: DatastoreKey) throws
 }

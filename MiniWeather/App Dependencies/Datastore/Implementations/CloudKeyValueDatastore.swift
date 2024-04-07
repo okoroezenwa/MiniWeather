@@ -47,6 +47,7 @@ struct CloudKeyValueDatastore: Datastore {
             let isSuccessful = cloudStore.synchronize()
             if !isSuccessful {
                 logger.error("NSUbiqiousKeyValueStore synchronisation failed")
+                #warning("Replace error namespace with something more specific?")
                 throw DatastoreError.failedSynchronise
             }
         } catch {
@@ -54,8 +55,4 @@ struct CloudKeyValueDatastore: Datastore {
             throw error
         }
     }
-}
-
-extension NSNotification.Name {
-    static let cloudStoreUpdated = NSNotification.Name.init("cloudStoreUpdated")
 }

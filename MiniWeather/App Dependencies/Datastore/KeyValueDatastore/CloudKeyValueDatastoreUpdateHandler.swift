@@ -9,6 +9,7 @@ import Foundation
 import Combine
 import OSLog
 
+/// Handles updating the local store once an update is received from another device.
 final class CloudKeyValueDatastoreUpdateHandler {
     private var kvsCancellable: Cancellable?
     private let cloudStore: KeyValueStore

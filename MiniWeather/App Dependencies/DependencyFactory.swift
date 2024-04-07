@@ -9,6 +9,7 @@ import Foundation
 import CoreLocation
 import OSLog
 import WeatherKit
+import DiskCache
 
 /// The singleton object through which all app dependencies are retrieved.
 final class DependencyFactory {
@@ -38,6 +39,8 @@ final class DependencyFactory {
         self.temporaryStore = temporaryStore
         self.cloudDatastoreUpdateHandler = cloudDatastoreUpdateHandler
     }
+    
+    // MARK: - Standard Repositories
     
     public func makeLocationsSearchRepository() -> LocationsSearchRepository {
         MainLocationsSearchRepository(
@@ -81,31 +84,53 @@ final class DependencyFactory {
         )
     }
     
-    public func makeMemoryDatastore() -> Datastore {
+    // MARK: - Datastores
+    
+    private func makeTemporalFileDatastore() -> Datastore {
+        FileDatastore(
+            cache: makeTemporalDiskCache(),
+            encoder: makeJSONDataEncoder(),
+            decoder: makeJSONDataDecoder(),
+            logger: Logger()
+        )
+    }
+    
+    private func makePermanentFileDatastore() -> Datastore {
+        FileDatastore(
+            cache: makePermanentDiskCache(),
+            encoder: makeJSONDataEncoder(),
+            decoder: makeJSONDataDecoder(),
+            logger: Logger()
+        )
+    }
+    
+    private func makeMemoryDatastore() -> Datastore {
         MemoryDatastore(
             store: temporaryStore,
             logger: Logger()
         )
     }
     
-    public func makeUserDefaultsDatastore() -> Datastore {
+    private func makeUserDefaultsDatastore() -> Datastore {
         UserDefaultsDatastore(
             store: makeUserDefaultsKeyValueStore(),
-            decoder: JSONDecoder(),
-            encoder: JSONEncoder(),
+            decoder: makeJSONDataDecoder(),
+            encoder: makeJSONDataEncoder(),
             logger: Logger()
         )
     }
     
-    public func makeCloudKeyValueDatastore() -> Datastore {
+    private func makeCloudKeyValueDatastore() -> Datastore {
         CloudKeyValueDatastore(
             cloudStore: makeCloudKeyValueStore(),
             localStore: makeUserDefaultsKeyValueStore(), 
-            decoder: JSONDecoder(),
-            encoder: JSONEncoder(),
+            decoder: makeJSONDataDecoder(),
+            encoder: makeJSONDataEncoder(),
             logger: Logger()
         )
     }
+    
+    // MARK: - Services
     
     private func makeAppleGeocoderService() -> GeocoderService {
         AppleGeocoderService<CLPlacemark>(geocoder: CLGeocoder())
@@ -203,6 +228,8 @@ final class DependencyFactory {
         }
     }
     
+    // MARK: - Providers
+    
     private func makeUserLocationProvider() -> UserLocationCoordinatesProvider {
         locationManagerDelegate
     }
@@ -213,7 +240,7 @@ final class DependencyFactory {
     
     private func makeCurrentLocationProvider() -> CurrentLocationProvider {
         MainCurrentLocationProvider(
-            store: makeUserDefaultsDatastore(),
+            store: makeTemporalFileDatastore(),
             userLocationAuthorisationProvider: makeUserLocationAuthorisationProvider(),
             logger: Logger()
         )
@@ -221,10 +248,12 @@ final class DependencyFactory {
     
     private func makeSavedLocationsProvider() -> SavedLocationsProvider {
         MainSavedLocationsProvider(
-            datastore: makeUserDefaultsDatastore(),
+            datastore: makePermanentFileDatastore(),
             logger: Logger()
         )
     }
+    
+    // MARK: - Key-Value Stores
     
     private func makeUserDefaultsKeyValueStore() -> KeyValueStore {
         UserDefaults.standard
@@ -234,17 +263,51 @@ final class DependencyFactory {
         NSUbiquitousKeyValueStore.default
     }
     
+    // MARK: - Caches
+    
+    private func makeTemporalDiskCache() -> Cache {
+        do {
+            return try DiskCache(storageType: .temporary(nil))
+        } catch {
+            fatalError("Caches directory not found")
+        }
+    }
+    
+    private func makePermanentDiskCache() -> Cache {
+        do {
+            return try DiskCache(storageType: .permanent(nil))
+        } catch {
+            fatalError("Main directory not found")
+        }
+    }
+    
+    // MARK: - Network
+    
     private func makeStandardNetworkService() -> NetworkService {
         StandardNetworkService(
             urlSession: .shared
         )
     }
     
+    // MARK: - Parser
+    
     private func makeStandardDataParser() -> DataParser {
         StandardDataParser(
-            decoder: JSONDecoder()
+            decoder: makeJSONDataDecoder()
         )
     }
+    
+    // MARK: - Decoders & Encoders
+    
+    private func makeJSONDataDecoder() -> DataDecoder {
+        JSONDecoder()
+    }
+    
+    private func makeJSONDataEncoder() -> DataEncoder {
+        JSONEncoder()
+    }
+    
+    // MARK: - Preferences
     
     private func makeMainStringPreferenceProvider() -> StringPreferenceProvider {
         UserDefaults.standard

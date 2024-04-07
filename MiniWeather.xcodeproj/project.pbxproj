@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BE01AD0A2BBD651B00E07389 /* DiskCache in Frameworks */ = {isa = PBXBuildFile; productRef = BE01AD092BBD651B00E07389 /* DiskCache */; };
+		BE01AD0D2BBD80EF00E07389 /* MockTemporaryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE01AD0C2BBD80EF00E07389 /* MockTemporaryStore.swift */; };
+		BE01AD0F2BBD816700E07389 /* StandardTemporaryStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE01AD0E2BBD816700E07389 /* StandardTemporaryStoreTests.swift */; };
+		BE01AD112BBD943600E07389 /* MemoryDatastoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE01AD102BBD943600E07389 /* MemoryDatastoreTests.swift */; };
+		BE01AD132BBEA6F300E07389 /* MockCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE01AD122BBEA6F300E07389 /* MockCache.swift */; };
+		BE01AD152BBEB65000E07389 /* FileDatastoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE01AD142BBEB65000E07389 /* FileDatastoreTests.swift */; };
 		BE13464D2B2B283B00A07631 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE13464C2B2B283B00A07631 /* String+Extensions.swift */; };
 		BE1709EF2BA9EDB900A44A52 /* AppleGeocoderServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE1709EE2BA9EDB900A44A52 /* AppleGeocoderServiceTests.swift */; };
 		BE1709F12BA9EFF400A44A52 /* MockTimeZoneLocationGeocoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE1709F02BA9EFF400A44A52 /* MockTimeZoneLocationGeocoder.swift */; };
@@ -98,6 +104,10 @@
 		BE7DA7872AEA6E550016047C /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE7DA7862AEA6E540016047C /* Request.swift */; };
 		BE928F172B177D5C0083CC96 /* KeyValueStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE928F162B177D5C0083CC96 /* KeyValueStore.swift */; };
 		BE928F1B2B1799610083CC96 /* CloudKeyValueDatastore.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE928F1A2B1799610083CC96 /* CloudKeyValueDatastore.swift */; };
+		BE9EC75B2BBAFA2A0067706F /* FileDatastore.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9EC75A2BBAFA2A0067706F /* FileDatastore.swift */; };
+		BE9EC75D2BBC63B30067706F /* TemporaryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9EC75C2BBC63B30067706F /* TemporaryStore.swift */; };
+		BE9EC7612BBC63EC0067706F /* StandardTemporaryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9EC7602BBC63EC0067706F /* StandardTemporaryStore.swift */; };
+		BE9EC7662BBC69D30067706F /* Notification+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9EC7652BBC69D30067706F /* Notification+Extensions.swift */; };
 		BE9F20F82AD0624A00CDC9F4 /* MainLocationsSearchRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9F20F72AD0624A00CDC9F4 /* MainLocationsSearchRepository.swift */; };
 		BEC47B382B8E4A9700BF39FD /* MiniWeatherTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEC47B372B8E4A9700BF39FD /* MiniWeatherTests.swift */; };
 		BECC197C2B2C860600A30ACE /* TimeZone+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BECC197B2B2C860600A30ACE /* TimeZone+Extensions.swift */; };
@@ -165,6 +175,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		BE01AD0C2BBD80EF00E07389 /* MockTemporaryStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockTemporaryStore.swift; sourceTree = "<group>"; };
+		BE01AD0E2BBD816700E07389 /* StandardTemporaryStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandardTemporaryStoreTests.swift; sourceTree = "<group>"; };
+		BE01AD102BBD943600E07389 /* MemoryDatastoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryDatastoreTests.swift; sourceTree = "<group>"; };
+		BE01AD122BBEA6F300E07389 /* MockCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockCache.swift; sourceTree = "<group>"; };
+		BE01AD142BBEB65000E07389 /* FileDatastoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileDatastoreTests.swift; sourceTree = "<group>"; };
 		BE13464C2B2B283B00A07631 /* String+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
 		BE1709EE2BA9EDB900A44A52 /* AppleGeocoderServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleGeocoderServiceTests.swift; sourceTree = "<group>"; };
 		BE1709F02BA9EFF400A44A52 /* MockTimeZoneLocationGeocoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockTimeZoneLocationGeocoder.swift; sourceTree = "<group>"; };
@@ -259,6 +274,10 @@
 		BE7DA7862AEA6E540016047C /* Request.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
 		BE928F162B177D5C0083CC96 /* KeyValueStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyValueStore.swift; sourceTree = "<group>"; };
 		BE928F1A2B1799610083CC96 /* CloudKeyValueDatastore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudKeyValueDatastore.swift; sourceTree = "<group>"; };
+		BE9EC75A2BBAFA2A0067706F /* FileDatastore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileDatastore.swift; sourceTree = "<group>"; };
+		BE9EC75C2BBC63B30067706F /* TemporaryStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemporaryStore.swift; sourceTree = "<group>"; };
+		BE9EC7602BBC63EC0067706F /* StandardTemporaryStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandardTemporaryStore.swift; sourceTree = "<group>"; };
+		BE9EC7652BBC69D30067706F /* Notification+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification+Extensions.swift"; sourceTree = "<group>"; };
 		BE9F20F72AD0624A00CDC9F4 /* MainLocationsSearchRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainLocationsSearchRepository.swift; sourceTree = "<group>"; };
 		BEC47B352B8E4A9700BF39FD /* MiniWeatherTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MiniWeatherTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BEC47B372B8E4A9700BF39FD /* MiniWeatherTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiniWeatherTests.swift; sourceTree = "<group>"; };
@@ -321,6 +340,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BE01AD0A2BBD651B00E07389 /* DiskCache in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -334,6 +354,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		BE01AD0B2BBD7D2200E07389 /* Datastore */ = {
+			isa = PBXGroup;
+			children = (
+				BE01AD0E2BBD816700E07389 /* StandardTemporaryStoreTests.swift */,
+				BE01AD142BBEB65000E07389 /* FileDatastoreTests.swift */,
+				BE01AD102BBD943600E07389 /* MemoryDatastoreTests.swift */,
+			);
+			path = Datastore;
+			sourceTree = "<group>";
+		};
 		BE1709F82BAB106A00A44A52 /* TimeZone */ = {
 			isa = PBXGroup;
 			children = (
@@ -379,6 +409,7 @@
 				BE23F9852BA74E7700A85C8C /* Geocoding */,
 				BE23F9712BA4973F00A85C8C /* Network */,
 				BE23F9722BA4977E00A85C8C /* Parser */,
+				BE01AD0B2BBD7D2200E07389 /* Datastore */,
 			);
 			path = "Component Tests";
 			sourceTree = "<group>";
@@ -603,6 +634,7 @@
 				BE23F9812BA74DE600A85C8C /* CLGeocoder+Extensions.swift */,
 				BE1709FD2BAB3C1E00A44A52 /* URLResponse+Extensions.swift */,
 				BE170A0C2BADC8FC00A44A52 /* CLLocationCoordinate2D+Extensions.swift */,
+				BE9EC7652BBC69D30067706F /* Notification+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -619,7 +651,6 @@
 		BE4FE4C22AECE28F00A381FD /* App Dependencies */ = {
 			isa = PBXGroup;
 			children = (
-				BE248C3C2B24BA5C007E32FD /* Preferences */,
 				BE4FE4C32AECE5D200A381FD /* DependencyFactory.swift */,
 				BED750C52B162C5900E2CF9E /* Saved Locations */,
 				BED750B32B160BDD00E2CF9E /* Current Location */,
@@ -632,6 +663,7 @@
 				BE4FE4A42AEC1E1200A381FD /* Network */,
 				BE4FE4B92AEC249200A381FD /* Parser */,
 				BED0F5AA2B11ED2800156E23 /* Datastore */,
+				BE248C3C2B24BA5C007E32FD /* Preferences */,
 				BEFE255F2B0625AB00AB5DED /* Listener & Broadcaster */,
 			);
 			path = "App Dependencies";
@@ -788,6 +820,36 @@
 			path = Repository;
 			sourceTree = "<group>";
 		};
+		BE9EC7622BBC64460067706F /* Implementations */ = {
+			isa = PBXGroup;
+			children = (
+				BED0F5AB2B11EDBE00156E23 /* Datastore.swift */,
+				BE9EC75A2BBAFA2A0067706F /* FileDatastore.swift */,
+				BE44D6B22B128EE700897390 /* MemoryDatastore.swift */,
+				BED0F5AD2B12123D00156E23 /* UserDefaultsDatastore.swift */,
+				BE928F1A2B1799610083CC96 /* CloudKeyValueDatastore.swift */,
+			);
+			path = Implementations;
+			sourceTree = "<group>";
+		};
+		BE9EC7632BBC64550067706F /* KeyValueDatastore */ = {
+			isa = PBXGroup;
+			children = (
+				BE928F162B177D5C0083CC96 /* KeyValueStore.swift */,
+				BE5561E72B17CAF900AB97FE /* CloudKeyValueDatastoreUpdateHandler.swift */,
+			);
+			path = KeyValueDatastore;
+			sourceTree = "<group>";
+		};
+		BE9EC7642BBC66EF0067706F /* TemporaryStore */ = {
+			isa = PBXGroup;
+			children = (
+				BE9EC75C2BBC63B30067706F /* TemporaryStore.swift */,
+				BE9EC7602BBC63EC0067706F /* StandardTemporaryStore.swift */,
+			);
+			path = TemporaryStore;
+			sourceTree = "<group>";
+		};
 		BEC47B362B8E4A9700BF39FD /* MiniWeatherTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -838,12 +900,9 @@
 		BED0F5AA2B11ED2800156E23 /* Datastore */ = {
 			isa = PBXGroup;
 			children = (
-				BED0F5AB2B11EDBE00156E23 /* Datastore.swift */,
-				BE928F162B177D5C0083CC96 /* KeyValueStore.swift */,
-				BE44D6B22B128EE700897390 /* MemoryDatastore.swift */,
-				BED0F5AD2B12123D00156E23 /* UserDefaultsDatastore.swift */,
-				BE5561E72B17CAF900AB97FE /* CloudKeyValueDatastoreUpdateHandler.swift */,
-				BE928F1A2B1799610083CC96 /* CloudKeyValueDatastore.swift */,
+				BE9EC7622BBC64460067706F /* Implementations */,
+				BE9EC7632BBC64550067706F /* KeyValueDatastore */,
+				BE9EC7642BBC66EF0067706F /* TemporaryStore */,
 			);
 			path = Datastore;
 			sourceTree = "<group>";
@@ -935,6 +994,8 @@
 				BE170A042BAB8B5800A44A52 /* MockWeatherProvider.swift */,
 				BE170A082BADC5F500A44A52 /* MockUserLocationAuthorisationProvider.swift */,
 				BE170A0A2BADC72100A44A52 /* MockUserLocationCoordinatesProvider.swift */,
+				BE01AD0C2BBD80EF00E07389 /* MockTemporaryStore.swift */,
+				BE01AD122BBEA6F300E07389 /* MockCache.swift */,
 			);
 			path = "Mock Objects";
 			sourceTree = "<group>";
@@ -1009,6 +1070,9 @@
 			dependencies = (
 			);
 			name = MiniWeather;
+			packageProductDependencies = (
+				BE01AD092BBD651B00E07389 /* DiskCache */,
+			);
 			productName = MiniWeather;
 			productReference = BE71B80B2ACE9F2B003AA99C /* MiniWeather.app */;
 			productType = "com.apple.product-type.application";
@@ -1059,6 +1123,9 @@
 				Base,
 			);
 			mainGroup = BE71B8022ACE9F2B003AA99C;
+			packageReferences = (
+				BE01AD082BBD651B00E07389 /* XCRemoteSwiftPackageReference "DiskCache" */,
+			);
 			productRefGroup = BE71B80C2ACE9F2B003AA99C /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -1104,6 +1171,7 @@
 				BE928F172B177D5C0083CC96 /* KeyValueStore.swift in Sources */,
 				BECDADCE2B2226B700CA2EAB /* CurrentLocationSectionHeader.swift in Sources */,
 				BED0F5AE2B12123D00156E23 /* UserDefaultsDatastore.swift in Sources */,
+				BE9EC75D2BBC63B30067706F /* TemporaryStore.swift in Sources */,
 				BE46751A2AFFB38400E9FAA3 /* LocationManagerDelegate.swift in Sources */,
 				BE4FE4CA2AEF947200A381FD /* APINinjasWeather.swift in Sources */,
 				BE248C402B25FA05007E32FD /* AppleWeatherService.swift in Sources */,
@@ -1130,6 +1198,7 @@
 				BE23F9822BA74DE600A85C8C /* CLGeocoder+Extensions.swift in Sources */,
 				BEF55F182B2DCABC008B8319 /* Date+Extensions.swift in Sources */,
 				BEFE25532B04A86000AB5DED /* CLAuthorizationStatus+Extensions.swift in Sources */,
+				BE9EC7662BBC69D30067706F /* Notification+Extensions.swift in Sources */,
 				BECDADC62B21F6DD00CA2EAB /* SectionContainerView.swift in Sources */,
 				BECDADD02B2227DD00CA2EAB /* SavedLocationsSectionHeader.swift in Sources */,
 				BEFE25672B06918200AB5DED /* LocationAuthorisationCell.swift in Sources */,
@@ -1160,6 +1229,7 @@
 				BE75A3602B163ABC0041ED46 /* SavedLocationsRepository.swift in Sources */,
 				BED0F59F2B10D1CC00156E23 /* OpenWeatherMapGeocoderService.swift in Sources */,
 				BECC197C2B2C860600A30ACE /* TimeZone+Extensions.swift in Sources */,
+				BE9EC7612BBC63EC0067706F /* StandardTemporaryStore.swift in Sources */,
 				BE2D18C12B150CF40012D1F0 /* OpenWeatherMapWeatherRequest.swift in Sources */,
 				BE44D6B32B128EE700897390 /* MemoryDatastore.swift in Sources */,
 				BE4FE4A62AEC1E2500A381FD /* NetworkService.swift in Sources */,
@@ -1182,6 +1252,7 @@
 				BE4FE49D2AEC187000A381FD /* TimeZoneRepository.swift in Sources */,
 				BE4E41B92AFBE61C008B07D5 /* LocationsViewModel.swift in Sources */,
 				BEFE25632B06273D00AB5DED /* UserLocationCoordinatesProvider.swift in Sources */,
+				BE9EC75B2BBAFA2A0067706F /* FileDatastore.swift in Sources */,
 				BE4FE4C62AEEC40700A381FD /* LocationCell.swift in Sources */,
 				BE71B8132ACE9F2B003AA99C /* Location.swift in Sources */,
 				BECDADCA2B220DC700CA2EAB /* SavedLocationsSection.swift in Sources */,
@@ -1219,9 +1290,11 @@
 				BE23F9892BA788EF00A85C8C /* MockDataParser.swift in Sources */,
 				BE170A122BAE237000A44A52 /* MainSavedLocationsProviderTests.swift in Sources */,
 				BE23F97C2BA71E6C00A85C8C /* MockLocation.swift in Sources */,
+				BE01AD0F2BBD816700E07389 /* StandardTemporaryStoreTests.swift in Sources */,
 				BE170A032BAB862C00A44A52 /* OpenWeatherMapWeatherServiceTests.swift in Sources */,
 				BE23F98D2BA7922200A85C8C /* MockPartialLocation.swift in Sources */,
 				BE23F97E2BA746CD00A85C8C /* MockTimeZoneLocation.swift in Sources */,
+				BE01AD132BBEA6F300E07389 /* MockCache.swift in Sources */,
 				BE65CFAD2B95FBC400D7AE98 /* MockWeather.swift in Sources */,
 				BE170A092BADC5F500A44A52 /* MockUserLocationAuthorisationProvider.swift in Sources */,
 				BE1709EF2BA9EDB900A44A52 /* AppleGeocoderServiceTests.swift in Sources */,
@@ -1230,6 +1303,7 @@
 				BE170A012BAB71BC00A44A52 /* APINinjasWeatherServiceTests.swift in Sources */,
 				BE1709F52BAA2F6500A44A52 /* OpenWeatherMapGeocoderServiceTests.swift in Sources */,
 				BE23F9872BA7511600A85C8C /* MockNetworkService.swift in Sources */,
+				BE01AD0D2BBD80EF00E07389 /* MockTemporaryStore.swift in Sources */,
 				BED77EC42BA3433400877FE0 /* StandardNetworkServiceTests.swift in Sources */,
 				BE23F9842BA74E5B00A85C8C /* APINinjasGeocoderServiceTests.swift in Sources */,
 				BE23F98B2BA7911100A85C8C /* MockAPIKeysProvider.swift in Sources */,
@@ -1241,7 +1315,9 @@
 				BE1709F12BA9EFF400A44A52 /* MockTimeZoneLocationGeocoder.swift in Sources */,
 				BE1709FC2BAB3A2700A44A52 /* APINinjasTimeZoneServiceTests.swift in Sources */,
 				BE1709F72BAAEF0600A44A52 /* MockDatastore.swift in Sources */,
+				BE01AD112BBD943600E07389 /* MemoryDatastoreTests.swift in Sources */,
 				BE170A0B2BADC72100A44A52 /* MockUserLocationCoordinatesProvider.swift in Sources */,
+				BE01AD152BBEB65000E07389 /* FileDatastoreTests.swift in Sources */,
 				BE170A072BAB8E9000A44A52 /* AppleWeatherServiceTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1519,6 +1595,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		BE01AD082BBD651B00E07389 /* XCRemoteSwiftPackageReference "DiskCache" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Mobelux/DiskCache";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.1.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		BE01AD092BBD651B00E07389 /* DiskCache */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BE01AD082BBD651B00E07389 /* XCRemoteSwiftPackageReference "DiskCache" */;
+			productName = DiskCache;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = BE71B8032ACE9F2B003AA99C /* Project object */;
 }
