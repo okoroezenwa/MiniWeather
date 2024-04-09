@@ -11,4 +11,9 @@ extension View {
     public func frame(square: CGFloat, alignment: Alignment = .center) -> some View {
         frame(width: square, height: square, alignment: alignment)
     }
+    
+    func toastView(toast: Toast?, isShowingToast: Binding<Bool>) -> some View {
+        self.modifier(ToastModifier(toast: toast, isShowingToast: isShowingToast))
+    }
 }
+

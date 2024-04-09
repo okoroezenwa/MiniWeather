@@ -98,7 +98,7 @@ struct MainView: View {
         } addLocation: { [weak viewModel] location in
             viewModel?.add(location)
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                viewModel?.displayedToast = .init(style: .success, title: "Location Added", message: "Added \(location.city) to Locations", rightButton: .init(style: .text("Undo")) {
+                viewModel?.displayedToast = .init(style: .success, title: "Location Added", message: "Added \(location.city) to Locations", trailingButton: .init(style: .text("Undo")) {
                     viewModel?.delete(location)
                     isShowingToast = false
                 })

@@ -46,6 +46,8 @@
 		BE248C402B25FA05007E32FD /* AppleWeatherService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE248C3F2B25FA05007E32FD /* AppleWeatherService.swift */; };
 		BE248C462B270316007E32FD /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE248C452B270316007E32FD /* Settings.swift */; };
 		BE2CB08D2BC2EFF80065F5BF /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2CB08C2BC2EFF80065F5BF /* ToastView.swift */; };
+		BE2CB0922BC5804F0065F5BF /* ToastModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2CB0912BC5804F0065F5BF /* ToastModifier.swift */; };
+		BE2CB0942BC5838A0065F5BF /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2CB0932BC5838A0065F5BF /* Toast.swift */; };
 		BE2D18BB2B134F0A0012D1F0 /* OpenWeatherMapTimeZoneService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2D18BA2B134F0A0012D1F0 /* OpenWeatherMapTimeZoneService.swift */; };
 		BE2D18BD2B1502CE0012D1F0 /* OpenWeatherMapWeather.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2D18BC2B1502CE0012D1F0 /* OpenWeatherMapWeather.swift */; };
 		BE2D18BF2B1503850012D1F0 /* OpenWeatherMapCodables.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2D18BE2B1503850012D1F0 /* OpenWeatherMapCodables.swift */; };
@@ -214,6 +216,8 @@
 		BE248C3F2B25FA05007E32FD /* AppleWeatherService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleWeatherService.swift; sourceTree = "<group>"; };
 		BE248C452B270316007E32FD /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		BE2CB08C2BC2EFF80065F5BF /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
+		BE2CB0912BC5804F0065F5BF /* ToastModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastModifier.swift; sourceTree = "<group>"; };
+		BE2CB0932BC5838A0065F5BF /* Toast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toast.swift; sourceTree = "<group>"; };
 		BE2D18BA2B134F0A0012D1F0 /* OpenWeatherMapTimeZoneService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenWeatherMapTimeZoneService.swift; sourceTree = "<group>"; };
 		BE2D18BC2B1502CE0012D1F0 /* OpenWeatherMapWeather.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenWeatherMapWeather.swift; sourceTree = "<group>"; };
 		BE2D18BE2B1503850012D1F0 /* OpenWeatherMapCodables.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenWeatherMapCodables.swift; sourceTree = "<group>"; };
@@ -488,9 +492,19 @@
 		BE2CB08B2BC2BF630065F5BF /* Global */ = {
 			isa = PBXGroup;
 			children = (
-				BE2CB08C2BC2EFF80065F5BF /* ToastView.swift */,
+				BE2CB0902BC580400065F5BF /* Toast */,
 			);
 			path = Global;
+			sourceTree = "<group>";
+		};
+		BE2CB0902BC580400065F5BF /* Toast */ = {
+			isa = PBXGroup;
+			children = (
+				BE2CB0932BC5838A0065F5BF /* Toast.swift */,
+				BE2CB08C2BC2EFF80065F5BF /* ToastView.swift */,
+				BE2CB0912BC5804F0065F5BF /* ToastModifier.swift */,
+			);
+			path = Toast;
 			sourceTree = "<group>";
 		};
 		BE4E41AE2AFA3F7A008B07D5 /* User Location Authorisation */ = {
@@ -1172,6 +1186,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BE5561E82B17CAF900AB97FE /* CloudKeyValueDatastoreUpdateHandler.swift in Sources */,
+				BE2CB0942BC5838A0065F5BF /* Toast.swift in Sources */,
 				BE13464D2B2B283B00A07631 /* String+Extensions.swift in Sources */,
 				BE4FE4C42AECE5D200A381FD /* DependencyFactory.swift in Sources */,
 				BE4FE4B82AEC242F00A381FD /* StandardDataParser.swift in Sources */,
@@ -1241,6 +1256,7 @@
 				BE75A3602B163ABC0041ED46 /* SavedLocationsRepository.swift in Sources */,
 				BED0F59F2B10D1CC00156E23 /* OpenWeatherMapGeocoderService.swift in Sources */,
 				BECC197C2B2C860600A30ACE /* TimeZone+Extensions.swift in Sources */,
+				BE2CB0922BC5804F0065F5BF /* ToastModifier.swift in Sources */,
 				BE9EC7612BBC63EC0067706F /* StandardTemporaryStore.swift in Sources */,
 				BE2D18C12B150CF40012D1F0 /* OpenWeatherMapWeatherRequest.swift in Sources */,
 				BE44D6B32B128EE700897390 /* MemoryDatastore.swift in Sources */,
