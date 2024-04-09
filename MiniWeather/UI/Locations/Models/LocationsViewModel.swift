@@ -32,6 +32,7 @@ final class LocationsViewModel {
     private var searchSubject = PassthroughSubject<String, Never>()
     var kvsCancellable: Cancellable?
     private var currentLocationNeedsRefresh = false
+    var displayedToast: Toast?
     
     init(
         userLocationAuthorisationRepositoryFactory: @escaping () -> UserLocationAuthorisationRepository,

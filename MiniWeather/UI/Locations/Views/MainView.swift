@@ -15,6 +15,7 @@ struct MainView: View {
     // TODO: - Replace alert with toast
     @State private var duplicateLocation: Location?
     @State private var isShowingSettings = false
+    @State private var isShowingToast = false
     @State var viewModel: LocationsViewModel
 
     var body: some View {
@@ -85,6 +86,7 @@ struct MainView: View {
                 }
             }
         }
+        .toastView(toast: viewModel.displayedToast, isShowingToast: $isShowingToast)
     }
     
     private func locationsSearchView(_ dismissSearch: @escaping () -> Void) -> some View {
@@ -95,6 +97,13 @@ struct MainView: View {
             return !viewModel.locations.contains(where: { location.fullName == $0.fullName  })
         } addLocation: { [weak viewModel] location in
             viewModel?.add(location)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                viewModel?.displayedToast = .init(style: .success, title: "Location Added", message: "Added \(location.city) to Locations", rightButton: .init(style: .text("Undo")) {
+                    viewModel?.delete(location)
+                    isShowingToast = false
+                })
+                isShowingToast = true
+            }
         } dismissSearch: {
             dismissSearch()
         }
