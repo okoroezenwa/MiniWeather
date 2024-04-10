@@ -8,18 +8,18 @@
 import SwiftUI
 
 struct LocationSearchResultsView: View {
-    @State var duplicateLocation: Location?
-    @State var isShowingDuplicateAlert = false
+    private var onDuplicateFound: (Location) -> Void
     private var searchResults: [Location]
     private var isUniqueLocation: (Location) -> Bool
     private var addLocation: (Location) -> ()
     private var dismissSearch: () -> Void
     
-    init(searchResults: [Location], isUniqueLocation: @escaping (Location) -> Bool, addLocation: @escaping (Location) -> Void, dismissSearch: @escaping () -> Void) {
+    init(searchResults: [Location], isUniqueLocation: @escaping (Location) -> Bool, addLocation: @escaping (Location) -> Void, dismissSearch: @escaping () -> Void, onDuplicateFound: @escaping (Location) -> Void) {
         self.searchResults = searchResults
         self.isUniqueLocation = isUniqueLocation
         self.addLocation = addLocation
         self.dismissSearch = dismissSearch
+        self.onDuplicateFound = onDuplicateFound
     }
     
     var body: some View {
@@ -38,8 +38,7 @@ struct LocationSearchResultsView: View {
                 .listRowBackground(Color.clear)
                 .onTapGesture {
                     guard isUniqueLocation(location) else {
-                        duplicateLocation = location
-                        isShowingDuplicateAlert = true
+                        onDuplicateFound(location)
                         return
                     }
                     
@@ -53,15 +52,6 @@ struct LocationSearchResultsView: View {
         }
         .listStyle(.plain)
         .scrollDismissesKeyboard(.immediately)
-        .alert("Duplicate Location", isPresented: $isShowingDuplicateAlert, presenting: duplicateLocation) { _ in
-            Button(role: .cancel) {
-                isShowingDuplicateAlert = false
-            } label: {
-                Text("OK")
-            }
-        } message: { location in
-            Text("You have already saved \"\(location.fullName)\".")
-        }
     }
 }
 
@@ -73,6 +63,8 @@ struct LocationSearchResultsView: View {
     } addLocation: { _ in
         
     } dismissSearch: {
+        
+    } onDuplicateFound: { _ in
         
     }
 }

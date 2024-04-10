@@ -32,8 +32,10 @@ final class LocationsViewModel {
     private var searchSubject = PassthroughSubject<String, Never>()
     var kvsCancellable: Cancellable?
     private var currentLocationNeedsRefresh = false
+    var toastShouldPerformOnDismissAction = true
     var displayedToast: Toast? {
         didSet {
+            guard toastShouldPerformOnDismissAction else { return }
             oldValue?.onDismiss?()
         }
     }
@@ -331,6 +333,7 @@ final class LocationsViewModel {
     }
     
     func displayToastForAdditionOf(_ location: Location) {
+        toastShouldPerformOnDismissAction = true
         let old = performLocalAdd(of: location)
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
             self?.displayedToast = .init(
@@ -340,7 +343,7 @@ final class LocationsViewModel {
                 trailingButton: .init(
                     style: .text("Undo")
                 ) {
-                    self?.locations = old
+                    self?.undoLocationsChange(from: old)
                 }
             ) {
                 self?.add(location, oldLocations: old)
@@ -383,6 +386,7 @@ final class LocationsViewModel {
     }
     
     func displayToastForRemovalOf(_ location: Location) {
+        toastShouldPerformOnDismissAction = true
         let old = performLocalDelete(of: location)
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
             self?.displayedToast = .init(
@@ -392,12 +396,18 @@ final class LocationsViewModel {
                 trailingButton: .init(
                     style: .text("Undo")
                 ) {
-                    self?.locations = old
+                    self?.undoLocationsChange(from: old)
                 }
             ) {
                 self?.delete(location, oldLocations: old)
             }
         }
+    }
+    
+    func undoLocationsChange(from old: [Location]) {
+        locations = old
+        toastShouldPerformOnDismissAction = false
+        displayedToast = nil
     }
 }
 
