@@ -8,8 +8,7 @@
 import SwiftUI
 
 struct ToastModifier: ViewModifier {
-    let toast: Toast?
-    @Binding var isShowingToast: Bool
+    @Binding var toast: Toast?
     @State private var workItem: DispatchWorkItem?
     
     func body(content: Content) -> some View {
@@ -18,7 +17,7 @@ struct ToastModifier: ViewModifier {
                 ZStack(alignment: .bottom) {
                     Color.clear
                     
-                    if isShowingToast, let toast {
+                    if let toast {
                         ToastView(toast: toast)
                             .onTapGesture {
                                 dismissToast()
@@ -29,14 +28,14 @@ struct ToastModifier: ViewModifier {
                 }
                     .animation(
                         .spring(),
-                        value: isShowingToast
+                        value: toast
                     )
             )
-            .onChange(of: isShowingToast) {
+            .onChange(of: toast) {
                 showToast()
             }
-            .sensoryFeedback(.impact(weight: .light), trigger: isShowingToast) { _, newValue in
-                return newValue
+            .sensoryFeedback(.impact(weight: .light), trigger: toast) { _, newValue in
+                return newValue != nil
             }
     }
     
@@ -57,7 +56,7 @@ struct ToastModifier: ViewModifier {
     
     private func dismissToast() {
         withAnimation {
-            isShowingToast = false
+            toast = nil
         }
         
         workItem?.cancel()

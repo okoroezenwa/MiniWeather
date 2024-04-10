@@ -12,8 +12,8 @@ extension View {
         frame(width: square, height: square, alignment: alignment)
     }
     
-    func toastView(toast: Toast?, isShowingToast: Binding<Bool>) -> some View {
-        self.modifier(ToastModifier(toast: toast, isShowingToast: isShowingToast))
+    func toastView(toast: Binding<Toast?>) -> some View {
+        self.modifier(ToastModifier(toast: toast))
     }
 }
 

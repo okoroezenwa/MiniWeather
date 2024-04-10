@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-struct Toast {
-    enum Style {
+struct Toast: Equatable {
+    enum Style: Equatable {
         case error
         case warning
         case success
@@ -20,8 +20,13 @@ struct Toast {
     var style: Style
     var title: String
     var message: String
-    var trailingButton: TrailingButton?
     var duration: Double = 7
+    var trailingButton: TrailingButton?
+    var onDismiss: (() -> Void)?
+    
+    static func == (lhs: Toast, rhs: Toast) -> Bool {
+        lhs.style == rhs.style && lhs.title == rhs.title && lhs.message == rhs.message
+    }
 }
 
 extension Toast {

@@ -20,10 +20,12 @@ struct ToastView: View {
                 
                 VStack(alignment: .leading, spacing: 2) {
                     Text(toast.title)
+                        .lineLimit(1)
                         .font(.system(size: 14, weight: .semibold))
                     
                     Text(toast.message)
                         .font(.system(size: 12))
+                        .lineLimit(2)
                         .foregroundStyle(.secondary)
                 }
                 .padding(.vertical, 12)

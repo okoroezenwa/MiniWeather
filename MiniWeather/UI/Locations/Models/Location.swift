@@ -15,6 +15,7 @@ struct Location: Codable, Identifiable, Hashable {
     let city: String
     let state: String?
     let country: String
+    var position: Int
     var nickname: String
     var timeZoneIdentifier: TimeZoneIdentifier?
     let longitude: Double
@@ -25,6 +26,7 @@ struct Location: Codable, Identifiable, Hashable {
          city: String,
          state: String?,
          country: String,
+         position: Int = 0,
          nickname: String,
          timeZone: TimeZoneIdentifier?,
          latitide: Double,
@@ -39,6 +41,7 @@ struct Location: Codable, Identifiable, Hashable {
         self.country = country
         self.longitude = longitude
         self.latitude = latitide
+        self.position = position
     }
     
     init<LocationObject: LocationProtocol>(locationObject: LocationObject, timeZone: TimeZoneIdentifier?) {
@@ -52,15 +55,16 @@ struct Location: Codable, Identifiable, Hashable {
         self.timeZoneIdentifier = timeZone
         self.id = UUID()
         self.timestamp = .now
+        self.position = 0
     }
 }
 
 extension Location: LocationProtocol {
-    var countryName: String {
+    nonisolated var countryName: String {
         country
     }
     
-    var fullName: String {
+    nonisolated var fullName: String {
         var name = city
         
         if let state {

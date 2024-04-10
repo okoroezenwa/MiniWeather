@@ -53,5 +53,5 @@ struct SavedLocationsSection: View {
 }
 
 #Preview {
-    SavedLocationsSection(viewModel: .init(locations: [], weather: { _ in Binding(get: { UniversalConstants.weather }, set: { _ in }) }, onDelete: { _ in }))
+    SavedLocationsSection(viewModel: .init(locations: [UniversalConstants.location], weather: { _ in Binding(get: { UniversalConstants.weather }, set: { _ in }) }, onDelete: { _ in }))
 }
