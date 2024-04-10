@@ -12,7 +12,6 @@ struct MainView: View {
     @Environment(\.colorScheme) private var colorScheme
     @Environment(\.scenePhase) private var scenePhase
     @State var selectedLocation: Location?
-    // TODO: - Replace alert with toast
     @State private var duplicateLocation: Location?
     @State private var isShowingSettings = false
     @State var viewModel: LocationsViewModel
@@ -85,6 +84,7 @@ struct MainView: View {
                 }
             }
         }
+        .toastView(toast: $viewModel.displayedToast)
     }
     
     private func locationsSearchView(_ dismissSearch: @escaping () -> Void) -> some View {
@@ -94,9 +94,11 @@ struct MainView: View {
             }
             return !viewModel.locations.contains(where: { location.fullName == $0.fullName  })
         } addLocation: { [weak viewModel] location in
-            viewModel?.add(location)
+            viewModel?.displayToastForAdditionOf(location)
         } dismissSearch: {
             dismissSearch()
+        } onDuplicateFound: { [weak viewModel] location in
+            viewModel?.displayedToast = .init(style: .warning, title: "Duplicate Location", message: "You have already saved \"\(location.fullName)\".")
         }
     }
     
@@ -132,7 +134,7 @@ struct MainView: View {
                     ) { location in
                         viewModel.weather(for: location)
                     } onDelete: { [weak viewModel] location in
-                        viewModel?.delete(location)
+                        viewModel?.displayToastForRemovalOf(location)
                     }
                 )
             } header: {

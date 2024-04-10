@@ -32,6 +32,13 @@ final class LocationsViewModel {
     private var searchSubject = PassthroughSubject<String, Never>()
     var kvsCancellable: Cancellable?
     private var currentLocationNeedsRefresh = false
+    var toastShouldPerformOnDismissAction = true
+    var displayedToast: Toast? {
+        didSet {
+            guard toastShouldPerformOnDismissAction else { return }
+            oldValue?.onDismiss?()
+        }
+    }
     
     init(
         userLocationAuthorisationRepositoryFactory: @escaping () -> UserLocationAuthorisationRepository,
@@ -284,14 +291,13 @@ final class LocationsViewModel {
         return oldLocations
     }
     
-    func add(_ location: Location) {
+    func add(_ location: Location, oldLocations: [Location]) {
         let savedLocationsRepository = savedLocationsRepositoryFactory()
         let weatherRepository = weatherRepositoryFactory()
         let timeZoneRepository = timeZoneRepositoryFactory()
-        let oldLocations = performLocalAdd(of: location)
         var variableLocation = location
         
-        Task(priority: .background) {
+        Task(priority: .utility) {
             do {
                 let weather = try await weatherRepository.getWeather(for: variableLocation)
                 let timeZoneIdentifier: TimeZoneIdentifier? = try await {
@@ -304,6 +310,7 @@ final class LocationsViewModel {
                 if let timeZoneIdentifier {
                     variableLocation.timeZoneIdentifier = timeZoneIdentifier
                 }
+                
                 try await savedLocationsRepository.add(variableLocation)
                 
                 await MainActor.run {
@@ -325,6 +332,25 @@ final class LocationsViewModel {
         }
     }
     
+    func displayToastForAdditionOf(_ location: Location) {
+        toastShouldPerformOnDismissAction = true
+        let old = performLocalAdd(of: location)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
+            self?.displayedToast = .init(
+                style: .success,
+                title: "Location Added",
+                message: "Added \(location.city) to Locations",
+                trailingButton: .init(
+                    style: .text("Undo")
+                ) {
+                    self?.undoLocationsChange(from: old)
+                }
+            ) {
+                self?.add(location, oldLocations: old)
+            }
+        }
+    }
+    
     /**
      Handles the deletion of a location from the locations array.
      
@@ -333,7 +359,7 @@ final class LocationsViewModel {
      - Returns: The locations array before the modification was performed.
      - Parameter location: The location to be removed from the user's saved locations,
      */
-    private func performLocalDelete(of location: Location) -> [Location] {
+    func performLocalDelete(of location: Location) -> [Location] {
         var tempLocations = locations
         let oldLocations = locations
         
@@ -346,9 +372,8 @@ final class LocationsViewModel {
         return oldLocations
     }
     
-    func delete(_ location: Location) {
+    func delete(_ location: Location, oldLocations: [Location]) {
         let savedLocationsRepository = savedLocationsRepositoryFactory()
-        let oldLocations = performLocalDelete(of: location)
         
         Task(priority: .userInitiated) {
             do {
@@ -358,6 +383,31 @@ final class LocationsViewModel {
                 self.locations = oldLocations
             }
         }
+    }
+    
+    func displayToastForRemovalOf(_ location: Location) {
+        toastShouldPerformOnDismissAction = true
+        let old = performLocalDelete(of: location)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
+            self?.displayedToast = .init(
+                style: .delete,
+                title: "Location Removed",
+                message: "Removed \(location.city) from Locations",
+                trailingButton: .init(
+                    style: .text("Undo")
+                ) {
+                    self?.undoLocationsChange(from: old)
+                }
+            ) {
+                self?.delete(location, oldLocations: old)
+            }
+        }
+    }
+    
+    func undoLocationsChange(from old: [Location]) {
+        locations = old
+        toastShouldPerformOnDismissAction = false
+        displayedToast = nil
     }
 }
 
