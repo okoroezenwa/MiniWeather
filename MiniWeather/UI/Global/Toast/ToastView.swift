@@ -75,8 +75,6 @@ struct ToastView: View {
                 .padding(.leading, 16)
                 .padding(.vertical, 8)
         }
-        .shadow(color: Color.black.opacity(0.1), radius: 20, x: 0, y: 1)
-        .padding(.horizontal, 16)
     }
 }
 

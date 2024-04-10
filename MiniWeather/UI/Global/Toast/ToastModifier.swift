@@ -13,7 +13,7 @@ struct ToastModifier: ViewModifier {
     
     func body(content: Content) -> some View {
         content
-            .overlay(
+            .overlay {
                 ZStack(alignment: .bottom) {
                     Color.clear
                     
@@ -22,15 +22,18 @@ struct ToastModifier: ViewModifier {
                             .onTapGesture {
                                 dismissToast()
                             }
-                            .transition(.move(edge: .bottom).combined(with: .opacity))
-                            .offset(y: -10)
+                            .transition(.move(edge: .bottom)/*.combined(with: .opacity)*/)
+                            .shadow(color: .black.opacity(0.1), radius: 20, x: 0, y: 1)
+                            .padding(.bottom, 30)
+                            .padding(.horizontal, 16)
                     }
                 }
-                    .animation(
-                        .spring(),
-                        value: toast
-                    )
-            )
+                .ignoresSafeArea(.container, edges: .bottom)
+                .animation(
+                    .spring(),
+                    value: toast
+                )
+            }
             .onChange(of: toast) {
                 showToast()
             }
