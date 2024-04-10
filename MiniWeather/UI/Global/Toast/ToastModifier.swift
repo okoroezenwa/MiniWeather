@@ -37,7 +37,7 @@ struct ToastModifier: ViewModifier {
             .onChange(of: toast) {
                 showToast()
             }
-            .sensoryFeedback(.impact(weight: .light), trigger: toast) { _, newValue in
+            .sensoryFeedback(toast?.style.feedback ?? .impact(weight: .light), trigger: toast) { _, newValue in
                 return newValue != nil
             }
     }

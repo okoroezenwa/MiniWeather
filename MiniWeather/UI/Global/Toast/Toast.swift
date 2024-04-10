@@ -73,4 +73,21 @@ extension Toast.Style {
                 return icon
         }
     }
+    
+    var feedback: SensoryFeedback {
+        switch self {
+            case .info:
+                return .impact
+            case .warning:
+                return .warning
+            case .success:
+                return .success
+            case .error:
+                return .error
+            case .delete:
+                return .decrease
+            case .custom(color: _, icon: let icon):
+                return .impact(weight: .light)
+        }
+    }
 }

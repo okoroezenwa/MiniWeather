@@ -15,6 +15,8 @@ struct ToastView: View {
         MaterialView(topPadding: 0, bottomPadding: 0, leadingPadding: 0, trailingPadding: 0) {
             HStack(alignment: .center, spacing: 16) {
                 Image(systemName: toast.style.icon)
+                    .resizable()
+                    .frame(square: 25)
                     .foregroundColor(toast.style.themeColor)
                     .padding(.leading, 16)
                 
