@@ -129,12 +129,13 @@ struct MainView: View {
         } savedLocationsSection: {
             SectionContainerView {
                 SavedLocationsSection(
-                    viewModel: .init(
-                        locations: viewModel.locations
-                    ) { location in
+                    locations: $viewModel.locations,
+                    viewModel: SavedLocationsSectionViewModel { location in
                         viewModel.weather(for: location)
                     } onDelete: { [weak viewModel] location in
                         viewModel?.displayToastForRemovalOf(location)
+                    } onMove: { offsets, destination in
+                        viewModel.move(from: offsets, to: destination)
                     }
                 )
             } header: {

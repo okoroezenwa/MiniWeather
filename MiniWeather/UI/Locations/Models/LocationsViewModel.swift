@@ -409,6 +409,19 @@ final class LocationsViewModel {
         toastShouldPerformOnDismissAction = false
         displayedToast = nil
     }
+    
+    func move(from offsets: IndexSet, to offset: Int) {
+        let savedLocationsRepository = savedLocationsRepositoryFactory()
+        
+        Task(priority: .userInitiated) {
+            do {
+                try await savedLocationsRepository.move(from: offsets, to: offset)
+            } catch {
+                logger.log("Deleting saved location failed: \(error)")
+                #warning("Need to undo changes here")
+            }
+        }
+    }
 }
 
 // TODO: - Use a better Error type?

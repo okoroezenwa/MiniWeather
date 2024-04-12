@@ -40,3 +40,11 @@ protocol TimeZoneLocationGeocoder {
     func getLocations<T: TimeZoneLocationProtocol>(named searchText: String) async throws -> [T]
     func getLocations<T: TimeZoneLocationProtocol>(at coordinates: CLLocationCoordinate2D) async throws -> [T]
 }
+
+extension LocationProtocol where Self == Location {
+    func atPosition(_ position: Int) -> Location {
+        var location = self
+        location.position = position
+        return location
+    }
+}

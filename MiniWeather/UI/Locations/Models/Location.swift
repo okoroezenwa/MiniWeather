@@ -7,6 +7,7 @@
 
 import Foundation
 import CoreLocation
+import SwiftUI
 
 /// The Location object.
 struct Location: Codable, Identifiable, Hashable {
@@ -74,6 +75,12 @@ extension Location: LocationProtocol {
         name += ", \(country)"
         
         return name
+    }
+}
+
+extension Location: Transferable {
+    static var transferRepresentation: some TransferRepresentation {
+        CodableRepresentation(contentType: .location)
     }
 }
 
