@@ -26,7 +26,7 @@ struct ToastView: View {
                         .font(.system(size: 14, weight: .semibold))
                     
                     Text(toast.message)
-                        .font(.system(size: 12))
+                        .font(.system(size: 13))
                         .lineLimit(2)
                         .foregroundStyle(.secondary)
                 }

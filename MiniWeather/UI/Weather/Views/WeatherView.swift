@@ -94,10 +94,7 @@ struct WeatherView: View {
                     .init(
                         location: UniversalConstants.location
                     ),
-            weather: .init(
-                get: { UniversalConstants.weather },
-                set: { _ in }
-            ),
+            weather: .constant(UniversalConstants.weather),
             showWeatherViewMap: false
         )
         .navigationTitle("Weather")

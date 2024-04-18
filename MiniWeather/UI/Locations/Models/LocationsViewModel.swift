@@ -339,7 +339,7 @@ final class LocationsViewModel {
             self?.displayedToast = .init(
                 style: .success,
                 title: "Location Added",
-                message: "Added \(location.city) to Locations",
+                message: "Added \(location.city) to Locations".grantAttributes(to: location.city, values: Location.toastMessageAttributeValues),
                 trailingButton: .init(
                     style: .text("Undo")
                 ) {
@@ -392,7 +392,7 @@ final class LocationsViewModel {
             self?.displayedToast = .init(
                 style: .delete,
                 title: "Location Removed",
-                message: "Removed \(location.city) from Locations",
+                message: "Removed \(location.city) from Locations".grantAttributes(to: location.city, values: Location.toastMessageAttributeValues),
                 trailingButton: .init(
                     style: .text("Undo")
                 ) {
@@ -424,7 +424,7 @@ final class LocationsViewModel {
     }
 }
 
-// TODO: - Use a better Error type?
+#warning("Use a better Error type?")
 enum CurrentLocationError: Error {
     case outdated
 }

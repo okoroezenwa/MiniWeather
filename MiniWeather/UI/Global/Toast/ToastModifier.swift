@@ -22,7 +22,7 @@ struct ToastModifier: ViewModifier {
                             .onTapGesture {
                                 dismissToast()
                             }
-                            .transition(.move(edge: .bottom)/*.combined(with: .opacity)*/)
+                            .transition(.move(edge: .bottom))
                             .shadow(color: .black.opacity(0.1), radius: 20, x: 0, y: 1)
                             .padding(.bottom, 30)
                             .padding(.horizontal, 16)

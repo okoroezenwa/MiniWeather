@@ -16,7 +16,11 @@ struct SavedLocationsSectionViewModel {
 struct SavedLocationsSection: View {
     @Binding private var locations: [Location]
     private let viewModel: SavedLocationsSectionViewModel
+    
     @State private var draggedItem: Location?
+    @State private var isEditing = false
+    @State private var editingIndices = Set<Int>()
+    @Environment(\.editMode) private var editMode
     
     init(locations: Binding<[Location]>, viewModel: SavedLocationsSectionViewModel) {
         self.viewModel = viewModel
@@ -24,91 +28,86 @@ struct SavedLocationsSection: View {
     }
     
     var body: some View {
-        ForEach(locations) { location in
+        ForEach(array(), id: \.location) { index, location in
             NavigationLink(value: location) {
-                MaterialView(bottomPadding: 12) {
-                    LocationCell(
-                        location: location,
-                        weather: viewModel.weather(location).wrappedValue,
-                        isCurrentLocation: false,
-                        shouldDisplayAsLoading: false
+                ScrollSwipeActionsView(
+                    direction: .trailing,
+                    style: .translucentRounded,
+                    isEditing: $isEditing
+                ) {
+                    SwipeAction(
+                        tint: .blue,
+                        name: "Edit Location Name",
+                        icon: "pencil",
+                        action: { }
                     )
-                } /*background: {
-                    HStack(spacing: 16) {
-                        Spacer()
-                        
-                        Circle()
-                            .frame(square: 35)
-                            .background(.thinMaterial)
-                            .overlay {
-                                Image(systemName: "trash.fill")
-                            }
+                    
+                    SwipeAction(
+                        tint: .red,
+                        name: "Delete Location",
+                        icon: "trash.fill",
+                        shouldResetPosition: false,
+                        action: { viewModel.onDelete(location) }
+                    )
+                } content: {
+                    MaterialView(bottomPadding: 12) {
+                        LocationCell(
+                            location: location,
+                            weather: viewModel.weather(location).wrappedValue,
+                            isCurrentLocation: false,
+                            shouldDisplayAsLoading: false
+                        )
                     }
-                    .padding(.trailing, 16)
-                }*/
-//                #if os(iOS)
-//                .contentShape(.contextMenuPreview, RoundedRectangle(cornerRadius: 16))
-//                #endif
-//                .contextMenu {
-//                    Button(role: .destructive) {
-//                        withAnimation {
-//                            viewModel.onDelete(location)
-//                        }
-//                    } label: {
-//                        Label("Delete Location", systemImage: "trash")
+                } onSwipe: { isExpanded in
+//                    if isExpanded, !editingIndices.contains(index) {
+//                        editingIndices.insert(index)
+//                    } else if !isExpanded, editingIndices.contains(index) {
+//                        editingIndices.remove(index)
 //                    }
-//                }
+                }
                 .contentShape(.dragPreview, RoundedRectangle(cornerRadius: 16))
             }
             .buttonStyle(.plain)
             .transition(.move(edge: .leading))
-            .onDrag {
+            .onDrag /*(if: /*!isEditing && !editingIndices.contains(index)*/true)*/ {
                 draggedItem = location
                 return NSItemProvider()
             } preview: {
-                RoundedRectangle(cornerRadius: 16)
+                RoundedRectangle(cornerRadius: 0.5)
                     .fill(.white)
                     .opacity(0.1)
             }
             .onDrop(of: [.location], delegate: DropViewDelegate(destinationItem: location, locations: $locations, draggedItem: $draggedItem, onMove: viewModel.onMove))
         }
-        .animation(.easeInOut, value: locations)
+        .animation(.smooth, value: locations)
         .padding(.horizontal, 16)
+        .onChange(of: editMode?.wrappedValue.isEditing) {
+            isEditing = editMode?.wrappedValue.isEditing == true
+        }
+    }
+    
+    func array() -> [(index: Int, location: Location)] {
+        Array(zip(0..<locations.count, locations))
+    }
+    
+    func actions(for location: Location) -> [Action] {
+        [
+            Action(
+                color: .blue,
+                name: "Edit Location Name",
+                systemIcon: "pencil",
+                action: { }
+            ),
+            Action(
+                color: .red,
+                name: "Delete Location",
+                systemIcon: "trash.fill",
+                action: { viewModel.onDelete(location) }
+            )
+        ]
     }
 }
 
 #Preview {
-    SavedLocationsSection(locations: .init(get: { [UniversalConstants.location] }, set: { _ in }), viewModel: .init(weather: { _ in Binding(get: { UniversalConstants.weather }, set: { _ in }) }, onDelete: { _ in }, onMove: { _, _ in }))
-}
-
-struct DropViewDelegate: DropDelegate {
-    
-    let destinationItem: Location
-    @Binding var locations: [Location]
-    @Binding var draggedItem: Location?
-    var onMove: (IndexSet, Int) -> Void
-    
-    func dropUpdated(info: DropInfo) -> DropProposal? {
-        return DropProposal(operation: .move)
-    }
-    
-    func performDrop(info: DropInfo) -> Bool {
-        draggedItem = nil
-        return true
-    }
-    
-    func dropEntered(info: DropInfo) {
-        if let draggedItem, 
-            let fromIndex = locations.firstIndex(of: draggedItem),
-            let toIndex = locations.firstIndex(of: destinationItem),
-            fromIndex != toIndex
-        {
-            let offsets = IndexSet(integer: fromIndex)
-            let destination = (toIndex > fromIndex ? (toIndex + 1) : toIndex)
-            withAnimation {
-                self.locations.move(fromOffsets: offsets, toOffset: destination)
-            }
-            onMove(offsets, destination)
-        }
-    }
+    SavedLocationsSection(locations: .constant([UniversalConstants.location]), viewModel: .init(weather: { _ in .constant(UniversalConstants.weather) }, onDelete: { _ in }, onMove: { _, _ in }))
 }

@@ -19,7 +19,7 @@ struct Toast: Equatable {
     
     var style: Style
     var title: String
-    var message: String
+    var message: AttributedString
     var duration: Double = 7
     var trailingButton: TrailingButton?
     var onDismiss: (() -> Void)?

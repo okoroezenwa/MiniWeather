@@ -49,6 +49,9 @@
 		BE2CB0922BC5804F0065F5BF /* ToastModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2CB0912BC5804F0065F5BF /* ToastModifier.swift */; };
 		BE2CB0942BC5838A0065F5BF /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2CB0932BC5838A0065F5BF /* Toast.swift */; };
 		BE2CB0962BC7E6490065F5BF /* UTType+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2CB0952BC7E6490065F5BF /* UTType+Extensions.swift */; };
+		BE2CB09B2BC99F790065F5BF /* AttributedString+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2CB09A2BC99F790065F5BF /* AttributedString+Extensions.swift */; };
+		BE2CB09E2BCB293C0065F5BF /* ActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2CB09C2BCB293C0065F5BF /* ActionButton.swift */; };
+		BE2CB09F2BCB293C0065F5BF /* GestureSwipeActionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2CB09D2BCB293C0065F5BF /* GestureSwipeActionsView.swift */; };
 		BE2D18BB2B134F0A0012D1F0 /* OpenWeatherMapTimeZoneService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2D18BA2B134F0A0012D1F0 /* OpenWeatherMapTimeZoneService.swift */; };
 		BE2D18BD2B1502CE0012D1F0 /* OpenWeatherMapWeather.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2D18BC2B1502CE0012D1F0 /* OpenWeatherMapWeather.swift */; };
 		BE2D18BF2B1503850012D1F0 /* OpenWeatherMapCodables.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2D18BE2B1503850012D1F0 /* OpenWeatherMapCodables.swift */; };
@@ -113,6 +116,20 @@
 		BE9EC7612BBC63EC0067706F /* StandardTemporaryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9EC7602BBC63EC0067706F /* StandardTemporaryStore.swift */; };
 		BE9EC7662BBC69D30067706F /* Notification+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9EC7652BBC69D30067706F /* Notification+Extensions.swift */; };
 		BE9F20F82AD0624A00CDC9F4 /* MainLocationsSearchRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9F20F72AD0624A00CDC9F4 /* MainLocationsSearchRepository.swift */; };
+		BEBAC1842BCC66A6009BF1B8 /* ScrollSwipeActionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEBAC1832BCC66A6009BF1B8 /* ScrollSwipeActionsView.swift */; };
+		BEBAC1B12BCD6FCD009BF1B8 /* ScrollUI in Frameworks */ = {isa = PBXBuildFile; productRef = BEBAC1B02BCD6FCD009BF1B8 /* ScrollUI */; };
+		BEBAC1B42BCE8258009BF1B8 /* PagingScrollViewStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEBAC1B32BCE8258009BF1B8 /* PagingScrollViewStyle.swift */; };
+		BEBAC1B62BCECD4E009BF1B8 /* SwipeAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEBAC1B52BCECD4E009BF1B8 /* SwipeAction.swift */; };
+		BEBAC1B92BCECD87009BF1B8 /* SwipeActionStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEBAC1B82BCECD87009BF1B8 /* SwipeActionStyle.swift */; };
+		BEBAC1BB2BCECDD0009BF1B8 /* FilledSwipeActionStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEBAC1BA2BCECDD0009BF1B8 /* FilledSwipeActionStyle.swift */; };
+		BEBAC1BD2BCECDE7009BF1B8 /* RoundedSwipeActionStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEBAC1BC2BCECDE7009BF1B8 /* RoundedSwipeActionStyle.swift */; };
+		BEBAC1BF2BCECE04009BF1B8 /* TranslucentRoundedSwipeActionStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEBAC1BE2BCECE04009BF1B8 /* TranslucentRoundedSwipeActionStyle.swift */; };
+		BEBAC1C12BCED26B009BF1B8 /* SwipeActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEBAC1C02BCED26B009BF1B8 /* SwipeActionButton.swift */; };
+		BEBAC1C42BCFB55E009BF1B8 /* DropViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEBAC1C32BCFB55E009BF1B8 /* DropViewDelegate.swift */; };
+		BEBAC1C72BD04818009BF1B8 /* SwipeActionConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEBAC1C62BD04818009BF1B8 /* SwipeActionConfiguration.swift */; };
+		BEBAC1CC2BD04AD6009BF1B8 /* AnySwipeActionStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEBAC1CB2BD04AD6009BF1B8 /* AnySwipeActionStyle.swift */; };
+		BEBAC1CF2BD04AF4009BF1B8 /* DefaultSwipeActionStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEBAC1CE2BD04AF4009BF1B8 /* DefaultSwipeActionStyle.swift */; };
+		BEBAC1D12BD04B39009BF1B8 /* SwipeDirection.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEBAC1D02BD04B39009BF1B8 /* SwipeDirection.swift */; };
 		BEC47B382B8E4A9700BF39FD /* MiniWeatherTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEC47B372B8E4A9700BF39FD /* MiniWeatherTests.swift */; };
 		BECC197C2B2C860600A30ACE /* TimeZone+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BECC197B2B2C860600A30ACE /* TimeZone+Extensions.swift */; };
 		BECC197E2B2D071800A30ACE /* Image+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BECC197D2B2D071800A30ACE /* Image+Extensions.swift */; };
@@ -220,6 +237,9 @@
 		BE2CB0912BC5804F0065F5BF /* ToastModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastModifier.swift; sourceTree = "<group>"; };
 		BE2CB0932BC5838A0065F5BF /* Toast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toast.swift; sourceTree = "<group>"; };
 		BE2CB0952BC7E6490065F5BF /* UTType+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UTType+Extensions.swift"; sourceTree = "<group>"; };
+		BE2CB09A2BC99F790065F5BF /* AttributedString+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AttributedString+Extensions.swift"; sourceTree = "<group>"; };
+		BE2CB09C2BCB293C0065F5BF /* ActionButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActionButton.swift; sourceTree = "<group>"; };
+		BE2CB09D2BCB293C0065F5BF /* GestureSwipeActionsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GestureSwipeActionsView.swift; sourceTree = "<group>"; };
 		BE2D18BA2B134F0A0012D1F0 /* OpenWeatherMapTimeZoneService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenWeatherMapTimeZoneService.swift; sourceTree = "<group>"; };
 		BE2D18BC2B1502CE0012D1F0 /* OpenWeatherMapWeather.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenWeatherMapWeather.swift; sourceTree = "<group>"; };
 		BE2D18BE2B1503850012D1F0 /* OpenWeatherMapCodables.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenWeatherMapCodables.swift; sourceTree = "<group>"; };
@@ -287,6 +307,19 @@
 		BE9EC7602BBC63EC0067706F /* StandardTemporaryStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandardTemporaryStore.swift; sourceTree = "<group>"; };
 		BE9EC7652BBC69D30067706F /* Notification+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification+Extensions.swift"; sourceTree = "<group>"; };
 		BE9F20F72AD0624A00CDC9F4 /* MainLocationsSearchRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainLocationsSearchRepository.swift; sourceTree = "<group>"; };
+		BEBAC1832BCC66A6009BF1B8 /* ScrollSwipeActionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollSwipeActionsView.swift; sourceTree = "<group>"; };
+		BEBAC1B32BCE8258009BF1B8 /* PagingScrollViewStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PagingScrollViewStyle.swift; sourceTree = "<group>"; };
+		BEBAC1B52BCECD4E009BF1B8 /* SwipeAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeAction.swift; sourceTree = "<group>"; };
+		BEBAC1B82BCECD87009BF1B8 /* SwipeActionStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeActionStyle.swift; sourceTree = "<group>"; };
+		BEBAC1BA2BCECDD0009BF1B8 /* FilledSwipeActionStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilledSwipeActionStyle.swift; sourceTree = "<group>"; };
+		BEBAC1BC2BCECDE7009BF1B8 /* RoundedSwipeActionStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedSwipeActionStyle.swift; sourceTree = "<group>"; };
+		BEBAC1BE2BCECE04009BF1B8 /* TranslucentRoundedSwipeActionStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranslucentRoundedSwipeActionStyle.swift; sourceTree = "<group>"; };
+		BEBAC1C02BCED26B009BF1B8 /* SwipeActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeActionButton.swift; sourceTree = "<group>"; };
+		BEBAC1C32BCFB55E009BF1B8 /* DropViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropViewDelegate.swift; sourceTree = "<group>"; };
+		BEBAC1C62BD04818009BF1B8 /* SwipeActionConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeActionConfiguration.swift; sourceTree = "<group>"; };
+		BEBAC1CB2BD04AD6009BF1B8 /* AnySwipeActionStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnySwipeActionStyle.swift; sourceTree = "<group>"; };
+		BEBAC1CE2BD04AF4009BF1B8 /* DefaultSwipeActionStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultSwipeActionStyle.swift; sourceTree = "<group>"; };
+		BEBAC1D02BD04B39009BF1B8 /* SwipeDirection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeDirection.swift; sourceTree = "<group>"; };
 		BEC47B352B8E4A9700BF39FD /* MiniWeatherTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MiniWeatherTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BEC47B372B8E4A9700BF39FD /* MiniWeatherTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiniWeatherTests.swift; sourceTree = "<group>"; };
 		BECC197B2B2C860600A30ACE /* TimeZone+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TimeZone+Extensions.swift"; sourceTree = "<group>"; };
@@ -349,6 +382,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BE01AD0A2BBD651B00E07389 /* DiskCache in Frameworks */,
+				BEBAC1B12BCD6FCD009BF1B8 /* ScrollUI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -494,7 +528,9 @@
 		BE2CB08B2BC2BF630065F5BF /* Global */ = {
 			isa = PBXGroup;
 			children = (
+				BEBAC1C22BCFB550009BF1B8 /* Drag & Drop */,
 				BE2CB0902BC580400065F5BF /* Toast */,
+				BEBAC1B22BCE823F009BF1B8 /* Swipe Actions */,
 			);
 			path = Global;
 			sourceTree = "<group>";
@@ -652,6 +688,7 @@
 				BE4B45BB2B06C56D007DBF66 /* ShapeStyle+Extensions.swift */,
 				BED0F59C2B0DF73200156E23 /* Sequence+Async.swift */,
 				BE13464C2B2B283B00A07631 /* String+Extensions.swift */,
+				BE2CB09A2BC99F790065F5BF /* AttributedString+Extensions.swift */,
 				BECC197B2B2C860600A30ACE /* TimeZone+Extensions.swift */,
 				BECC197D2B2D071800A30ACE /* Image+Extensions.swift */,
 				BECC197F2B2D098000A30ACE /* Calendar+Extensions.swift */,
@@ -848,6 +885,23 @@
 			path = Repository;
 			sourceTree = "<group>";
 		};
+		BE7A98E42BD05B5700D4AB9C /* Implementations */ = {
+			isa = PBXGroup;
+			children = (
+				BE2CB09D2BCB293C0065F5BF /* GestureSwipeActionsView.swift */,
+				BEBAC1832BCC66A6009BF1B8 /* ScrollSwipeActionsView.swift */,
+			);
+			path = Implementations;
+			sourceTree = "<group>";
+		};
+		BE7A98E52BD05D2500D4AB9C /* Other Views */ = {
+			isa = PBXGroup;
+			children = (
+				BEBAC1C02BCED26B009BF1B8 /* SwipeActionButton.swift */,
+			);
+			path = "Other Views";
+			sourceTree = "<group>";
+		};
 		BE9EC7622BBC64460067706F /* Implementations */ = {
 			isa = PBXGroup;
 			children = (
@@ -876,6 +930,66 @@
 				BE9EC7602BBC63EC0067706F /* StandardTemporaryStore.swift */,
 			);
 			path = TemporaryStore;
+			sourceTree = "<group>";
+		};
+		BEBAC1B22BCE823F009BF1B8 /* Swipe Actions */ = {
+			isa = PBXGroup;
+			children = (
+				BEBAC1C52BD047E7009BF1B8 /* Models */,
+				BEBAC1B72BCECD77009BF1B8 /* Styles */,
+				BE2CB09C2BCB293C0065F5BF /* ActionButton.swift */,
+				BE7A98E42BD05B5700D4AB9C /* Implementations */,
+				BEBAC1B32BCE8258009BF1B8 /* PagingScrollViewStyle.swift */,
+				BE7A98E52BD05D2500D4AB9C /* Other Views */,
+			);
+			path = "Swipe Actions";
+			sourceTree = "<group>";
+		};
+		BEBAC1B72BCECD77009BF1B8 /* Styles */ = {
+			isa = PBXGroup;
+			children = (
+				BEBAC1B82BCECD87009BF1B8 /* SwipeActionStyle.swift */,
+				BEBAC1C92BD04AA1009BF1B8 /* Implementations */,
+			);
+			path = Styles;
+			sourceTree = "<group>";
+		};
+		BEBAC1C22BCFB550009BF1B8 /* Drag & Drop */ = {
+			isa = PBXGroup;
+			children = (
+				BEBAC1C32BCFB55E009BF1B8 /* DropViewDelegate.swift */,
+			);
+			path = "Drag & Drop";
+			sourceTree = "<group>";
+		};
+		BEBAC1C52BD047E7009BF1B8 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				BEBAC1B52BCECD4E009BF1B8 /* SwipeAction.swift */,
+				BEBAC1C62BD04818009BF1B8 /* SwipeActionConfiguration.swift */,
+				BEBAC1D02BD04B39009BF1B8 /* SwipeDirection.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		BEBAC1C92BD04AA1009BF1B8 /* Implementations */ = {
+			isa = PBXGroup;
+			children = (
+				BEBAC1CA2BD04ABE009BF1B8 /* Transients */,
+				BEBAC1BA2BCECDD0009BF1B8 /* FilledSwipeActionStyle.swift */,
+				BEBAC1BC2BCECDE7009BF1B8 /* RoundedSwipeActionStyle.swift */,
+				BEBAC1BE2BCECE04009BF1B8 /* TranslucentRoundedSwipeActionStyle.swift */,
+			);
+			path = Implementations;
+			sourceTree = "<group>";
+		};
+		BEBAC1CA2BD04ABE009BF1B8 /* Transients */ = {
+			isa = PBXGroup;
+			children = (
+				BEBAC1CB2BD04AD6009BF1B8 /* AnySwipeActionStyle.swift */,
+				BEBAC1CE2BD04AF4009BF1B8 /* DefaultSwipeActionStyle.swift */,
+			);
+			path = Transients;
 			sourceTree = "<group>";
 		};
 		BEC47B362B8E4A9700BF39FD /* MiniWeatherTests */ = {
@@ -1100,6 +1214,7 @@
 			name = MiniWeather;
 			packageProductDependencies = (
 				BE01AD092BBD651B00E07389 /* DiskCache */,
+				BEBAC1B02BCD6FCD009BF1B8 /* ScrollUI */,
 			);
 			productName = MiniWeather;
 			productReference = BE71B80B2ACE9F2B003AA99C /* MiniWeather.app */;
@@ -1153,6 +1268,7 @@
 			mainGroup = BE71B8022ACE9F2B003AA99C;
 			packageReferences = (
 				BE01AD082BBD651B00E07389 /* XCRemoteSwiftPackageReference "DiskCache" */,
+				BEBAC1AF2BCD6FCD009BF1B8 /* XCRemoteSwiftPackageReference "ScrollViewStyle" */,
 			);
 			productRefGroup = BE71B80C2ACE9F2B003AA99C /* Products */;
 			projectDirPath = "";
@@ -1197,11 +1313,13 @@
 				BE62AF2F2AFA26D600BEEBFA /* WeatherView.swift in Sources */,
 				BE4FE49F2AEC1A0C00A381FD /* GeocoderService.swift in Sources */,
 				BE5384E52B345ED900895109 /* WeatherViewModel.swift in Sources */,
+				BE2CB09F2BCB293C0065F5BF /* GestureSwipeActionsView.swift in Sources */,
 				BE928F172B177D5C0083CC96 /* KeyValueStore.swift in Sources */,
 				BECDADCE2B2226B700CA2EAB /* CurrentLocationSectionHeader.swift in Sources */,
 				BED0F5AE2B12123D00156E23 /* UserDefaultsDatastore.swift in Sources */,
 				BE9EC75D2BBC63B30067706F /* TemporaryStore.swift in Sources */,
 				BE46751A2AFFB38400E9FAA3 /* LocationManagerDelegate.swift in Sources */,
+				BEBAC1C72BD04818009BF1B8 /* SwipeActionConfiguration.swift in Sources */,
 				BE4FE4CA2AEF947200A381FD /* APINinjasWeather.swift in Sources */,
 				BE248C402B25FA05007E32FD /* AppleWeatherService.swift in Sources */,
 				BE570EEF2B21A44800A43B96 /* LocationSearchResultsView.swift in Sources */,
@@ -1212,6 +1330,7 @@
 				BE4E41B42AFA45A2008B07D5 /* Listener.swift in Sources */,
 				BED0F59A2B0B9AEE00156E23 /* MainLocationManagerDelegate.swift in Sources */,
 				BEF55F2A2B30788D008B8319 /* AlertCard.swift in Sources */,
+				BEBAC1C12BCED26B009BF1B8 /* SwipeActionButton.swift in Sources */,
 				BE4FE4932AEC08D100A381FD /* APINinjasGeocodingRequest.swift in Sources */,
 				BE4FE4BF2AEC4A4300A381FD /* CountryCodes.swift in Sources */,
 				BE4675182AFE8EEE00E9FAA3 /* View+Extensions.swift in Sources */,
@@ -1223,19 +1342,24 @@
 				BE75A35C2B1632040041ED46 /* MainSavedLocationsProvider.swift in Sources */,
 				BEF55F202B30727F008B8319 /* WindAndPressureCard.swift in Sources */,
 				BEF55F2C2B307C19008B8319 /* WeatherCard.swift in Sources */,
+				BEBAC1B92BCECD87009BF1B8 /* SwipeActionStyle.swift in Sources */,
 				BEF55F242B30746D008B8319 /* UVIndexCard.swift in Sources */,
 				BE23F9822BA74DE600A85C8C /* CLGeocoder+Extensions.swift in Sources */,
 				BEF55F182B2DCABC008B8319 /* Date+Extensions.swift in Sources */,
+				BE2CB09B2BC99F790065F5BF /* AttributedString+Extensions.swift in Sources */,
 				BEFE25532B04A86000AB5DED /* CLAuthorizationStatus+Extensions.swift in Sources */,
+				BEBAC1CC2BD04AD6009BF1B8 /* AnySwipeActionStyle.swift in Sources */,
 				BE9EC7662BBC69D30067706F /* Notification+Extensions.swift in Sources */,
 				BECDADC62B21F6DD00CA2EAB /* SectionContainerView.swift in Sources */,
 				BECDADD02B2227DD00CA2EAB /* SavedLocationsSectionHeader.swift in Sources */,
+				BEBAC1BF2BCECE04009BF1B8 /* TranslucentRoundedSwipeActionStyle.swift in Sources */,
 				BEFE25672B06918200AB5DED /* LocationAuthorisationCell.swift in Sources */,
 				BEE949052B30BFAB0074507E /* MapCard.swift in Sources */,
 				BE5384E32B335B5300895109 /* AppleWeatherExtensions.swift in Sources */,
 				BE2D18BF2B1503850012D1F0 /* OpenWeatherMapCodables.swift in Sources */,
 				BED0F5A72B10EA1200156E23 /* WeatherProtocol.swift in Sources */,
 				BE4FE4D02AF1337100A381FD /* MainWeatherRepository.swift in Sources */,
+				BEBAC1842BCC66A6009BF1B8 /* ScrollSwipeActionsView.swift in Sources */,
 				BE23F9802BA749CB00A85C8C /* LocationProtocol.swift in Sources */,
 				BEFE255E2B061D1300AB5DED /* APINinjasReverseGeocodingRequest.swift in Sources */,
 				BEFE255C2B060EDD00AB5DED /* MainUserLocationAuthorisationRepository.swift in Sources */,
@@ -1260,10 +1384,12 @@
 				BED0F59F2B10D1CC00156E23 /* OpenWeatherMapGeocoderService.swift in Sources */,
 				BECC197C2B2C860600A30ACE /* TimeZone+Extensions.swift in Sources */,
 				BE2CB0922BC5804F0065F5BF /* ToastModifier.swift in Sources */,
+				BEBAC1BB2BCECDD0009BF1B8 /* FilledSwipeActionStyle.swift in Sources */,
 				BE9EC7612BBC63EC0067706F /* StandardTemporaryStore.swift in Sources */,
 				BE2D18C12B150CF40012D1F0 /* OpenWeatherMapWeatherRequest.swift in Sources */,
 				BE44D6B32B128EE700897390 /* MemoryDatastore.swift in Sources */,
 				BE4FE4A62AEC1E2500A381FD /* NetworkService.swift in Sources */,
+				BEBAC1D12BD04B39009BF1B8 /* SwipeDirection.swift in Sources */,
 				BE1709FE2BAB3C1E00A44A52 /* URLResponse+Extensions.swift in Sources */,
 				BED0F5A32B10D84E00156E23 /* OpenWeatherMapReverseGeocodingRequest.swift in Sources */,
 				BE248C3E2B25F043007E32FD /* AppleWeather.swift in Sources */,
@@ -1288,11 +1414,13 @@
 				BE4FE4C62AEEC40700A381FD /* LocationCell.swift in Sources */,
 				BE71B8132ACE9F2B003AA99C /* Location.swift in Sources */,
 				BECDADCA2B220DC700CA2EAB /* SavedLocationsSection.swift in Sources */,
+				BEBAC1B42BCE8258009BF1B8 /* PagingScrollViewStyle.swift in Sources */,
 				BE170A0D2BADC8FC00A44A52 /* CLLocationCoordinate2D+Extensions.swift in Sources */,
 				BE4FE4C12AEC4DE900A381FD /* APINinjasTimeZoneService.swift in Sources */,
 				BEF55F2E2B307E2F008B8319 /* WeatherCardChildren.swift in Sources */,
 				BE928F1B2B1799610083CC96 /* CloudKeyValueDatastore.swift in Sources */,
 				BED0F5A12B10D47200156E23 /* OpenWeatherMapGeocodingRequest.swift in Sources */,
+				BEBAC1C42BCFB55E009BF1B8 /* DropViewDelegate.swift in Sources */,
 				BED0F5AC2B11EDBE00156E23 /* Datastore.swift in Sources */,
 				BEE949072B30C4290074507E /* SunAndMoonCard.swift in Sources */,
 				BEF55F282B307648008B8319 /* HourlyForecastCard.swift in Sources */,
@@ -1301,7 +1429,9 @@
 				BEFE255A2B060D5500AB5DED /* UserLocationAuthorisationRepository.swift in Sources */,
 				BEFE25562B04EDCF00AB5DED /* UserLocationCoordinatesRepository.swift in Sources */,
 				BE4FE4A32AEC1D2500A381FD /* LocationsSearchRepository.swift in Sources */,
+				BEBAC1CF2BD04AF4009BF1B8 /* DefaultSwipeActionStyle.swift in Sources */,
 				BECC19802B2D098000A30ACE /* Calendar+Extensions.swift in Sources */,
+				BEBAC1BD2BCECDE7009BF1B8 /* RoundedSwipeActionStyle.swift in Sources */,
 				BE2D18C32B150DAC0012D1F0 /* OpenWeatherMapWeatherService.swift in Sources */,
 				BECDADC22B21D9BC00CA2EAB /* LocationsView.swift in Sources */,
 				BE7DA77D2AE6B42A0016047C /* StandardNetworkService.swift in Sources */,
@@ -1309,8 +1439,10 @@
 				BE248C392B248D46007E32FD /* PreferencesProvider.swift in Sources */,
 				BEF55F222B30738F008B8319 /* VisibilityCard.swift in Sources */,
 				BE7DA7852AE99D800016047C /* DataParser.swift in Sources */,
+				BEBAC1B62BCECD4E009BF1B8 /* SwipeAction.swift in Sources */,
 				BE9F20F82AD0624A00CDC9F4 /* MainLocationsSearchRepository.swift in Sources */,
 				BECDADC42B21F34000CA2EAB /* LocationsGridView.swift in Sources */,
+				BE2CB09E2BCB293C0065F5BF /* ActionButton.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1425,6 +1557,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_STRICT_CONCURRENCY = minimal;
 			};
 			name = Debug;
 		};
@@ -1480,6 +1613,7 @@
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_STRICT_CONCURRENCY = minimal;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -1643,6 +1777,14 @@
 				minimumVersion = 2.1.0;
 			};
 		};
+		BEBAC1AF2BCD6FCD009BF1B8 /* XCRemoteSwiftPackageReference "ScrollViewStyle" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/TimmysApp/ScrollViewStyle";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1650,6 +1792,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = BE01AD082BBD651B00E07389 /* XCRemoteSwiftPackageReference "DiskCache" */;
 			productName = DiskCache;
+		};
+		BEBAC1B02BCD6FCD009BF1B8 /* ScrollUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BEBAC1AF2BCD6FCD009BF1B8 /* XCRemoteSwiftPackageReference "ScrollViewStyle" */;
+			productName = ScrollUI;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

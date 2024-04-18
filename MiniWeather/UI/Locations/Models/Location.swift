@@ -118,3 +118,7 @@ extension Location {
         return true
     }
 }
+
+extension Location {
+    static let toastMessageAttributeValues: [AttributedString.AttributeValue] = [.foreground(.primary), .font(.system(size: 13, weight: .semibold))]
+}

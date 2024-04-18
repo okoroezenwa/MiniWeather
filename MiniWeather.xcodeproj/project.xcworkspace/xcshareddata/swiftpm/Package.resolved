@@ -1,5 +1,5 @@
 {
-  "originHash" : "77940252e00dd0f834c580401c0b81e9334a3331a27ab88a7691500047a38d88",
+  "originHash" : "1abbd50d80e0cb203e7a74385f3db69c03da06b47de3cdb8f9c9dad69f319916",
   "pins" : [
     {
       "identity" : "diskcache",
@@ -8,6 +8,24 @@
       "state" : {
         "revision" : "07c65d6d8c282bd95074c22f267050b6172a0278",
         "version" : "2.1.0"
+      }
+    },
+    {
+      "identity" : "scrollviewstyle",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/TimmysApp/ScrollViewStyle",
+      "state" : {
+        "revision" : "acbc98767d2d9d02c2ed7fe35636566277670188",
+        "version" : "2.0.0"
+      }
+    },
+    {
+      "identity" : "swiftui-introspect",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/siteline/SwiftUI-Introspect",
+      "state" : {
+        "revision" : "121c146fe591b1320238d054ae35c81ffa45f45a",
+        "version" : "0.12.0"
       }
     }
   ],
