@@ -70,6 +70,16 @@ struct MainSavedLocationsProvider: SavedLocationsProvider {
         }
     }
     
+    func changeNickname(ofLocationAt index: Int, to nickname: String) async throws {
+        do {
+            var locations: [Location] = try datastore.fetch(forKey: .savedLocations)
+            locations[index].nickname = nickname
+            try datastore.store(locations, withKey: .savedLocations)
+        } catch {
+            throw error
+        }
+    }
+    
     private func add(_ location: Location, to locations: [Location]) -> [Location] {
         if locations.isEmpty {
             return [location]

@@ -12,7 +12,7 @@ struct ToastView: View {
     @State private var height: CGFloat = 20
     
     var body: some View {
-        MaterialView(topPadding: 0, bottomPadding: 0, leadingPadding: 0, trailingPadding: 0) {
+        MaterialView(insets: .init(top: 0, bottom: 0, leading: 0, trailing: 0)) {
             HStack(alignment: .center, spacing: 16) {
                 Image(systemName: toast.style.icon)
                     .resizable()

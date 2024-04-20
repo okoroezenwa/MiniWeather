@@ -13,7 +13,7 @@ struct ActionButton: View {
     }
     
     let style: Style
-    let action: Action
+    let action: SwipeAction
     let width: CGFloat
     let needsLeadingPadding: Bool
     let dismiss: () -> Void
@@ -37,9 +37,9 @@ struct ActionButton: View {
     }
     
     @ViewBuilder func filledStyle() -> some View {
-        action.color
+        action.tint
             .overlay(alignment: .leading) {
-                Label(action.name, systemImage: action.systemIcon)
+                Label(action.name, systemImage: action.icon)
                     .labelStyle(.iconOnly)
                     .padding(.leading)
             }
@@ -57,9 +57,9 @@ struct ActionButton: View {
                     .overlay(alignment: .leading) {
                         Circle()
                             .frame(width: 50)
-                            .foregroundStyle(action.color)
+                            .foregroundStyle(action.tint)
                             .overlay {
-                                Label(action.name, systemImage: action.systemIcon)
+                                Label(action.name, systemImage: action.icon)
                                     .labelStyle(.iconOnly)
                             }
                             .padding(.leading, needsLeadingPadding ? spacing : 0)

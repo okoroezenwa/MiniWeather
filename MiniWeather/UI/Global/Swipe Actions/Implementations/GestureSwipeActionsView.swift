@@ -6,11 +6,25 @@ struct GestureSwipeActionsView<Content: View>: View {
     @State var startOffset: CGFloat = 0
     @State var isDragging = false
     @State var isTriggered = false
+    @State var hasCrossedThreshold = false
+    @State var allowUserInteraction = true
+    @State var editing = false
     
+    let width: CGFloat = 66
     let triggerThreshhold: CGFloat = -250
     let expansionThreshhold: CGFloat = -66
     let spacing: CGFloat = 16
+    let direction: SwipeDirection = .trailing
     var expansionOffset: CGFloat { CGFloat(actions.count) * expansionThreshhold }
+    let swipeActionsViewID = UUID()
+    let constants = SwipeActionsConstants()
+    
+    var actionButtonsWidth: CGFloat {
+        CGFloat(filteredActions.count) * width
+    }
+    var filteredActions: [SwipeAction] {
+        actions.filter(\.isEnabled)
+    }
     
     var dragGesture: some Gesture {
         DragGesture()
@@ -36,7 +50,8 @@ struct GestureSwipeActionsView<Content: View>: View {
                     offset = startOffset + value.translation.width
                 }
                 
-                isTriggered = offset < triggerThreshhold
+//                isTriggered = offset < triggerThreshhold
+                hasCrossedThreshold = abs(offset) > triggerThreshhold
             }
             .onEnded { value in
                 guard !isEditing else {
@@ -45,26 +60,29 @@ struct GestureSwipeActionsView<Content: View>: View {
                 
                 isDragging = false
                 
-                withAnimation {
-                    if value.predictedEndTranslation.width < expansionThreshhold &&
-                        !isTriggered {
-                        offset = expansionOffset
+                withAnimation(.smooth(duration: 0.25)) {
+                    if abs(value.predictedEndTranslation.width) > width/*expansionThreshhold*/ &&
+                        !hasCrossedThreshold/*isTriggered*/ {
+                        offset = direction == .trailing ? -actionButtonsWidth : actionButtonsWidth//expansionOffset
 //                        onManualInvocation(true)
                     } else {
-                        if let action = actions.last, isTriggered {
-                            action.action()
+                        Task { @MainActor in
+                            if let action = actions.last, /*isTriggered*/hasCrossedThreshold {
+                                action.action()
+                            }
                         }
                         offset = 0
 //                        onManualInvocation(false)
                     }
                 }
                 
-                isTriggered = false
+                hasCrossedThreshold = false
+//                isTriggered = false
             }
     }
     
     private let style: ActionButton.Style
-    private let actions: [Action]
+    private let actions: [SwipeAction]
     private let content: Content
     private let onManualInvocation: (Bool) -> Void
     private let isEditing: Bool
@@ -72,7 +90,7 @@ struct GestureSwipeActionsView<Content: View>: View {
     init(
         style: ActionButton.Style,
         isEditing: Bool,
-        actions: [Action],
+        actions: [SwipeAction],
         @ViewBuilder content: () -> Content,
         onManualInvocation: @escaping (Bool) -> Void
     ) {
@@ -84,7 +102,7 @@ struct GestureSwipeActionsView<Content: View>: View {
     }
     
     var body: some View {
-        content
+        /*content
             .overlay {
                 Button {
                     if !isEditing, offset != 0 {
@@ -126,9 +144,31 @@ struct GestureSwipeActionsView<Content: View>: View {
             .highPriorityGesture(dragGesture)
             .onChange(of: isEditing) {
                 withAnimation {
-                    offset = isEditing ? expansionOffset : 0
+                    offset = isEditing ? (/*expansionOffset*/direction == .trailing ? -actionButtonsWidth : actionButtonsWidth) : 0
+                }
+            }*/
+        
+        replacementView
+    }
+    
+    var replacementView: some View {
+        LazyHStack(spacing: 0) {
+            content
+                .containerRelativeFrame(.horizontal)
+                .offset(x: offset)
+                .contentShape(.rect)
+                .highPriorityGesture(dragGesture)
+            
+            SwipeActionButtonsView(direction: direction, filteredActions: filteredActions, style: .rounded, isEditing: editing, hasCrossedThreshold: $hasCrossedThreshold, allowUserInteraction: $allowUserInteraction, currentActionButtonWidth: getActionButtonWidth, currentOpacity: getOpacity, currentScale: getScale) { shouldAnimate in
+                if shouldAnimate {
+                    withAnimation(.smooth(duration: 0.25)) {
+                        offset = 0
+                    }
+                } else {
+                    offset = 0
                 }
             }
+        }
     }
     
     func getOffset() -> CGFloat {
@@ -142,14 +182,38 @@ struct GestureSwipeActionsView<Content: View>: View {
     func getWidth(isDefault: Bool, proportion: CGFloat, needsLeadingPadding: Bool) -> CGFloat {
         isDefault && isTriggered ? -offset : (-offset * proportion / CGFloat(actions.count)) + (needsLeadingPadding ? spacing : 0)
     }
+    
+    func getActionButtonWidth(isLastAction: Bool) -> CGFloat {
+        if isLastAction {
+            hasCrossedThreshold ? actionButtonsWidth : constants.width
+        } else {
+            hasCrossedThreshold ? 0 : constants.width
+        }
+    }
+    
+    func getOpacity(isLastAction: Bool) -> CGFloat {
+        if isLastAction {
+            1
+        } else {
+            hasCrossedThreshold ? 0 : 1
+        }
+    }
+    
+    func getScale(isLastAction: Bool) -> CGSize {
+        if isLastAction {
+            .init(width: 1, height: 1)
+        } else {
+            hasCrossedThreshold ? .init(width: 0.2, height: 0.2) : .init(width: 1, height: 1)
+        }
+    }
 }
 
 #Preview {
     GestureSwipeActionsView(style: .filled, isEditing: false, actions: [
-        Action(color: .indigo, name: "Like", systemIcon: "hand.thumbsup.fill", action: {
+        SwipeAction(tint: .indigo, name: "Like", icon: "hand.thumbsup.fill", action: {
             print("LIKE")
         }),
-        Action(color: .blue, name: "Subscribe", systemIcon: "figure.mind.and.body", action: {
+        SwipeAction(tint: .blue, name: "Subscribe", icon: "figure.mind.and.body", action: {
             print("SUBSCRIBE")
         }),
     ]) {
@@ -160,7 +224,7 @@ struct GestureSwipeActionsView<Content: View>: View {
         
     }
 }
-
+#warning("Organise later")
 struct Draggable<P: View>: ViewModifier {
     let condition: Bool
     let data: () -> NSItemProvider

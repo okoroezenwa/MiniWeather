@@ -9,16 +9,12 @@ import SwiftUI
 import ScrollUI
 
 struct ScrollSwipeActionsView<Content: View, Style: SwipeActionStyle>: View {
-    let contentID = UUID()
-    let swipeActionsViewID = UUID()
-    let width: CGFloat = 66
-    let triggerThreshold: CGFloat = 200
-    let animation = Animation.smooth(duration: 0.25)
+    let constants = SwipeActionsConstants()
     let direction: SwipeDirection
     let style: Style
     let onSwipe: (Bool) -> Void
     var actionButtonsWidth: CGFloat {
-        CGFloat(filteredActions.count) * width
+        CGFloat(filteredActions.count) * constants.width
     }
     var filteredActions: [SwipeAction] {
         actions.filter(\.isEnabled)
@@ -47,7 +43,7 @@ struct ScrollSwipeActionsView<Content: View, Style: SwipeActionStyle>: View {
                     content
                         .rotationEffect(.init(degrees: direction == .leading ? -180 : 0))
                         .containerRelativeFrame(.horizontal)
-                        .id(contentID)
+                        .id(constants.contentID)
                         .overlay {
                             Button {
                                 if !isEditing {
@@ -59,9 +55,10 @@ struct ScrollSwipeActionsView<Content: View, Style: SwipeActionStyle>: View {
                             .disabled(scrollOffset.isEqual(to: 0))
                         }
                     
-                    ActionButtons { animated in
+                    SwipeActionButtonsView(direction: direction, filteredActions: filteredActions, style: style, isEditing: isEditing, hasCrossedThreshold: $hasCrossedThreshold, allowUserInteraction: $allowUserInteraction, currentActionButtonWidth: getActionButtonWidth, currentOpacity: getOpacity, currentScale: getScale) { animated in
                         resetPosition(with: proxy, shouldAnimate: animated)
                     }
+                    .id(constants.swipeActionsViewID)
                 }
                 .scrollTargetLayout()
                 .visualEffect { content, innerProxy in
@@ -86,16 +83,16 @@ struct ScrollSwipeActionsView<Content: View, Style: SwipeActionStyle>: View {
                 if !newValue, hasCrossedThreshold, let lastAction = filteredActions.last {
                     lastAction.action()
                     withAnimation(.smooth) {
-                        proxy.scrollTo(contentID, anchor: direction == .trailing ? .topLeading : .topTrailing)
+                        proxy.scrollTo(constants.contentID, anchor: direction == .trailing ? .topLeading : .topTrailing)
                     }
                 }
             }
             .onChange(of: isEditing) { _, newValue in
                 withAnimation {
                     if newValue {
-                        proxy.scrollTo(swipeActionsViewID, anchor: direction == .trailing ? .topLeading : .topTrailing)
+                        proxy.scrollTo(constants.swipeActionsViewID, anchor: direction == .trailing ? .topLeading : .topTrailing)
                     } else {
-                        proxy.scrollTo(contentID, anchor: direction == .trailing ? .topLeading : .topTrailing)
+                        proxy.scrollTo(constants.contentID, anchor: direction == .trailing ? .topLeading : .topTrailing)
                     }
                 }
             }
@@ -109,66 +106,18 @@ struct ScrollSwipeActionsView<Content: View, Style: SwipeActionStyle>: View {
     func resetPosition(with proxy: ScrollViewProxy, shouldAnimate: Bool) {
         if shouldAnimate {
             withAnimation(.smooth(duration: 0.25)) {
-                proxy.scrollTo(contentID, anchor: direction == .trailing ? .topLeading : .topTrailing)
+                proxy.scrollTo(constants.contentID, anchor: direction == .trailing ? .topLeading : .topTrailing)
             }
         } else {
-            proxy.scrollTo(contentID, anchor: direction == .trailing ? .topLeading : .topTrailing)
+            proxy.scrollTo(constants.contentID, anchor: direction == .trailing ? .topLeading : .topTrailing)
         }
-    }
-    
-    @ViewBuilder
-    func ActionButtons(resetPosition: @escaping @MainActor (Bool) -> Void) -> some View {
-        Rectangle()
-            .fill(.clear)
-            .id(swipeActionsViewID)
-            .frame(width: actionButtonsWidth)
-            .overlay(alignment: direction.alignment) {
-                HStack(spacing: 0) {
-                    ForEach(filteredActions) { swipeAction in
-                        let isLastAction = swipeAction == filteredActions.last
-                        
-                        SwipeActionButton(
-                            swipeAction: swipeAction,
-                            widths: .init(
-                                label: width,
-                                container: getActionButtonWidth(isLastAction: isLastAction)
-                            ),
-                            visualEffects: .init(
-                                opacity: getOpacity(isLastAction: isLastAction),
-                                scale: getScale(isLastAction: isLastAction)
-                            )
-                        ) {
-                            Task { @MainActor in
-                                allowUserInteraction = false
-                                if !isEditing && swipeAction.shouldResetPosition {
-                                    resetPosition(true)
-                                    try? await Task.sleep(for: .seconds (0.25))
-                                }
-                                swipeAction.action()
-                                try? await Task.sleep(for: .seconds (0.1))
-                                allowUserInteraction = true
-//                                if !swipeAction.shouldResetPosition && !isEditing {
-//                                    try? await Task.sleep(for: .seconds (0.25))
-//                                    resetPosition(false)
-//                                }
-                            }
-                        } content: {
-                            Label(swipeAction.name, systemImage: swipeAction.icon)
-                                .labelStyle(.iconOnly)
-                        }
-                        .swipeActionStyle(style)
-                        .rotationEffect(.init(degrees: direction == .leading ? -180 : 0))
-                        .sensoryFeedback(.impact(weight: .medium), trigger: hasCrossedThreshold)
-                    }
-                }
-            }
     }
     
     func getActionButtonWidth(isLastAction: Bool) -> CGFloat {
         if isLastAction {
-            hasCrossedThreshold ? actionButtonsWidth : width
+            hasCrossedThreshold ? actionButtonsWidth : constants.width
         } else {
-            hasCrossedThreshold ? 0 : width
+            hasCrossedThreshold ? 0 : constants.width
         }
     }
     
@@ -194,7 +143,7 @@ struct ScrollSwipeActionsView<Content: View, Style: SwipeActionStyle>: View {
             let absoluteMinX = abs(minX)
             scrollOffset = absoluteMinX
             withAnimation(.smooth(duration: 0.25)) {
-                hasCrossedThreshold = absoluteMinX > triggerThreshold
+                hasCrossedThreshold = absoluteMinX > constants.triggerThreshold
             }
         }
         return (minX > 0 ? -minX : 0)
@@ -203,6 +152,14 @@ struct ScrollSwipeActionsView<Content: View, Style: SwipeActionStyle>: View {
 
 #Preview {
     ColorList()
+}
+
+struct SwipeActionsConstants {
+    let contentID = UUID()
+    let swipeActionsViewID = UUID()
+    let width: CGFloat = 66
+    let triggerThreshold: CGFloat = 200
+    let animation = Animation.smooth(duration: 0.25)
 }
 
 @resultBuilder

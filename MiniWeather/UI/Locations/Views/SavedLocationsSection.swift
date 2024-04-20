@@ -11,16 +11,20 @@ struct SavedLocationsSectionViewModel {
     let weather: (Location) -> Binding<WeatherProtocol?>
     let onDelete: (Location) -> Void
     let onMove: (IndexSet, Int) -> Void
+    let onNicknameChange: (String, Int) -> Void
 }
 
 struct SavedLocationsSection: View {
     @Binding private var locations: [Location]
     private let viewModel: SavedLocationsSectionViewModel
-    
     @State private var draggedItem: Location?
     @State private var isEditing = false
     @State private var editingIndices = Set<Int>()
+    @State private var editingLocationInfo: EditLocationInfo?
+    @State private var editInfo = SearchTextField.EditInfo(purpose: "", placeholder: "", text: "")
+    @State private var showConfirmation = false
     @Environment(\.editMode) private var editMode
+    @Environment(\.colorScheme) private var colorScheme
     
     init(locations: Binding<[Location]>, viewModel: SavedLocationsSectionViewModel) {
         self.viewModel = viewModel
@@ -39,7 +43,13 @@ struct SavedLocationsSection: View {
                         tint: .blue,
                         name: "Edit Location Name",
                         icon: "pencil",
-                        action: { }
+                        action: {
+                            let city = location.city
+                            let nickname = location.nickname
+                            let condition = nickname != city
+                            editInfo = SearchTextField.EditInfo(purpose: "Edit Nickname", placeholder: city, text: nickname.value(if: condition) ?? "")
+                            editingLocationInfo = .init(index: index, location: location)
+                        }
                     )
                     
                     SwipeAction(
@@ -50,7 +60,7 @@ struct SavedLocationsSection: View {
                         action: { viewModel.onDelete(location) }
                     )
                 } content: {
-                    MaterialView(bottomPadding: 12) {
+                    MaterialView(insets: .init(bottom: 12)) {
                         LocationCell(
                             location: location,
                             weather: viewModel.weather(location).wrappedValue,
@@ -59,11 +69,11 @@ struct SavedLocationsSection: View {
                         )
                     }
                 } onSwipe: { isExpanded in
-//                    if isExpanded, !editingIndices.contains(index) {
-//                        editingIndices.insert(index)
-//                    } else if !isExpanded, editingIndices.contains(index) {
-//                        editingIndices.remove(index)
-//                    }
+                    /*if isExpanded, !editingIndices.contains(index) {
+                        editingIndices.insert(index)
+                    } else if !isExpanded, editingIndices.contains(index) {
+                        editingIndices.remove(index)
+                    }*/
                 }
                 .contentShape(.dragPreview, RoundedRectangle(cornerRadius: 16))
             }
@@ -83,6 +93,16 @@ struct SavedLocationsSection: View {
         .padding(.horizontal, 16)
         .onChange(of: editMode?.wrappedValue.isEditing) {
             isEditing = editMode?.wrappedValue.isEditing == true
+        }
+        .sheet(item: $editingLocationInfo) { item in
+            SheetViewController(allowDismissal: editInfo.text.isEmpty) {
+                showConfirmation = true
+            } content: {
+                EditNicknameView(location: item.location, index: item.index, editInfo: $editInfo, showConfirmation: $showConfirmation, onNicknameChange: viewModel.onNicknameChange) {
+                    editingLocationInfo = nil
+                }
+                .preferredColorScheme(colorScheme)
+            }
         }
     }
     
@@ -109,5 +129,14 @@ struct SavedLocationsSection: View {
 }
 
 #Preview {
-    SavedLocationsSection(locations: .constant([UniversalConstants.location]), viewModel: .init(weather: { _ in .constant(UniversalConstants.weather) }, onDelete: { _ in }, onMove: { _, _ in }))
+    SavedLocationsSection(locations: .constant([UniversalConstants.location]), viewModel: .init(weather: { _ in .constant(UniversalConstants.weather) }, onDelete: { _ in }, onMove: { _, _ in }, onNicknameChange: { _, _ in }))
+}
+
+extension SavedLocationsSection {
+    struct EditLocationInfo: Identifiable {
+        let index: Int
+        let location: Location
+        
+        var id: UUID { location.id }
+    }
 }

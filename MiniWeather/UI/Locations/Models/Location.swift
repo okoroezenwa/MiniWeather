@@ -48,7 +48,7 @@ struct Location: Codable, Identifiable, Hashable {
     init<LocationObject: LocationProtocol>(locationObject: LocationObject, timeZone: TimeZoneIdentifier?) {
         let city = locationObject.city
         self.city = city
-        self.nickname = city
+        self.nickname = (locationObject as? Location)?.nickname ?? city
         self.state = locationObject.state
         self.country = locationObject.countryName
         self.latitude = locationObject.latitude
