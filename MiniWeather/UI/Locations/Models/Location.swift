@@ -7,6 +7,7 @@
 
 import Foundation
 import CoreLocation
+import SwiftUI
 
 /// The Location object.
 struct Location: Codable, Identifiable, Hashable {
@@ -47,7 +48,7 @@ struct Location: Codable, Identifiable, Hashable {
     init<LocationObject: LocationProtocol>(locationObject: LocationObject, timeZone: TimeZoneIdentifier?) {
         let city = locationObject.city
         self.city = city
-        self.nickname = city
+        self.nickname = (locationObject as? Location)?.nickname ?? city
         self.state = locationObject.state
         self.country = locationObject.countryName
         self.latitude = locationObject.latitude
@@ -74,6 +75,12 @@ extension Location: LocationProtocol {
         name += ", \(country)"
         
         return name
+    }
+}
+
+extension Location: Transferable {
+    static var transferRepresentation: some TransferRepresentation {
+        CodableRepresentation(contentType: .location)
     }
 }
 
@@ -110,4 +117,8 @@ extension Location {
         }
         return true
     }
+}
+
+extension Location {
+    static let toastMessageAttributeValues: [AttributedString.AttributeValue] = [.foreground(.primary), .font(.system(size: 13, weight: .semibold))]
 }

@@ -25,4 +25,12 @@ struct MainSavedLocationsRepository: SavedLocationsRepository {
     func delete(_ location: Location) async throws {
         try await provider.delete(location)
     }
+    
+    func move(from offsets: IndexSet, to offset: Int) async throws {
+        try await provider.move(from: offsets, to: offset)
+    }
+    
+    func changeNickname(ofLocationAt index: Int, to nickname: String) async throws {
+        try await provider.changeNickname(ofLocationAt: index, to: nickname)
+    }
 }

@@ -98,7 +98,7 @@ struct MainView: View {
         } dismissSearch: {
             dismissSearch()
         } onDuplicateFound: { [weak viewModel] location in
-            viewModel?.displayedToast = .init(style: .warning, title: "Duplicate Location", message: "You have already saved \"\(location.fullName)\".")
+            viewModel?.displayedToast = .init(style: .warning, title: "Duplicate Location", message: "You have already saved \(location.nickname) to Locations".grantAttributes(to: location.nickname, values: Location.toastMessageAttributeValues))
         }
     }
     
@@ -129,12 +129,15 @@ struct MainView: View {
         } savedLocationsSection: {
             SectionContainerView {
                 SavedLocationsSection(
-                    viewModel: .init(
-                        locations: viewModel.locations
-                    ) { location in
+                    locations: $viewModel.locations,
+                    viewModel: SavedLocationsSectionViewModel { location in
                         viewModel.weather(for: location)
                     } onDelete: { [weak viewModel] location in
                         viewModel?.displayToastForRemovalOf(location)
+                    } onMove: { offsets, destination in
+                        viewModel.move(from: offsets, to: destination)
+                    } onNicknameChange: { nickname, index in
+                        viewModel.editNickname(ofLocationAt: index, to: nickname)
                     }
                 )
             } header: {

@@ -27,7 +27,7 @@ struct CurrentLocationSection: View {
     var body: some View {
         if viewModel.authorisationStatus.isAuthorised() {
             NavigationLink(value: viewModel.currentLocation) {
-                MaterialView(bottomPadding: 12) {
+                MaterialView(insets: .init(bottom: 12)) {
                     LocationCell(
                         location: viewModel.currentLocation,
                         weather: viewModel.weather,
@@ -38,7 +38,7 @@ struct CurrentLocationSection: View {
                 .padding(.horizontal, 16)
             }
         } else {
-            MaterialView(bottomPadding: 16) {
+            MaterialView(insets: .init()) {
                 LocationAuthorisationCell(status: viewModel.authorisationStatus)
                     .onTapGesture {
                         let status = viewModel.authorisationStatus

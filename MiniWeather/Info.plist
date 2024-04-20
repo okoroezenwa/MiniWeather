@@ -2,11 +2,22 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>MiniWeather needs your current location to automatically fill in weather info for it.</string>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>MiniWeather needs your current location to automatically fill in weather info for it.</string>
-	<key>NSLocationUsageDescription</key>
-	<string>MiniWeather needs your current location to automatically fill in weather info for it.</string>
+	<key>UTExportedTypeDeclarations</key>
+	<array>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>com.public.data</string>
+			</array>
+			<key>UTTypeDescription</key>
+			<string>Location</string>
+			<key>UTTypeIconFiles</key>
+			<array/>
+			<key>UTTypeIdentifier</key>
+			<string>com.okoroezenwa.location</string>
+			<key>UTTypeTagSpecification</key>
+			<dict/>
+		</dict>
+	</array>
 </dict>
 </plist>

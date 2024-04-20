@@ -52,6 +52,28 @@ struct MainSavedLocationsProvider: SavedLocationsProvider {
                 throw LocationError.notFound
             }
             locations.remove(at: index)
+            locations = adjustPositions(of: locations)
+            try datastore.store(locations, withKey: .savedLocations)
+        } catch {
+            throw error
+        }
+    }
+    
+    func move(from offsets: IndexSet, to offset: Int) async throws {
+        do {
+            var locations: [Location] = try datastore.fetch(forKey: .savedLocations)
+            locations.move(fromOffsets: offsets, toOffset: offset)
+            locations = adjustPositions(of: locations)
+            try datastore.store(locations, withKey: .savedLocations)
+        } catch {
+            throw error
+        }
+    }
+    
+    func changeNickname(ofLocationAt index: Int, to nickname: String) async throws {
+        do {
+            var locations: [Location] = try datastore.fetch(forKey: .savedLocations)
+            locations[index].nickname = nickname
             try datastore.store(locations, withKey: .savedLocations)
         } catch {
             throw error
@@ -63,13 +85,19 @@ struct MainSavedLocationsProvider: SavedLocationsProvider {
             return [location]
         }
         
-        var sortedLocations = locations.sorted { $1.timestamp > $0.timestamp }
+        var sortedLocations = locations.sorted { $0.position < $1.position }
         
         if sortedLocations.count == 10 {
             sortedLocations.removeLast()
         }
         
         sortedLocations.insert(location, at: 0)
+        sortedLocations = adjustPositions(of: sortedLocations)
         return sortedLocations
+    }
+    
+    private func adjustPositions(of locations: [Location]) -> [Location] {
+        zip(0..<locations.count, locations)
+            .map { $1.atPosition($0) }
     }
 }

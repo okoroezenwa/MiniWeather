@@ -19,7 +19,7 @@ struct Toast: Equatable {
     
     var style: Style
     var title: String
-    var message: String
+    var message: AttributedString
     var duration: Double = 7
     var trailingButton: TrailingButton?
     var onDismiss: (() -> Void)?
@@ -62,7 +62,7 @@ extension Toast.Style {
             case .info:
                 return "info.circle.fill"
             case .warning:
-                return "exclamationmark.triangle.fill"
+                return "exclamationmark.circle.fill"
             case .success:
                 return "checkmark.circle.fill"
             case .error:
@@ -86,7 +86,7 @@ extension Toast.Style {
                 return .error
             case .delete:
                 return .decrease
-            case .custom(color: _, icon: let icon):
+            case .custom:
                 return .impact(weight: .light)
         }
     }

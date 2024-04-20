@@ -339,7 +339,7 @@ final class LocationsViewModel {
             self?.displayedToast = .init(
                 style: .success,
                 title: "Location Added",
-                message: "Added \(location.city) to Locations",
+                message: "Added \(location.nickname) to Locations".grantAttributes(to: location.nickname, values: Location.toastMessageAttributeValues),
                 trailingButton: .init(
                     style: .text("Undo")
                 ) {
@@ -392,7 +392,7 @@ final class LocationsViewModel {
             self?.displayedToast = .init(
                 style: .delete,
                 title: "Location Removed",
-                message: "Removed \(location.city) from Locations",
+                message: "Removed \(location.nickname) from Locations".grantAttributes(to: location.nickname, values: Location.toastMessageAttributeValues),
                 trailingButton: .init(
                     style: .text("Undo")
                 ) {
@@ -409,9 +409,36 @@ final class LocationsViewModel {
         toastShouldPerformOnDismissAction = false
         displayedToast = nil
     }
+    
+    func move(from offsets: IndexSet, to offset: Int) {
+        let savedLocationsRepository = savedLocationsRepositoryFactory()
+        
+        Task(priority: .userInitiated) {
+            do {
+                try await savedLocationsRepository.move(from: offsets, to: offset)
+            } catch {
+                logger.log("Deleting saved location failed: \(error)")
+                #warning("Need to undo changes here")
+            }
+        }
+    }
+    
+    func editNickname(ofLocationAt index: Int, to nickname: String) {
+        locations[index].nickname = nickname
+        let savedLocationsRepository = savedLocationsRepositoryFactory()
+        
+        Task(priority: .userInitiated) {
+            do {
+                try await savedLocationsRepository.changeNickname(ofLocationAt: index, to: nickname)
+            } catch {
+                logger.log("Deleting saved location failed: \(error)")
+                #warning("Need to undo changes here")
+            }
+        }
+    }
 }
 
-// TODO: - Use a better Error type?
+#warning("Use a better Error type?")
 enum CurrentLocationError: Error {
     case outdated
 }
