@@ -18,6 +18,7 @@ struct SavedLocationsSection: View {
     @Binding private var locations: [Location]
     private let viewModel: SavedLocationsSectionViewModel
     @State private var draggedItem: Location?
+    @Binding private var selection: Location?
     @State private var isEditing = false
     @State private var editingIndices = Set<Int>()
     @State private var editingLocationInfo: EditLocationInfo?
@@ -26,9 +27,10 @@ struct SavedLocationsSection: View {
     @Environment(\.editMode) private var editMode
     @Environment(\.colorScheme) private var colorScheme
     
-    init(locations: Binding<[Location]>, viewModel: SavedLocationsSectionViewModel) {
+    init(locations: Binding<[Location]>, selection: Binding<Location?>, viewModel: SavedLocationsSectionViewModel) {
         self.viewModel = viewModel
         self._locations = locations
+        self._selection = selection
     }
     
     var body: some View {
@@ -57,6 +59,7 @@ struct SavedLocationsSection: View {
                         name: "Delete Location",
                         icon: "trash.fill",
                         shouldResetPosition: false,
+                        shouldGenerateFeedback: false,
                         action: { viewModel.onDelete(location) }
                     )
                 } content: {
@@ -79,6 +82,12 @@ struct SavedLocationsSection: View {
             }
             .buttonStyle(.plain)
             .transition(.move(edge: .leading))
+            .simultaneousGesture(
+                TapGesture()
+                    .onEnded { value in
+                        selection = location
+                    }
+            )
             .onDrag /*(if: /*!isEditing && !editingIndices.contains(index)*/true)*/ {
                 draggedItem = location
                 return NSItemProvider()
@@ -95,7 +104,7 @@ struct SavedLocationsSection: View {
             isEditing = editMode?.wrappedValue.isEditing == true
         }
         .sheet(item: $editingLocationInfo) { item in
-            SheetViewController(allowDismissal: editInfo.text.isEmpty) {
+            SheetViewController(allowDismissal: editInfo.text.isEmpty && item.location.nickname == item.location.city) {
                 showConfirmation = true
             } content: {
                 EditNicknameView(location: item.location, index: item.index, editInfo: $editInfo, showConfirmation: $showConfirmation, onNicknameChange: viewModel.onNicknameChange) {
@@ -104,6 +113,7 @@ struct SavedLocationsSection: View {
                 .preferredColorScheme(colorScheme)
             }
         }
+        .sensoryFeedback(.impact(weight: .medium), trigger: isEditing)
     }
     
     func array() -> [(index: Int, location: Location)] {
@@ -129,7 +139,7 @@ struct SavedLocationsSection: View {
 }
 
 #Preview {
-    SavedLocationsSection(locations: .constant([UniversalConstants.location]), viewModel: .init(weather: { _ in .constant(UniversalConstants.weather) }, onDelete: { _ in }, onMove: { _, _ in }, onNicknameChange: { _, _ in }))
+    SavedLocationsSection(locations: .constant([UniversalConstants.location]), selection: .constant(UniversalConstants.location), viewModel: .init(weather: { _ in .constant(UniversalConstants.weather) }, onDelete: { _ in }, onMove: { _, _ in }, onNicknameChange: { _, _ in }))
 }
 
 extension SavedLocationsSection {

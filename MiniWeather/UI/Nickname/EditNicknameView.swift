@@ -10,6 +10,7 @@ import SwiftUI
 struct EditNicknameView: View {
     @Binding var editInfo: SearchTextField.EditInfo
     @Binding var showConfirmation: Bool
+    @State var didSubmit = false
     @FocusState private var isFocused: Bool
     
     let location: Location
@@ -55,29 +56,45 @@ struct EditNicknameView: View {
             #if os(iOS)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
-                    Button(action: dismiss) {
+                    Button {
+                        guard editInfo.text.isEmpty && location.nickname == location.city else {
+                            showConfirmation = true
+                            return
+                        }
+                        dismiss()
+                    } label: {
                         Text("Cancel")
                     }
                 }
                 
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button { 
-                        onNicknameChange(validNickname, index)
-                        dismiss()
-                    } label: {
+                    Button(action: onSubmit) {
                         Text("Save")
                     }
                 }
             }
             #endif
             .interactiveDismissDisabled(!editInfo.text.isEmpty)
-            .confirmationDialog("", isPresented: $showConfirmation) {
-                Button("Discard Changes?", role: .destructive, action: dismiss)
+            .confirmationDialog("You have made changes to this location.", isPresented: $showConfirmation, titleVisibility: .visible) {
+                Button("Discard Changes", role: .destructive, action: dismiss)
             }
+            .sensoryFeedback(trigger: showConfirmation) { _, newValue in
+                guard newValue else {
+                    return nil
+                }
+                return .warning
+            }
+            .sensoryFeedback(.success, trigger: didSubmit)
         }
         .onAppear {
             isFocused = true
         }
+    }
+    
+    func onSubmit() {
+        onNicknameChange(validNickname, index)
+        didSubmit = true
+        dismiss()
     }
     
     func headerText(_ text: String) -> some View {
@@ -104,10 +121,7 @@ struct EditNicknameView: View {
                     .textInputAutocapitalization(.words)
                     .autocorrectionDisabled()
                     .submitLabel(.done)
-                    .onSubmit {
-                        onNicknameChange(validNickname, index)
-                        dismiss()
-                    }
+                    .onSubmit(onSubmit)
             } else {
                 SearchTextField(placeholder: "", text: .constant(location.fullName), canShowClearButton: false)
                     .disabled(true)

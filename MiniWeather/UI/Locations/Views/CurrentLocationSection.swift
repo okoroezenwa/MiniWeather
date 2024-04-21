@@ -18,9 +18,11 @@ struct CurrentLocationSectionViewModel {
 
 struct CurrentLocationSection: View {
     @Environment(\.openURL) private var openURL
+    @Binding private var selection: Location?
     private var viewModel: CurrentLocationSectionViewModel
     
-    init(viewModel: CurrentLocationSectionViewModel) {
+    init(selection: Binding<Location?>, viewModel: CurrentLocationSectionViewModel) {
+        self._selection = selection
         self.viewModel = viewModel
     }
     
@@ -37,6 +39,12 @@ struct CurrentLocationSection: View {
                 }
                 .padding(.horizontal, 16)
             }
+            .simultaneousGesture(
+                TapGesture()
+                    .onEnded { value in
+                        selection = viewModel.currentLocation
+                    }
+            )
         } else {
             MaterialView(insets: .init()) {
                 LocationAuthorisationCell(status: viewModel.authorisationStatus)
@@ -65,6 +73,7 @@ struct CurrentLocationSection: View {
 
 #Preview {
     CurrentLocationSection(
+        selection: .constant(UniversalConstants.location),
         viewModel: .init(
             authorisationStatus: .authorizedAlways,
             shouldDisplayAsLoading: false

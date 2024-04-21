@@ -14,6 +14,7 @@ struct SwipeActionButtonsView<S: SwipeActionStyle>: View {
     let isEditing: Bool
     @Binding var hasCrossedThreshold: Bool
     @Binding var allowUserInteraction: Bool
+    @State var feedbackAction: SwipeAction?
     let currentActionButtonWidth: (Bool) -> CGFloat
     let currentOpacity: (Bool) -> CGFloat
     let currentScale: (Bool) -> CGSize
@@ -50,6 +51,9 @@ struct SwipeActionButtonsView<S: SwipeActionStyle>: View {
                                     resetPosition(true)
                                     try? await Task.sleep(for: .seconds (0.25))
                                 }
+                                if swipeAction.shouldGenerateFeedback {
+                                    feedbackAction = swipeAction
+                                }
                                 swipeAction.action()
                                 try? await Task.sleep(for: .seconds (0.1))
                                 allowUserInteraction = true
@@ -65,6 +69,7 @@ struct SwipeActionButtonsView<S: SwipeActionStyle>: View {
                         .swipeActionStyle(style)
                         .rotationEffect(.init(degrees: direction == .leading ? -180 : 0))
                         .sensoryFeedback(.impact(weight: .medium), trigger: hasCrossedThreshold)
+                        .sensoryFeedback(.impact(weight: .medium), trigger: feedbackAction)
                     }
                 }
             }

@@ -14,15 +14,17 @@ struct SwipeAction: Identifiable, Equatable {
     let icon: String
     let isEnabled: Bool
     let shouldResetPosition: Bool
+    let shouldGenerateFeedback: Bool
     let action: @MainActor () -> Void
     
-    init(tint: Color, name: String, icon: String, isEnabled: Bool = true, shouldResetPosition: Bool = true, action: @escaping () -> Void) {
+    init(tint: Color, name: String, icon: String, isEnabled: Bool = true, shouldResetPosition: Bool = true, shouldGenerateFeedback: Bool = true, action: @escaping () -> Void) {
         self.tint = tint
         self.name = name
         self.icon = icon
         self.isEnabled = isEnabled
         self.shouldResetPosition = shouldResetPosition
         self.action = action
+        self.shouldGenerateFeedback = shouldGenerateFeedback
     }
     
     static func == (lhs: SwipeAction, rhs: SwipeAction) -> Bool {
