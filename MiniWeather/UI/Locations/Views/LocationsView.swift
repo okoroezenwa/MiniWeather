@@ -21,6 +21,11 @@ struct LocationsView<Search: View, Grid: View>: View {
     }
     
     var body: some View {
+        mainView()
+            .sensoryFeedback(.impact(weight: .medium), trigger: isSearching)
+    }
+    
+    @ViewBuilder func mainView() -> some View {
         if isSearching && hasSearchResults {
             searchView() {
                 dismissSearch()

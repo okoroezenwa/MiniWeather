@@ -20,7 +20,7 @@ struct LocationsGridView<Current: View, Saved: View>: View {
     
     var body: some View {
         ScrollView {
-            LazyVStack(
+            VStack(
                 alignment: .leading,
                 spacing: 12
             ) {

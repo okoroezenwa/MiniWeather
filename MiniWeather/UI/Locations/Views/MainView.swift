@@ -18,12 +18,23 @@ struct MainView: View {
 
     var body: some View {
         NavigationSplitView {
-            LocationsView(hasSearchResults: viewModel.hasSearchResults()) { dismissSearch in
-                locationsSearchView(dismissSearch)
-            } gridView: {
-                locationsGridView()
-            }
+            LocationsView(
+                hasSearchResults: viewModel.hasSearchResults(),
+                searchView: locationsSearchView,
+                gridView: locationsGridView
+            )
             .searchable(text: $viewModel.searchText, prompt: "Search City Name")
+            .refreshable {
+                if viewModel.status.isAuthorised() {
+                    viewModel.refreshCurrentLocation(requestingAuthorisation: false)
+                }
+                #warning("Fix viewModel later")
+                do {
+                    try await viewModel.getWeatherForSavedLocations()
+                } catch {
+                    print(error)
+                }
+            }
             .background {
                 background(for: colorScheme)
             }
@@ -49,6 +60,9 @@ struct MainView: View {
                 }
             }
             #endif
+            .sensoryFeedback(.impact(weight: .medium), trigger: isShowingSettings) { oldValue, newValue in
+                oldValue != newValue && newValue
+            }
             .sheet(isPresented: $isShowingSettings) {
                 SettingsView() {
                     isShowingSettings = false
@@ -85,6 +99,7 @@ struct MainView: View {
             }
         }
         .toastView(toast: $viewModel.displayedToast)
+        .sensoryFeedback(.selection, trigger: selectedLocation)
     }
     
     private func locationsSearchView(_ dismissSearch: @escaping () -> Void) -> some View {
@@ -106,6 +121,7 @@ struct MainView: View {
         LocationsGridView(hasLocations: !viewModel.locations.isEmpty) {
             SectionContainerView {
                 CurrentLocationSection(
+                    selection: $selectedLocation,
                     viewModel: .init(
                         currentLocation: viewModel.currentLocation,
                         weather: {
@@ -130,6 +146,7 @@ struct MainView: View {
             SectionContainerView {
                 SavedLocationsSection(
                     locations: $viewModel.locations,
+                    selection: $selectedLocation,
                     viewModel: SavedLocationsSectionViewModel { location in
                         viewModel.weather(for: location)
                     } onDelete: { [weak viewModel] location in
