@@ -22,6 +22,16 @@ struct ToastModifier: ViewModifier {
                             .onTapGesture {
                                 dismissToast()
                             }
+                            .gesture(
+                                DragGesture (minimumDistance: 0)
+                                    .onEnded { value in
+                                        let endY = value.translation.height
+                                        let velocityY = value.velocity.height
+                                        if (endY + velocityY) > 100 {
+                                            dismissToast()
+                                        }
+                                    }
+                            )
                             .transition(.move(edge: .bottom))
                             .shadow(color: .black.opacity(0.1), radius: 20, x: 0, y: 1)
                             .padding(.bottom, 30)
@@ -29,10 +39,6 @@ struct ToastModifier: ViewModifier {
                     }
                 }
                 .ignoresSafeArea(.container, edges: .bottom)
-                .animation(
-                    .spring(),
-                    value: toast
-                )
             }
             .onChange(of: toast) {
                 showToast()

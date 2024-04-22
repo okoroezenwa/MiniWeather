@@ -113,7 +113,8 @@ struct MainView: View {
         } dismissSearch: {
             dismissSearch()
         } onDuplicateFound: { [weak viewModel] location in
-            viewModel?.displayedToast = .init(style: .warning, title: "Duplicate Location", message: "You have already saved \(location.nickname) to Locations".grantAttributes(to: location.nickname, values: Location.toastMessageAttributeValues))
+            let toast = Toast(style: .warning, title: "Duplicate Location", message: "You have already saved \(location.nickname) to Locations".grantAttributes(to: location.nickname, values: Location.toastMessageAttributeValues))
+            viewModel?.setToast(to: toast)
         }
     }
     

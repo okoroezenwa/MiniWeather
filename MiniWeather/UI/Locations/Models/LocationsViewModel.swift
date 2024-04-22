@@ -278,17 +278,19 @@ final class LocationsViewModel {
      - Parameter location: The new location to be added to the user's saved locations,
      */
     private func performLocalAdd(of location: Location) -> [Location] {
-        var tempLocations = locations
-        let oldLocations = locations
-        
-        if locations.count == 10 {
-            tempLocations.removeLast()
+        withAnimation {
+            var tempLocations = locations
+            let oldLocations = locations
+            
+            if locations.count == 10 {
+                tempLocations.removeLast()
+            }
+            
+            tempLocations.insert(location, at: 0)
+            locations = tempLocations
+            
+            return oldLocations
         }
-        
-        tempLocations.insert(location, at: 0)
-        locations = tempLocations
-        
-        return oldLocations
     }
     
     func add(_ location: Location, oldLocations: [Location]) {
@@ -336,7 +338,7 @@ final class LocationsViewModel {
         toastShouldPerformOnDismissAction = true
         let old = performLocalAdd(of: location)
         DispatchQueue.main.asyncAfter(deadline: .now()/* + 0.3*/) { [weak self] in
-            self?.displayedToast = .init(
+            let toast = Toast(
                 style: .success,
                 title: "Location Added",
                 message: "Added \(location.nickname) to Locations".grantAttributes(to: location.nickname, values: Location.toastMessageAttributeValues),
@@ -348,6 +350,7 @@ final class LocationsViewModel {
             ) {
                 self?.add(location, oldLocations: old)
             }
+            self?.setToast(to: toast)
         }
     }
     
@@ -360,16 +363,17 @@ final class LocationsViewModel {
      - Parameter location: The location to be removed from the user's saved locations,
      */
     func performLocalDelete(of location: Location) -> [Location] {
-        var tempLocations = locations
-        let oldLocations = locations
-        
-        if let index = tempLocations.firstIndex(of: location) {
-            tempLocations.remove(at: index)
+        withAnimation {
+            var tempLocations = locations
+            let oldLocations = locations
+            
+            if let index = tempLocations.firstIndex(of: location) {
+                tempLocations.remove(at: index)
+            }
+            
+            locations = tempLocations
+            return oldLocations
         }
-        
-        locations = tempLocations
-        
-        return oldLocations
     }
     
     func delete(_ location: Location, oldLocations: [Location]) {
@@ -388,26 +392,27 @@ final class LocationsViewModel {
     func displayToastForRemovalOf(_ location: Location) {
         toastShouldPerformOnDismissAction = true
         let old = performLocalDelete(of: location)
-//        DispatchQueue.main.asyncAfter(deadline: .now()/* + 0.3*/) { [weak self] in
-            displayedToast = .init(
-                style: .delete,
-                title: "Location Removed",
-                message: "Removed \(location.nickname) from Locations".grantAttributes(to: location.nickname, values: Location.toastMessageAttributeValues),
-                trailingButton: .init(
-                    style: .text("Undo")
-                ) {
-                    self.undoLocationsChange(from: old)
-                }
+        let toast = Toast(
+            style: .delete,
+            title: "Location Removed",
+            message: "Removed \(location.nickname) from Locations".grantAttributes(to: location.nickname, values: Location.toastMessageAttributeValues),
+            trailingButton: .init(
+                style: .text("Undo")
             ) {
-                self.delete(location, oldLocations: old)
+                self.undoLocationsChange(from: old)
             }
-//        }
+        ) {
+            self.delete(location, oldLocations: old)
+        }
+        setToast(to: toast)
     }
     
     func undoLocationsChange(from old: [Location]) {
-        locations = old
-        toastShouldPerformOnDismissAction = false
-        displayedToast = nil
+        withAnimation {
+            locations = old
+            toastShouldPerformOnDismissAction = false
+            displayedToast = nil
+        }
     }
     
     func move(from offsets: IndexSet, to offset: Int) {
@@ -434,6 +439,13 @@ final class LocationsViewModel {
                 logger.log("Deleting saved location failed: \(error)")
                 #warning("Need to undo changes here")
             }
+        }
+    }
+    
+    func setToast(to value: Toast) {
+        displayedToast = nil
+        withAnimation {
+            displayedToast = value
         }
     }
 }

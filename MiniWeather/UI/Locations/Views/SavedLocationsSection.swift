@@ -98,7 +98,6 @@ struct SavedLocationsSection: View {
             }
             .onDrop(of: [.location], delegate: DropViewDelegate(destinationItem: location, locations: $locations, draggedItem: $draggedItem, onMove: viewModel.onMove))
         }
-        .animation(.smooth, value: locations)
         .padding(.horizontal, 16)
         .onChange(of: editMode?.wrappedValue.isEditing) {
             isEditing = editMode?.wrappedValue.isEditing == true
