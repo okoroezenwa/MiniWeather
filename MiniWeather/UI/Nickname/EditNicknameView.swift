@@ -38,6 +38,7 @@ struct EditNicknameView: View {
                         textField("Nickname", isNicknameField: true)
                         
                         textField("Location", isNicknameField: false)
+                            .padding(.bottom, 8)
                     }
                     .padding(.horizontal, 16)
                     .padding(.vertical, 8)
@@ -47,6 +48,7 @@ struct EditNicknameView: View {
                         .foregroundStyle(.secondary)
                         .padding(.horizontal, 16)
                         .multilineTextAlignment(.center)
+                        .padding(.top, 4)
                     
                     Spacer()
                 }

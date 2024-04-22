@@ -18,6 +18,7 @@ struct DropViewDelegate<Item: Equatable>: DropDelegate {
     }
     
     func performDrop(info: DropInfo) -> Bool {
+        UIImpactFeedbackGenerator(style: .medium).impactOccurred()
         draggedItem = nil
         return true
     }
