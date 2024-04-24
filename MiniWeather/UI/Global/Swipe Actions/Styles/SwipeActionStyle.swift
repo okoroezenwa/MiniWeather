@@ -14,12 +14,6 @@ protocol SwipeActionStyle {
     func makeBody(configuration: Configuration) -> Body
 }
 
-
-
-#warning("Organise later?")
-
-
-
 struct SwipeActionStyleKey: EnvironmentKey {
     static var defaultValue = AnySwipeActionStyle(style: DefaultSwipeActionStyle())
 }

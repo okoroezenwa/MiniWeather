@@ -159,7 +159,7 @@ struct GestureSwipeActionsView<Content: View>: View {
                 .contentShape(.rect)
                 .highPriorityGesture(dragGesture)
             
-            SwipeActionButtonsView(direction: direction, filteredActions: filteredActions, style: .rounded, isEditing: editing, hasCrossedThreshold: $hasCrossedThreshold, allowUserInteraction: $allowUserInteraction, currentActionButtonWidth: getActionButtonWidth, currentOpacity: getOpacity, currentScale: getScale) { shouldAnimate in
+            SwipeActionButtonsView(direction: direction, filteredActions: filteredActions, isEditing: editing, hasCrossedThreshold: $hasCrossedThreshold, allowUserInteraction: $allowUserInteraction, currentActionButtonWidth: getActionButtonWidth, currentOpacity: getOpacity, currentScale: getScale) { shouldAnimate in
                 if shouldAnimate {
                     withAnimation(.smooth(duration: 0.25)) {
                         offset = 0

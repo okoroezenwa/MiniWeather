@@ -17,6 +17,7 @@ struct Settings {
     static let showLocationsUnits = "showLocationsUnits"
     static let showWeatherViewMap = "showWeatherViewMap"
     static let showWeatherViewUnits = "showWeatherViewUnits"
+    static let swipeStyle = "swipeStyle"
     
     /// The current value of the given settings key.
     static func currentValue<Value: DefaultPresenting & RawRepresentable<String>>(for key: String) -> Value {
@@ -69,4 +70,27 @@ enum UnitOfMeasure: String, PickableSetting {
     }
     
     static let `default`: UnitOfMeasure = .metric
+}
+
+enum SwipeStyle: String, PickableSetting {
+    case filled = "Filled"
+    case rounded = "Rounded"
+    case translucent = "Translucent"
+    
+    var id: Self {
+        self
+    }
+    
+    static let `default`: SwipeStyle = .translucent
+    
+    var current: some SwipeActionStyle {
+        switch self {
+            case .filled:
+                AnySwipeActionStyle(style: .filled)
+            case .rounded:
+                AnySwipeActionStyle(style: .rounded)
+            case .translucent:
+                AnySwipeActionStyle(style: .translucentRounded)
+        }
+    }
 }

@@ -26,6 +26,7 @@ struct SavedLocationsSection: View {
     @State private var showConfirmation = false
     @Environment(\.editMode) private var editMode
     @Environment(\.colorScheme) private var colorScheme
+    @AppStorage(Settings.swipeStyle) private var swipeStyle = SwipeStyle.default
     
     init(locations: Binding<[Location]>, selection: Binding<Location?>, viewModel: SavedLocationsSectionViewModel) {
         self.viewModel = viewModel
@@ -38,7 +39,6 @@ struct SavedLocationsSection: View {
             NavigationLink(value: location) {
                 ScrollSwipeActionsView(
                     direction: .trailing,
-                    style: .translucentRounded,
                     index: index,
                     isEditing: $isEditing,
                     swipedIndex: $swipedIndex
@@ -73,6 +73,7 @@ struct SavedLocationsSection: View {
                             shouldDisplayAsLoading: false
                         )
                     }
+                    .padding(.horizontal, swipeStyle != .filled ? 0 : 16)
                 }
                 .contentShape(.dragPreview, RoundedRectangle(cornerRadius: 16))
             }
@@ -94,7 +95,7 @@ struct SavedLocationsSection: View {
             }
             .onDrop(of: [.location], delegate: DropViewDelegate(destinationItem: location, locations: $locations, draggedItem: $draggedItem, onMove: viewModel.onMove))
         }
-        .padding(.horizontal, 16)
+        .padding(.horizontal, swipeStyle == .filled ? 0 : 16)
         .onChange(of: editMode?.wrappedValue.isEditing) {
             isEditing = editMode?.wrappedValue.isEditing == true
         }

@@ -123,6 +123,9 @@
 		BE9EC7612BBC63EC0067706F /* StandardTemporaryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9EC7602BBC63EC0067706F /* StandardTemporaryStore.swift */; };
 		BE9EC7662BBC69D30067706F /* Notification+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9EC7652BBC69D30067706F /* Notification+Extensions.swift */; };
 		BE9F20F82AD0624A00CDC9F4 /* MainLocationsSearchRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9F20F72AD0624A00CDC9F4 /* MainLocationsSearchRepository.swift */; };
+		BEA465442BD9303900FBF410 /* SettingsLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEA465432BD9303900FBF410 /* SettingsLink.swift */; };
+		BEA465462BD930E300FBF410 /* LabeledTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEA465452BD930E300FBF410 /* LabeledTextField.swift */; };
+		BEA465482BD9320000FBF410 /* SettingsPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEA465472BD9320000FBF410 /* SettingsPicker.swift */; };
 		BEBAC1842BCC66A6009BF1B8 /* ScrollSwipeActionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEBAC1832BCC66A6009BF1B8 /* ScrollSwipeActionsView.swift */; };
 		BEBAC1B12BCD6FCD009BF1B8 /* ScrollUI in Frameworks */ = {isa = PBXBuildFile; productRef = BEBAC1B02BCD6FCD009BF1B8 /* ScrollUI */; };
 		BEBAC1B42BCE8258009BF1B8 /* PagingScrollViewStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEBAC1B32BCE8258009BF1B8 /* PagingScrollViewStyle.swift */; };
@@ -321,6 +324,9 @@
 		BE9EC7602BBC63EC0067706F /* StandardTemporaryStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandardTemporaryStore.swift; sourceTree = "<group>"; };
 		BE9EC7652BBC69D30067706F /* Notification+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification+Extensions.swift"; sourceTree = "<group>"; };
 		BE9F20F72AD0624A00CDC9F4 /* MainLocationsSearchRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainLocationsSearchRepository.swift; sourceTree = "<group>"; };
+		BEA465432BD9303900FBF410 /* SettingsLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsLink.swift; sourceTree = "<group>"; };
+		BEA465452BD930E300FBF410 /* LabeledTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabeledTextField.swift; sourceTree = "<group>"; };
+		BEA465472BD9320000FBF410 /* SettingsPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPicker.swift; sourceTree = "<group>"; };
 		BEBAC1832BCC66A6009BF1B8 /* ScrollSwipeActionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollSwipeActionsView.swift; sourceTree = "<group>"; };
 		BEBAC1B32BCE8258009BF1B8 /* PagingScrollViewStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PagingScrollViewStyle.swift; sourceTree = "<group>"; };
 		BEBAC1B52BCECD4E009BF1B8 /* SwipeAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeAction.swift; sourceTree = "<group>"; };
@@ -527,6 +533,9 @@
 			isa = PBXGroup;
 			children = (
 				BECDADD22B23758700CA2EAB /* SettingsView.swift */,
+				BEA465432BD9303900FBF410 /* SettingsLink.swift */,
+				BEA465452BD930E300FBF410 /* LabeledTextField.swift */,
+				BEA465472BD9320000FBF410 /* SettingsPicker.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1381,6 +1390,7 @@
 				BE9EC7662BBC69D30067706F /* Notification+Extensions.swift in Sources */,
 				BECDADC62B21F6DD00CA2EAB /* SectionContainerView.swift in Sources */,
 				BE53806E2BD3AB3900AA3BBB /* SearchTextField.swift in Sources */,
+				BEA465442BD9303900FBF410 /* SettingsLink.swift in Sources */,
 				BECDADD02B2227DD00CA2EAB /* SavedLocationsSectionHeader.swift in Sources */,
 				BEBAC1BF2BCECE04009BF1B8 /* TranslucentRoundedSwipeActionStyle.swift in Sources */,
 				BEFE25672B06918200AB5DED /* LocationAuthorisationCell.swift in Sources */,
@@ -1416,6 +1426,7 @@
 				BECDADC02B21BBAD00CA2EAB /* MaterialView.swift in Sources */,
 				BE53806C2BD3AAFC00AA3BBB /* FullBorderedButtonStyle.swift in Sources */,
 				BE75A3602B163ABC0041ED46 /* SavedLocationsRepository.swift in Sources */,
+				BEA465482BD9320000FBF410 /* SettingsPicker.swift in Sources */,
 				BED0F59F2B10D1CC00156E23 /* OpenWeatherMapGeocoderService.swift in Sources */,
 				BECC197C2B2C860600A30ACE /* TimeZone+Extensions.swift in Sources */,
 				BE2CB0922BC5804F0065F5BF /* ToastModifier.swift in Sources */,
@@ -1475,6 +1486,7 @@
 				BE248C392B248D46007E32FD /* PreferencesProvider.swift in Sources */,
 				BEF55F222B30738F008B8319 /* VisibilityCard.swift in Sources */,
 				BE7DA7852AE99D800016047C /* DataParser.swift in Sources */,
+				BEA465462BD930E300FBF410 /* LabeledTextField.swift in Sources */,
 				BEBAC1B62BCECD4E009BF1B8 /* SwipeAction.swift in Sources */,
 				BE9F20F82AD0624A00CDC9F4 /* MainLocationsSearchRepository.swift in Sources */,
 				BECDADC42B21F34000CA2EAB /* LocationsGridView.swift in Sources */,
