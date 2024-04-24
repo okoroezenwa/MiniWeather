@@ -20,7 +20,7 @@ struct SavedLocationsSection: View {
     @State private var draggedItem: Location?
     @Binding private var selection: Location?
     @State private var isEditing = false
-    @State private var editingIndices = Set<Int>()
+    @State private var swipedIndex: Int?
     @State private var editingLocationInfo: EditLocationInfo?
     @State private var editInfo = SearchTextField.EditInfo(purpose: "", placeholder: "", text: "")
     @State private var showConfirmation = false
@@ -39,7 +39,9 @@ struct SavedLocationsSection: View {
                 ScrollSwipeActionsView(
                     direction: .trailing,
                     style: .translucentRounded,
-                    isEditing: $isEditing
+                    index: index,
+                    isEditing: $isEditing,
+                    swipedIndex: $swipedIndex
                 ) {
                     SwipeAction(
                         tint: .blue,
@@ -71,24 +73,18 @@ struct SavedLocationsSection: View {
                             shouldDisplayAsLoading: false
                         )
                     }
-                } onSwipe: { isExpanded in
-                    /*if isExpanded, !editingIndices.contains(index) {
-                        editingIndices.insert(index)
-                    } else if !isExpanded, editingIndices.contains(index) {
-                        editingIndices.remove(index)
-                    }*/
                 }
                 .contentShape(.dragPreview, RoundedRectangle(cornerRadius: 16))
             }
             .buttonStyle(.plain)
-            .transition(.move(edge: .leading))
+            .transition(.move(edge: .leading).combined(with: .opacity))
             .simultaneousGesture(
                 TapGesture()
                     .onEnded { value in
                         selection = location
                     }
             )
-            .onDrag /*(if: /*!isEditing && !editingIndices.contains(index)*/true)*/ {
+            .onDrag {
                 draggedItem = location
                 return NSItemProvider()
             } preview: {

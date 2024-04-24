@@ -12,7 +12,7 @@ struct ScrollSwipeActionsView<Content: View, Style: SwipeActionStyle>: View {
     let constants = SwipeActionsConstants()
     let direction: SwipeDirection
     let style: Style
-    let onSwipe: (Bool) -> Void
+    let index: Int
     var actionButtonsWidth: CGFloat {
         CGFloat(filteredActions.count) * constants.width
     }
@@ -23,17 +23,19 @@ struct ScrollSwipeActionsView<Content: View, Style: SwipeActionStyle>: View {
     @State var hasCrossedThreshold = false
     @State var scrollOffset: CGFloat = 0
     @Binding var isEditing: Bool
+    @Binding var swipedIndex: Int?
     @ActionBuilder let actions: [SwipeAction]
     @ViewBuilder let content: Content
     @ScrollState var scrollState
     
-    init(direction: SwipeDirection, style: Style, isEditing: Binding<Bool>, @ActionBuilder actions: () -> [SwipeAction], @ViewBuilder content: () -> Content, onSwipe: @escaping (Bool) -> Void) {
+    init(direction: SwipeDirection, style: Style, index: Int, isEditing: Binding<Bool>, swipedIndex: Binding<Int?>, @ActionBuilder actions: () -> [SwipeAction], @ViewBuilder content: () -> Content) {
         self.direction = direction
         self._isEditing = isEditing
         self.actions = actions()
         self.content = content()
         self.style = style
-        self.onSwipe = onSwipe
+        self.index = index
+        self._swipedIndex = swipedIndex
     }
     
     var body: some View {
@@ -43,7 +45,7 @@ struct ScrollSwipeActionsView<Content: View, Style: SwipeActionStyle>: View {
                     content
                         .rotationEffect(.init(degrees: direction == .leading ? -180 : 0))
                         .containerRelativeFrame(.horizontal)
-                        .id(constants.contentID)
+                        .id(SwipeActionsConstants.contentID)
                         .overlay {
                             Button {
                                 if !isEditing {
@@ -58,7 +60,7 @@ struct ScrollSwipeActionsView<Content: View, Style: SwipeActionStyle>: View {
                     SwipeActionButtonsView(direction: direction, filteredActions: filteredActions, style: style, isEditing: isEditing, hasCrossedThreshold: $hasCrossedThreshold, allowUserInteraction: $allowUserInteraction, currentActionButtonWidth: getActionButtonWidth, currentOpacity: getOpacity, currentScale: getScale) { animated in
                         resetPosition(with: proxy, shouldAnimate: animated)
                     }
-                    .id(constants.swipeActionsViewID)
+                    .id(SwipeActionsConstants.swipeActionsViewID)
                 }
                 .scrollTargetLayout()
                 .visualEffect { content, innerProxy in
@@ -83,34 +85,55 @@ struct ScrollSwipeActionsView<Content: View, Style: SwipeActionStyle>: View {
                 if !newValue, hasCrossedThreshold, let lastAction = filteredActions.last {
                     lastAction.action()
                     withAnimation(.smooth) {
-                        proxy.scrollTo(constants.contentID, anchor: direction == .trailing ? .topLeading : .topTrailing)
+                        scroll(to: .content, proxy: proxy)
                     }
                 }
             }
             .onChange(of: isEditing) { _, newValue in
                 withAnimation {
                     if newValue {
-                        proxy.scrollTo(constants.swipeActionsViewID, anchor: direction == .trailing ? .topLeading : .topTrailing)
+                        scroll(to: .swipeActions, proxy: proxy)
                     } else {
-                        proxy.scrollTo(constants.contentID, anchor: direction == .trailing ? .topLeading : .topTrailing)
+                        scroll(to: .content, proxy: proxy)
                     }
                 }
             }
-//            .onChange(of: scrollOffset) { _, newValue in
-//                onSwipe(abs(newValue) >= actionButtonsWidth)
-//            }
+            .onChange(of: scrollOffset) { old, new in
+                if scrollState.isDragging, abs(new) > 0, index != swipedIndex {
+                    swipedIndex = index
+                }
+            }
+            .onChange(of: swipedIndex) { old, new in
+                if old != new, new != nil, new != index, scrollOffset > 0 {
+                    withAnimation(constants.animation) {
+                        scroll(to: .content, proxy: proxy)
+                    }
+                }
+            }
         }
         .allowsHitTesting(allowUserInteraction)
     }
     
     func resetPosition(with proxy: ScrollViewProxy, shouldAnimate: Bool) {
         if shouldAnimate {
-            withAnimation(.smooth(duration: 0.25)) {
-                proxy.scrollTo(constants.contentID, anchor: direction == .trailing ? .topLeading : .topTrailing)
+            withAnimation(constants.animation) {
+                scroll(to: .content, proxy: proxy)
             }
         } else {
-            proxy.scrollTo(constants.contentID, anchor: direction == .trailing ? .topLeading : .topTrailing)
+            scroll(to: .content, proxy: proxy)
         }
+    }
+    
+    func scroll(to view: SwipeActionsConstants.View, proxy: ScrollViewProxy) {
+        var id: UUID {
+            switch view {
+                case .content:
+                    SwipeActionsConstants.contentID
+                case .swipeActions:
+                    SwipeActionsConstants.swipeActionsViewID
+            }
+        }
+        proxy.scrollTo(id, anchor: direction == .trailing ? .topLeading : .topTrailing)
     }
     
     func getActionButtonWidth(isLastAction: Bool) -> CGFloat {
@@ -155,8 +178,13 @@ struct ScrollSwipeActionsView<Content: View, Style: SwipeActionStyle>: View {
 }
 
 struct SwipeActionsConstants {
-    let contentID = UUID()
-    let swipeActionsViewID = UUID()
+    enum View {
+        case content
+        case swipeActions
+    }
+    
+    static let contentID = UUID()
+    static let swipeActionsViewID = UUID()
     let width: CGFloat = 66
     let triggerThreshold: CGFloat = 200
     let animation = Animation.smooth(duration: 0.25)
@@ -178,8 +206,8 @@ struct ColorList: View {
         NavigationStack {
             ScrollView(.vertical) {
                 LazyVStack(spacing: 16) {
-                    ForEach(Array(zip(0..<colors.count, colors)), id: \.1) { index, color in
-                        ScrollSwipeActionsView(direction: .trailing, style: .rounded, isEditing: $isEditing) {
+                    ForEach(array, id: \.1) { index, color in
+                        ScrollSwipeActionsView(direction: .trailing, style: .rounded, index: index, isEditing: $isEditing, swipedIndex: .constant(0)) {
                             SwipeAction(tint: .blue, name: "Edit Item", icon: "star.fill") {
                                 print("Bookmarked")
                             }
@@ -193,8 +221,6 @@ struct ColorList: View {
                                         .foregroundStyle(.white)
                                 }
                                 .clipShape(.rect(cornerRadius: 16))
-                        } onSwipe: { _ in
-                            
                         }
                         .frame(height: 100)
                         .transition(.move(edge: .leading))
@@ -214,5 +240,9 @@ struct ColorList: View {
             }
             #endif
         }
+    }
+    
+    var array: [(Int, Color)] {
+        Array(zip(0..<colors.count, colors))
     }
 }

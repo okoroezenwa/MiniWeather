@@ -47,20 +47,23 @@ struct SwipeActionButtonsView<S: SwipeActionStyle>: View {
                         ) {
                             Task { @MainActor in
                                 allowUserInteraction = false
+                                
                                 if !isEditing && swipeAction.shouldResetPosition {
                                     resetPosition(true)
                                     try? await Task.sleep(for: .seconds (0.25))
                                 }
+                                
                                 if swipeAction.shouldGenerateFeedback {
                                     feedbackAction = swipeAction
                                 }
+                                
                                 swipeAction.action()
                                 try? await Task.sleep(for: .seconds (0.1))
                                 allowUserInteraction = true
-//                                if !swipeAction.shouldResetPosition && !isEditing {
-//                                    try? await Task.sleep(for: .seconds (0.25))
-//                                    resetPosition(false)
-//                                }
+                                if !swipeAction.shouldResetPosition && !isEditing {
+                                    try? await Task.sleep(for: .seconds (0.3))
+                                    resetPosition(false)
+                                }
                             }
                         } content: {
                             Label(swipeAction.name, systemImage: swipeAction.icon)

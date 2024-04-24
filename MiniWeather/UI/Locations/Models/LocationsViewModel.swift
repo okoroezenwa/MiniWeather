@@ -336,8 +336,8 @@ final class LocationsViewModel {
     
     func displayToastForAdditionOf(_ location: Location) {
         toastShouldPerformOnDismissAction = true
-        let old = performLocalAdd(of: location)
-        DispatchQueue.main.asyncAfter(deadline: .now()/* + 0.3*/) { [weak self] in
+        var old = [Location]()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
             let toast = Toast(
                 style: .success,
                 title: "Location Added",
@@ -351,6 +351,7 @@ final class LocationsViewModel {
                 self?.add(location, oldLocations: old)
             }
             self?.setToast(to: toast)
+            old = self?.performLocalAdd(of: location) ?? []
         }
     }
     
@@ -391,7 +392,7 @@ final class LocationsViewModel {
     
     func displayToastForRemovalOf(_ location: Location) {
         toastShouldPerformOnDismissAction = true
-        let old = performLocalDelete(of: location)
+        var old = [Location]()
         let toast = Toast(
             style: .delete,
             title: "Location Removed",
@@ -405,6 +406,7 @@ final class LocationsViewModel {
             self.delete(location, oldLocations: old)
         }
         setToast(to: toast)
+        old = performLocalDelete(of: location)
     }
     
     func undoLocationsChange(from old: [Location]) {

@@ -22,7 +22,9 @@ struct LocationsView<Search: View, Grid: View>: View {
     
     var body: some View {
         mainView()
-            .sensoryFeedback(.impact(weight: .medium), trigger: isSearching)
+            .sensoryFeedback(.impact(weight: .medium), trigger: isSearching) { _, new in
+                new
+            }
     }
     
     @ViewBuilder func mainView() -> some View {
