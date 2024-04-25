@@ -11,6 +11,7 @@ import SwiftUI
 struct MiniWeatherApp: App {
     @Environment(\.scenePhase) private var scenePhase
     @AppStorage(Settings.appTheme) private var theme = Theme.default
+    @AppStorage(Settings.maxLocations) private var maxLocations = LocationsCount.max
     
     let timeFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -22,6 +23,7 @@ struct MiniWeatherApp: App {
     }()
     
     let locationsViewModel = LocationsViewModel(
+        preferencesRepositoryFactory: DependencyFactory.shared.makePreferencesRepository,
         userLocationAuthorisationRepositoryFactory: DependencyFactory.shared.makeUserLocationAuthorisationRepository,
         userLocationCoordinatesRepositoryFactory: DependencyFactory.shared.makeUserLocationCoordinatesRepository,
         locationsRepositoryFactory: DependencyFactory.shared.makeLocationsSearchRepository,

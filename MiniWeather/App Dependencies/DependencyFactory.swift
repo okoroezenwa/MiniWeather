@@ -84,6 +84,12 @@ final class DependencyFactory {
         )
     }
     
+    public func makePreferencesRepository() -> PreferencesRepository {
+        MainPreferencesRepository(
+            provider: makeMainPreferencesProvider()
+        )
+    }
+    
     // MARK: - Datastores
     
     private func makeTemporalFileDatastore() -> Datastore {
@@ -140,7 +146,7 @@ final class DependencyFactory {
         APINinjasGeocoderService<APINinjasLocation, APINinjasTemporaryLocation>(
             parser: makeStandardDataParser(),
             networkService: makeStandardNetworkService(), 
-            apiKeysProvider: makeMainStringPreferenceProvider()
+            apiKeysProvider: makeMainPreferencesProvider()
         )
     }
     
@@ -148,7 +154,7 @@ final class DependencyFactory {
         OpenWeatherMapGeocoderService<OpenWeatherMapLocation>(
             parser: makeStandardDataParser(),
             networkService: makeStandardNetworkService(),
-            apiKeysProvider: makeMainStringPreferenceProvider()
+            apiKeysProvider: makeMainPreferencesProvider()
         )
     }
     
@@ -169,7 +175,7 @@ final class DependencyFactory {
         APINinjasTimeZoneService(
             parser: makeStandardDataParser(), 
             networkService: makeStandardNetworkService(),
-            apiKeysProvider: makeMainStringPreferenceProvider()
+            apiKeysProvider: makeMainPreferencesProvider()
         )
     }
     
@@ -196,7 +202,7 @@ final class DependencyFactory {
         APINinjasWeatherService<APINinjasWeather>(
             parser: makeStandardDataParser(),
             networkService: makeStandardNetworkService(),
-            apiKeysProvider: makeMainStringPreferenceProvider()
+            apiKeysProvider: makeMainPreferencesProvider()
         )
     }
     
@@ -205,7 +211,7 @@ final class DependencyFactory {
             parser: makeStandardDataParser(),
             timeZoneDatastore: makeMemoryDatastore(),
             networkService: makeStandardNetworkService(),
-            apiKeysProvider: makeMainStringPreferenceProvider()
+            apiKeysProvider: makeMainPreferencesProvider()
         )
     }
     
@@ -249,7 +255,8 @@ final class DependencyFactory {
     private func makeSavedLocationsProvider() -> SavedLocationsProvider {
         MainSavedLocationsProvider(
             datastore: makePermanentFileDatastore(),
-            logger: Logger()
+            logger: Logger(), 
+            intPreferenceProvider: makeMainPreferencesProvider()
         )
     }
     
@@ -309,7 +316,7 @@ final class DependencyFactory {
     
     // MARK: - Preferences
     
-    private func makeMainStringPreferenceProvider() -> StringPreferenceProvider {
+    private func makeMainPreferencesProvider() -> PreferencesProvider {
         UserDefaults.standard
     }
 }

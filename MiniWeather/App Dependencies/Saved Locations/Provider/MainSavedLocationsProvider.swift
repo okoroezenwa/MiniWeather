@@ -11,10 +11,12 @@ import OSLog
 struct MainSavedLocationsProvider: SavedLocationsProvider {
     private let datastore: Datastore
     private let logger: Logger
+    private let intPreferenceProvider: PreferencesProvider
     
-    init(datastore: Datastore, logger: Logger) {
+    init(datastore: Datastore, logger: Logger, intPreferenceProvider: PreferencesProvider) {
         self.datastore = datastore
         self.logger = logger
+        self.intPreferenceProvider = intPreferenceProvider
     }
     
     func getSavedLocations() async throws -> [Location] {
@@ -80,14 +82,23 @@ struct MainSavedLocationsProvider: SavedLocationsProvider {
         }
     }
     
+    func setLocations(to locations: [Location]) async throws {
+        do {
+            try datastore.store(locations, withKey: .savedLocations)
+        } catch {
+            throw error
+        }
+    }
+    
     private func add(_ location: Location, to locations: [Location]) -> [Location] {
         if locations.isEmpty {
             return [location]
         }
         
         var sortedLocations = locations.sorted { $0.position < $1.position }
+        let maxLocations = intPreferenceProvider.integer(forKey: Settings.maxLocations)
         
-        if sortedLocations.count == 10 {
+        if sortedLocations.count == maxLocations {
             sortedLocations.removeLast()
         }
         

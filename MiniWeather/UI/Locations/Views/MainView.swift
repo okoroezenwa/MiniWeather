@@ -15,6 +15,7 @@ struct MainView: View {
     @State private var duplicateLocation: Location?
     @State private var isShowingSettings = false
     @State var viewModel: LocationsViewModel
+    @AppStorage(Settings.maxLocations) private var maxLocations = LocationsCount.max
 
     var body: some View {
         NavigationSplitView {
@@ -100,6 +101,9 @@ struct MainView: View {
         }
         .toastView(toast: $viewModel.displayedToast)
         .sensoryFeedback(.selection, trigger: selectedLocation)
+        .onChange(of: maxLocations) {
+            viewModel.updateLocationsOnMaxLocationChange()
+        }
     }
     
     private func locationsSearchView(_ dismissSearch: @escaping () -> Void) -> some View {
@@ -202,6 +206,7 @@ struct MainView: View {
 #Preview {
     MainView(
         viewModel: LocationsViewModel(
+            preferencesRepositoryFactory: DependencyFactory.shared.makePreferencesRepository, 
             userLocationAuthorisationRepositoryFactory: DependencyFactory.shared.makeUserLocationAuthorisationRepository,
             userLocationCoordinatesRepositoryFactory: DependencyFactory.shared.makeUserLocationCoordinatesRepository,
             locationsRepositoryFactory: DependencyFactory.shared.makeLocationsSearchRepository,

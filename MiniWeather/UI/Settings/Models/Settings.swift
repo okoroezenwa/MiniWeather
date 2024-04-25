@@ -18,6 +18,7 @@ struct Settings {
     static let showWeatherViewMap = "showWeatherViewMap"
     static let showWeatherViewUnits = "showWeatherViewUnits"
     static let swipeStyle = "swipeStyle"
+    static let maxLocations = "maxLocations"
     
     /// The current value of the given settings key.
     static func currentValue<Value: DefaultPresenting & RawRepresentable<String>>(for key: String) -> Value {
@@ -93,4 +94,8 @@ enum SwipeStyle: String, PickableSetting {
                 AnySwipeActionStyle(style: .translucentRounded)
         }
     }
+}
+
+struct LocationsCount {
+    static let max = 10
 }

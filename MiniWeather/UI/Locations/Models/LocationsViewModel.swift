@@ -20,6 +20,7 @@ final class LocationsViewModel {
     private let timeZoneRepositoryFactory: () -> TimeZoneRepository
     private let currentLocationRepositoryFactory: () -> CurrentLocationRepository
     private let savedLocationsRepositoryFactory: () -> SavedLocationsRepository
+    private let preferencesRepositoryFactory: () -> PreferencesRepository
     private let logger: Logger
     var status: CLAuthorizationStatus
     var currentLocation: Location?
@@ -41,6 +42,7 @@ final class LocationsViewModel {
     }
     
     init(
+        preferencesRepositoryFactory: @escaping () -> PreferencesRepository,
         userLocationAuthorisationRepositoryFactory: @escaping () -> UserLocationAuthorisationRepository,
         userLocationCoordinatesRepositoryFactory: @escaping () -> UserLocationCoordinatesRepository,
         locationsRepositoryFactory: @escaping () -> LocationsSearchRepository,
@@ -57,6 +59,7 @@ final class LocationsViewModel {
         self.timeZoneRepositoryFactory = timeZoneRepositoryFactory
         self.currentLocationRepositoryFactory = currentLocationRepositoryFactory
         self.savedLocationsRepositoryFactory = savedLocationsRepositoryFactory
+        self.preferencesRepositoryFactory = preferencesRepositoryFactory
         
         self.status = userLocationAuthorisationRepositoryFactory().getAuthorisationStatus()
         self.logger = logger
@@ -279,10 +282,12 @@ final class LocationsViewModel {
      */
     private func performLocalAdd(of location: Location) -> [Location] {
         withAnimation {
+            let preferencesRepository = preferencesRepositoryFactory()
+            let maxLocations = preferencesRepository.integer(forKey: Settings.maxLocations)
             var tempLocations = locations
             let oldLocations = locations
             
-            if locations.count == 10 {
+            if locations.count == maxLocations {
                 tempLocations.removeLast()
             }
             
@@ -440,6 +445,20 @@ final class LocationsViewModel {
             } catch {
                 logger.log("Deleting saved location failed: \(error)")
                 #warning("Need to undo changes here")
+            }
+        }
+    }
+    
+    func updateLocationsOnMaxLocationChange() {
+        let preferencesRepository = preferencesRepositoryFactory()
+        let savedLocationsRepository = savedLocationsRepositoryFactory()
+        let maxLocations = preferencesRepository.integer(forKey: Settings.maxLocations)
+        
+        if locations.count > maxLocations {
+            let numberToRemove = locations.count - maxLocations
+            locations.removeLast(numberToRemove)
+            Task {
+                try await savedLocationsRepository.setLocations(to: locations)
             }
         }
     }
