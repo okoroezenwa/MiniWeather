@@ -1,23 +1,11 @@
 //
-//  PreferencesProvider.swift
+//  MainPreferencesRepository.swift
 //  MiniWeather
 //
-//  Created by Ezenwa Okoro on 09/12/2023.
+//  Created by Ezenwa Okoro on 26/04/2024.
 //
 
 import Foundation
-#warning("Organise later")
-protocol PreferencesProvider {
-    func string(forKey service: String) -> String?
-    func integer(forKey service: String) -> Int
-}
-
-extension UserDefaults: PreferencesProvider { }
-
-protocol PreferencesRepository {
-    func string(forKey key: String) -> String?
-    func integer(forKey key: String) -> Int
-}
 
 final class MainPreferencesRepository: PreferencesRepository {
     private let provider: PreferencesProvider

@@ -118,6 +118,8 @@
 		BE7DA7872AEA6E550016047C /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE7DA7862AEA6E540016047C /* Request.swift */; };
 		BE928F172B177D5C0083CC96 /* KeyValueStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE928F162B177D5C0083CC96 /* KeyValueStore.swift */; };
 		BE928F1B2B1799610083CC96 /* CloudKeyValueDatastore.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE928F1A2B1799610083CC96 /* CloudKeyValueDatastore.swift */; };
+		BE9D66DB2BDC3C5C002B05B3 /* PreferencesRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9D66DA2BDC3C5C002B05B3 /* PreferencesRepository.swift */; };
+		BE9D66DD2BDC3C72002B05B3 /* MainPreferencesRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9D66DC2BDC3C72002B05B3 /* MainPreferencesRepository.swift */; };
 		BE9EC75B2BBAFA2A0067706F /* FileDatastore.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9EC75A2BBAFA2A0067706F /* FileDatastore.swift */; };
 		BE9EC75D2BBC63B30067706F /* TemporaryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9EC75C2BBC63B30067706F /* TemporaryStore.swift */; };
 		BE9EC7612BBC63EC0067706F /* StandardTemporaryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9EC7602BBC63EC0067706F /* StandardTemporaryStore.swift */; };
@@ -319,6 +321,8 @@
 		BE7DA7862AEA6E540016047C /* Request.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
 		BE928F162B177D5C0083CC96 /* KeyValueStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyValueStore.swift; sourceTree = "<group>"; };
 		BE928F1A2B1799610083CC96 /* CloudKeyValueDatastore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudKeyValueDatastore.swift; sourceTree = "<group>"; };
+		BE9D66DA2BDC3C5C002B05B3 /* PreferencesRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesRepository.swift; sourceTree = "<group>"; };
+		BE9D66DC2BDC3C72002B05B3 /* MainPreferencesRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPreferencesRepository.swift; sourceTree = "<group>"; };
 		BE9EC75A2BBAFA2A0067706F /* FileDatastore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileDatastore.swift; sourceTree = "<group>"; };
 		BE9EC75C2BBC63B30067706F /* TemporaryStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemporaryStore.swift; sourceTree = "<group>"; };
 		BE9EC7602BBC63EC0067706F /* StandardTemporaryStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandardTemporaryStore.swift; sourceTree = "<group>"; };
@@ -524,7 +528,8 @@
 		BE248C3C2B24BA5C007E32FD /* Preferences */ = {
 			isa = PBXGroup;
 			children = (
-				BE248C382B248D46007E32FD /* PreferencesProvider.swift */,
+				BE9D66D92BDC3C47002B05B3 /* Repository */,
+				BE9D66D82BDC3C41002B05B3 /* Provider */,
 			);
 			path = Preferences;
 			sourceTree = "<group>";
@@ -938,6 +943,23 @@
 				BE53806D2BD3AB3900AA3BBB /* SearchTextField.swift */,
 			);
 			path = Nickname;
+			sourceTree = "<group>";
+		};
+		BE9D66D82BDC3C41002B05B3 /* Provider */ = {
+			isa = PBXGroup;
+			children = (
+				BE248C382B248D46007E32FD /* PreferencesProvider.swift */,
+			);
+			path = Provider;
+			sourceTree = "<group>";
+		};
+		BE9D66D92BDC3C47002B05B3 /* Repository */ = {
+			isa = PBXGroup;
+			children = (
+				BE9D66DA2BDC3C5C002B05B3 /* PreferencesRepository.swift */,
+				BE9D66DC2BDC3C72002B05B3 /* MainPreferencesRepository.swift */,
+			);
+			path = Repository;
 			sourceTree = "<group>";
 		};
 		BE9EC7622BBC64460067706F /* Implementations */ = {
@@ -1376,6 +1398,7 @@
 				BE2D18BD2B1502CE0012D1F0 /* OpenWeatherMapWeather.swift in Sources */,
 				BE71B8112ACE9F2B003AA99C /* MainView.swift in Sources */,
 				BE248C462B270316007E32FD /* Settings.swift in Sources */,
+				BE9D66DB2BDC3C5C002B05B3 /* PreferencesRepository.swift in Sources */,
 				BE4FE4D62AF1346000A381FD /* APINinjasWeatherService.swift in Sources */,
 				BE75A35C2B1632040041ED46 /* MainSavedLocationsProvider.swift in Sources */,
 				BEF55F202B30727F008B8319 /* WindAndPressureCard.swift in Sources */,
@@ -1416,6 +1439,7 @@
 				BE4FE4AD2AEC21F700A381FD /* AppleGeocoderService.swift in Sources */,
 				BE4FE4AA2AEC1F1000A381FD /* NetworkError.swift in Sources */,
 				BE5380682BD27E6300AA3BBB /* SheetViewController.swift in Sources */,
+				BE9D66DD2BDC3C72002B05B3 /* MainPreferencesRepository.swift in Sources */,
 				BE7DA7872AEA6E550016047C /* Request.swift in Sources */,
 				BEFE25582B0600EF00AB5DED /* MainUserLocationCoordinatesRepository.swift in Sources */,
 				BED0F5A92B11043900156E23 /* OpenWeatherMapLocation.swift in Sources */,
