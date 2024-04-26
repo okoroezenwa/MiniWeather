@@ -96,6 +96,32 @@ enum SwipeStyle: String, PickableSetting {
     }
 }
 
+enum MaxLocations: String, PickableSetting {
+    case five = "5 Locations"
+    case ten = "10 Locations"
+    case fifteen = "15 Locations"
+    case twenty = "20 Locations"
+    
+    var id: Self {
+        self
+    }
+    
+    static let `default`: MaxLocations = .ten
+    
+    var amount: Int {
+        switch self {
+            case .five:
+                5
+            case .ten:
+                10
+            case .fifteen:
+                15
+            case .twenty:
+                20
+        }
+    }
+}
+
 struct LocationsCount {
     static let max = 10
 }

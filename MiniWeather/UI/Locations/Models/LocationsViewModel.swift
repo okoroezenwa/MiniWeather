@@ -20,7 +20,6 @@ final class LocationsViewModel {
     private let timeZoneRepositoryFactory: () -> TimeZoneRepository
     private let currentLocationRepositoryFactory: () -> CurrentLocationRepository
     private let savedLocationsRepositoryFactory: () -> SavedLocationsRepository
-    private let preferencesRepositoryFactory: () -> PreferencesRepository
     private let logger: Logger
     var status: CLAuthorizationStatus
     var currentLocation: Location?
@@ -42,7 +41,6 @@ final class LocationsViewModel {
     }
     
     init(
-        preferencesRepositoryFactory: @escaping () -> PreferencesRepository,
         userLocationAuthorisationRepositoryFactory: @escaping () -> UserLocationAuthorisationRepository,
         userLocationCoordinatesRepositoryFactory: @escaping () -> UserLocationCoordinatesRepository,
         locationsRepositoryFactory: @escaping () -> LocationsSearchRepository,
@@ -59,7 +57,6 @@ final class LocationsViewModel {
         self.timeZoneRepositoryFactory = timeZoneRepositoryFactory
         self.currentLocationRepositoryFactory = currentLocationRepositoryFactory
         self.savedLocationsRepositoryFactory = savedLocationsRepositoryFactory
-        self.preferencesRepositoryFactory = preferencesRepositoryFactory
         
         self.status = userLocationAuthorisationRepositoryFactory().getAuthorisationStatus()
         self.logger = logger
@@ -282,8 +279,8 @@ final class LocationsViewModel {
      */
     private func performLocalAdd(of location: Location) -> [Location] {
         withAnimation {
-            let preferencesRepository = preferencesRepositoryFactory()
-            let maxLocations = preferencesRepository.integer(forKey: Settings.maxLocations)
+            let setting: MaxLocations = Settings.currentValue(for: Settings.maxLocations)
+            let maxLocations = setting.amount
             var tempLocations = locations
             let oldLocations = locations
             
@@ -449,10 +446,9 @@ final class LocationsViewModel {
         }
     }
     
-    func updateLocationsOnMaxLocationChange() {
-        let preferencesRepository = preferencesRepositoryFactory()
+    func updateMaxNumberOfDisplayedLocations(to maxLocations: MaxLocations) {
         let savedLocationsRepository = savedLocationsRepositoryFactory()
-        let maxLocations = preferencesRepository.integer(forKey: Settings.maxLocations)
+        let maxLocations = maxLocations.amount
         
         if locations.count > maxLocations {
             let numberToRemove = locations.count - maxLocations

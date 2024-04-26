@@ -18,7 +18,7 @@ struct SettingsView: View {
     @AppStorage(Settings.showWeatherViewMap) private var showWeatherViewMap = true
     @AppStorage(Settings.showWeatherViewUnits) private var showWeatherViewUnits = false
     @AppStorage(Settings.swipeStyle) private var swipeStyle = SwipeStyle.default
-    @AppStorage(Settings.maxLocations) private var maxLocations = LocationsCount.max
+    @AppStorage(Settings.maxLocations) private var maxLocations = MaxLocations.default
     
     private var dismiss: () -> ()
     
@@ -58,11 +58,7 @@ struct SettingsView: View {
                     
                     SettingsPicker(title: "Swipe Style", selection: $swipeStyle)
                     
-                    Stepper(value: $maxLocations, in: 5...15) {
-                        Text("\(maxLocations) Locations".grantAttributes(to: "\(maxLocations)", values: .foreground(.gray)))
-                    } onEditingChanged: { changed in
-                        print(changed)
-                    }
+                    SettingsPicker(title: "Max Locations", selection: $maxLocations)
                 }
                 
                 Section("Weather View") {

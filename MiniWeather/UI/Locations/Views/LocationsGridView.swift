@@ -32,6 +32,7 @@ struct LocationsGridView<Current: View, Saved: View>: View {
             }
         }
         .scrollDismissesKeyboard(.immediately)
+        .contentMargins(.bottom, 16, for: .scrollContent)
     }
 }
 

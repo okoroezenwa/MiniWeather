@@ -23,7 +23,6 @@ struct MiniWeatherApp: App {
     }()
     
     let locationsViewModel = LocationsViewModel(
-        preferencesRepositoryFactory: DependencyFactory.shared.makePreferencesRepository,
         userLocationAuthorisationRepositoryFactory: DependencyFactory.shared.makeUserLocationAuthorisationRepository,
         userLocationCoordinatesRepositoryFactory: DependencyFactory.shared.makeUserLocationCoordinatesRepository,
         locationsRepositoryFactory: DependencyFactory.shared.makeLocationsSearchRepository,
