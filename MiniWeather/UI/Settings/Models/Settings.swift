@@ -121,7 +121,3 @@ enum MaxLocations: String, PickableSetting {
         }
     }
 }
-
-struct LocationsCount {
-    static let max = 10
-}

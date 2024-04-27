@@ -58,7 +58,7 @@ struct SettingsView: View {
                     
                     SettingsPicker(title: "Swipe Style", selection: $swipeStyle)
                     
-                    SettingsPicker(title: "Max Locations", selection: $maxLocations)
+                    SettingsPicker(title: "Max Item Count", selection: $maxLocations)
                 }
                 
                 Section("Weather View") {
