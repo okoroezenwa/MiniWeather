@@ -152,15 +152,14 @@ struct MainView: View {
                 SavedLocationsSection(
                     locations: $viewModel.locations,
                     selection: $selectedLocation,
-                    viewModel: SavedLocationsSectionViewModel { location in
-                        viewModel.weather(for: location)
-                    } onDelete: { [weak viewModel] location in
-                        viewModel?.displayToastForRemovalOf(location)
-                    } onMove: { offsets, destination in
-                        viewModel.move(from: offsets, to: destination)
-                    } onNicknameChange: { nickname, index in
-                        viewModel.editNickname(ofLocationAt: index, to: nickname)
-                    }
+                    viewModel:
+                        SavedLocationsSectionViewModel(
+                            weather: viewModel.weather(for:),
+                            onDelete: viewModel.displayToastForRemovalOf(_:),
+                            onMove: viewModel.move(from:to:),
+                            onMoveCompleted: viewModel.onMoveCompletion,
+                            onNicknameChange: viewModel.editNickname(ofLocationAt:to:)
+                        )
                 )
             } header: {
                 SavedLocationsSectionHeader()
@@ -212,7 +211,8 @@ struct MainView: View {
             weatherRepositoryFactory: DependencyFactory.shared.makeWeatherRepository,
             timeZoneRepositoryFactory: DependencyFactory.shared.makeTimeZoneRepository,
             currentLocationRepositoryFactory: DependencyFactory.shared.makeCurrentLocationRepository,
-            savedLocationsRepositoryFactory: DependencyFactory.shared.makeSavedLocationsRepository
+            savedLocationsRepositoryFactory: DependencyFactory.shared.makeSavedLocationsRepository,
+            syncEngineOperationsRepositoryFactory: DependencyFactory.shared.makeSyncEngineOperationsRepository
         )
     )
 }

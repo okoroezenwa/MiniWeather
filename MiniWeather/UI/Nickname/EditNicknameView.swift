@@ -15,13 +15,13 @@ struct EditNicknameView: View {
     
     let location: Location
     let index: Int
-    let onNicknameChange: (String, Int) -> Void
+    let onNicknameChange: (Int, String) -> Void
     let dismiss: () -> Void
     
     let spacing: CGFloat = 24
     var validNickname: String { editInfo.text.value(if: !editInfo.text.isEmpty) ?? location.city }
     
-    init(location: Location, index: Int, editInfo: Binding<SearchTextField.EditInfo>, showConfirmation: Binding<Bool>, onNicknameChange: @escaping (String, Int) -> Void, dismiss: @escaping () -> Void) {
+    init(location: Location, index: Int, editInfo: Binding<SearchTextField.EditInfo>, showConfirmation: Binding<Bool>, onNicknameChange: @escaping (Int, String) -> Void, dismiss: @escaping () -> Void) {
         self.location = location
         self.index = index
         self.onNicknameChange = onNicknameChange
@@ -94,7 +94,7 @@ struct EditNicknameView: View {
     }
     
     func onSubmit() {
-        onNicknameChange(validNickname, index)
+        onNicknameChange(index, validNickname)
         didSubmit = true
         dismiss()
     }

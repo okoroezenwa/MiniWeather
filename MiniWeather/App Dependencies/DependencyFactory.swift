@@ -5,11 +5,11 @@
 //  Created by Ezenwa Okoro on 28/10/2023.
 //
 
-import Foundation
 import CoreLocation
 import OSLog
 import WeatherKit
 import DiskCache
+import CloudKit
 
 /// The singleton object through which all app dependencies are retrieved.
 final class DependencyFactory {
@@ -26,9 +26,12 @@ final class DependencyFactory {
                 logger: Logger()
             )
     )
+    private static let cloudKitIdentifier = "iCloud.okoroezenwa.MiniWeather"
+    
     private let locationManagerDelegate: LocationManagerDelegate
     private let temporaryStore: TemporaryStore
     private let cloudDatastoreUpdateHandler: CloudKeyValueDatastoreUpdateHandler
+    private lazy var syncEngineDelegate = makeSyncEngineDelegate()
     
     private init(
         locationManagerDelegate: LocationManagerDelegate,
@@ -38,6 +41,10 @@ final class DependencyFactory {
         self.locationManagerDelegate = locationManagerDelegate
         self.temporaryStore = temporaryStore
         self.cloudDatastoreUpdateHandler = cloudDatastoreUpdateHandler
+    }
+    
+    func startSyncEngine() {
+        syncEngineDelegate.start()
     }
     
     // MARK: - Standard Repositories
@@ -87,6 +94,12 @@ final class DependencyFactory {
     public func makePreferencesRepository() -> PreferencesRepository {
         MainPreferencesRepository(
             provider: makeMainPreferencesProvider()
+        )
+    }
+    
+    public func makeSyncEngineOperationsRepository() -> SyncEngineOperationsRepository {
+        MainSyncEngineOperationsRepository(
+            provider: makeSyncEngineOperationsProvider()
         )
     }
     
@@ -260,6 +273,54 @@ final class DependencyFactory {
         )
     }
     
+    private func makeCloudKitRecordsProvider() -> CloudKitRecordsProvider {
+        MainCloudKitRecordsProvider(
+            datastore: makePermanentFileDatastore(),
+            encoder: makeJSONDataEncoder(),
+            decoder: makeJSONDataDecoder()
+        )
+    }
+    
+    private func makeSyncEngineStateSerialisationProvider() -> SyncEngineStateSerialisationProvider {
+        MainSyncEngineStateSerialisationProvider(
+            datastore: makePermanentFileDatastore()
+        )
+    }
+    
+    private func makeCloudKitUserAccountStatusProvider() -> CloudKitUserAccountStatusProvider {
+        MainCloudKitUserAccountStatusProvider(
+            container: makeCloudKitContainer()
+        )
+    }
+    
+    private func makeSyncEngineOperationsProvider() -> SyncEngineOperationsProvider {
+        MainSyncEngineOperationsProvider(
+            syncEngineDelegate: makeSyncEngineDelegate(),
+            recordProvider: makeCloudKitRecordsProvider(),
+            userAccountStatusProvider: makeCloudKitUserAccountStatusProvider()
+        )
+    }
+    
+    // MARK: - CloudKit Container
+    
+    private func makeCloudKitContainer() -> CKContainer {
+        CKContainer(identifier: Self.cloudKitIdentifier)
+    }
+    
+    // MARK: - CloudKit Databases
+    
+    private func makePublicCloudKitDatabase() -> CKDatabase {
+        makeCloudKitContainer().publicCloudDatabase
+    }
+    
+    private func makePrivateCloudKitDatabase() -> CKDatabase {
+        makeCloudKitContainer().privateCloudDatabase
+    }
+    
+    private func makeSharedCloudKitDatabase() -> CKDatabase {
+        makeCloudKitContainer().sharedCloudDatabase
+    }
+    
     // MARK: - Key-Value Stores
     
     private func makeUserDefaultsKeyValueStore() -> KeyValueStore {
@@ -268,6 +329,17 @@ final class DependencyFactory {
     
     private func makeCloudKeyValueStore() -> KeyValueStore {
         NSUbiquitousKeyValueStore.default
+    }
+    
+    // MARK: - Sync Engine
+    
+    private func makeSyncEngineDelegate() -> SyncEngineDelegate {
+        MainSyncEngineDelegate(
+            database: makePrivateCloudKitDatabase(),
+            recordProvider: makeCloudKitRecordsProvider(),
+            savedLocationsProvider: makeSavedLocationsProvider(),
+            serialisationProvider: makeSyncEngineStateSerialisationProvider()
+        )
     }
     
     // MARK: - Caches

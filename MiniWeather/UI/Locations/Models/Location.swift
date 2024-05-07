@@ -5,13 +5,26 @@
 //  Created by Ezenwa Okoro on 05/10/2023.
 //
 
-import Foundation
 import CoreLocation
 import SwiftUI
+import CloudKit
 
 /// The Location object.
-struct Location: Codable, Identifiable, Hashable {
-    let id: UUID
+struct Location: Identifiable, Hashable, Codable {
+    enum CodingKeys: String, CodingKey {
+        case id
+        case timestamp
+        case city
+        case state
+        case country
+        case position
+        case nickname
+        case timeZoneIdentifier
+        case longitude
+        case latitude
+    }
+    
+    let id: String
     let timestamp: Date
     let city: String
     let state: String?
@@ -21,8 +34,12 @@ struct Location: Codable, Identifiable, Hashable {
     var timeZoneIdentifier: TimeZoneIdentifier?
     let longitude: Double
     let latitude: Double
+    var lastModified = Date.distantPast
     
-    init(id: UUID = UUID(),
+    static let zoneName = "Locations"
+    static let recordType = "Location"
+    
+    init(id: String = UUID().uuidString,
          timestamp: Date = .now,
          city: String,
          state: String?,
@@ -54,7 +71,7 @@ struct Location: Codable, Identifiable, Hashable {
         self.latitude = locationObject.latitude
         self.longitude = locationObject.longitude
         self.timeZoneIdentifier = timeZone
-        self.id = UUID()
+        self.id = UUID().uuidString
         self.timestamp = .now
         self.position = 0
     }
@@ -81,6 +98,24 @@ extension Location: LocationProtocol {
 extension Location: Transferable {
     static var transferRepresentation: some TransferRepresentation {
         CodableRepresentation(contentType: .location)
+    }
+}
+
+extension Location: CloudKitModel {
+    var recordFields: [(kind: CKRecord.FieldKey.Kind, value: CKRecordValueProtocol?)] {
+        [
+            (.unencrypted(.city), city),
+            (.unencrypted(.nickname), nickname),
+            (.unencrypted(.state), state),
+            (.unencrypted(.country), country),
+            (.unencrypted(.latitude), latitude),
+            (.unencrypted(.longitude), longitude),
+            (.unencrypted(.timestamp), timestamp),
+            (.unencrypted(.position), position),
+            (.unencrypted(.timeZoneIdentifier), timeZoneIdentifier?.name),
+            (.unencrypted(.timeZoneOffset), timeZoneIdentifier?.offset),
+            (.unencrypted(.lastModified), lastModified)
+        ]
     }
 }
 

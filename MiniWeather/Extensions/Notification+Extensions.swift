@@ -9,4 +9,5 @@ import Foundation
 
 extension Notification.Name {
     static let cloudStoreUpdated = Notification.Name.init("cloudStoreUpdated")
+    static let cloudKitRecordsUpdated = Notification.Name.init("cloudKitRecordsUpdated")
 }

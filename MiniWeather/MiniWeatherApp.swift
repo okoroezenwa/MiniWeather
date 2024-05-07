@@ -29,11 +29,13 @@ struct MiniWeatherApp: App {
         weatherRepositoryFactory: DependencyFactory.shared.makeWeatherRepository,
         timeZoneRepositoryFactory: DependencyFactory.shared.makeTimeZoneRepository,
         currentLocationRepositoryFactory: DependencyFactory.shared.makeCurrentLocationRepository,
-        savedLocationsRepositoryFactory: DependencyFactory.shared.makeSavedLocationsRepository
+        savedLocationsRepositoryFactory: DependencyFactory.shared.makeSavedLocationsRepository,
+        syncEngineOperationsRepositoryFactory: DependencyFactory.shared.makeSyncEngineOperationsRepository
     )
     
     init() {
         NSUbiquitousKeyValueStore.default.synchronize()
+        DependencyFactory.shared.startSyncEngine()
     }
 
     var body: some Scene {
