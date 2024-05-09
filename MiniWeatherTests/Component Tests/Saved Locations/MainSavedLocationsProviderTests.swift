@@ -22,7 +22,7 @@ final class MainSavedLocationsProviderTests: XCTestCase {
     func test_getSavedLocations_SuccessfullyReturnsLocations() async throws {
         // Given
         let locations = [UniversalConstants.location]
-        let datastore = MockDatastore(dict: [.savedLocations: locations])
+        let datastore = MockDatastore(dict: [.savedItems: locations])
         
         // When
         let sut = MainSavedLocationsProvider(datastore: datastore, logger: Logger())
@@ -73,7 +73,7 @@ final class MainSavedLocationsProviderTests: XCTestCase {
         // Given
         let location = UniversalConstants.location
         let locations = [UniversalConstants.location]
-        let datastore = MockDatastore(dict: [.savedLocations: locations])
+        let datastore = MockDatastore(dict: [.savedItems: locations])
         
         // When
         let sut = MainSavedLocationsProvider(datastore: datastore, logger: Logger())
@@ -99,7 +99,7 @@ final class MainSavedLocationsProviderTests: XCTestCase {
         let location1 = UniversalConstants.location
         let location2 = Location(city: "Lagos", state: "Lagos", country: "Nigeria", nickname: "test", timeZone: .empty, latitide: 1, longitude: 1)
         let locations = [location1, location2]
-        let datastore = MockDatastore(dict: [.savedLocations: locations])
+        let datastore = MockDatastore(dict: [.savedItems: locations])
         
         // When
         let sut = MainSavedLocationsProvider(datastore: datastore, logger: Logger())
@@ -111,7 +111,7 @@ final class MainSavedLocationsProviderTests: XCTestCase {
     func test_changeNickname_ThrowsNoError() async throws {
         // Given
         let location = UniversalConstants.location
-        let datastore = MockDatastore(dict: [.savedLocations: [location]])
+        let datastore = MockDatastore(dict: [.savedItems: [location]])
         
         // When
         let sut = MainSavedLocationsProvider(datastore: datastore, logger: Logger())

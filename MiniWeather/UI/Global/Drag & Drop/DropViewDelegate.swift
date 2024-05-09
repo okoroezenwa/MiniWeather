@@ -9,9 +9,10 @@ import SwiftUI
 
 struct DropViewDelegate<Item: Equatable>: DropDelegate {
     let destinationItem: Item
-    @Binding var locations: [Item]
+    @Binding var items: [Item]
     @Binding var draggedItem: Item?
-    var onMove: (IndexSet, Int) -> Void
+    let onMove: (IndexSet, Int) -> Void
+    let onMoveCompleted: () -> Void
     
     func dropUpdated(info: DropInfo) -> DropProposal? {
         return DropProposal(operation: .move)
@@ -19,21 +20,22 @@ struct DropViewDelegate<Item: Equatable>: DropDelegate {
     
     func performDrop(info: DropInfo) -> Bool {
         UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+        onMoveCompleted()
         draggedItem = nil
         return true
     }
     
     func dropEntered(info: DropInfo) {
         if let draggedItem,
-            let fromIndex = locations.firstIndex(of: draggedItem),
-           let toIndex = locations.firstIndex(of: destinationItem),
+            let fromIndex = items.firstIndex(of: draggedItem),
+           let toIndex = items.firstIndex(of: destinationItem),
            fromIndex != toIndex
         {
             let offsets = IndexSet(integer: fromIndex)
             let destination = (toIndex > fromIndex ? (toIndex + 1) : toIndex)
-            withAnimation {
-                self.locations.move(fromOffsets: offsets, toOffset: destination)
-            }
+//            withAnimation {
+//                self.items.move(fromOffsets: offsets, toOffset: destination)
+//            }
             onMove(offsets, destination)
         }
     }

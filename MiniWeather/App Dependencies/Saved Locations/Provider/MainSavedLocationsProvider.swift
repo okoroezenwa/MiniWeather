@@ -21,7 +21,7 @@ struct MainSavedLocationsProvider: SavedLocationsProvider {
     
     func getSavedLocations() async throws -> [Location] {
         do {
-            let locations: [Location] = try datastore.fetch(forKey: .savedLocations)
+            let locations: [Location] = try datastore.fetch(forKey: .savedItems)
             logger.trace("Fetched saved locations")
             return locations
         } catch DatastoreError.notFound {
@@ -35,13 +35,13 @@ struct MainSavedLocationsProvider: SavedLocationsProvider {
     
     func add(_ location: Location) async throws {
         do {
-            let locations: [Location] = try datastore.fetch(forKey: .savedLocations)
+            let locations: [Location] = try datastore.fetch(forKey: .savedItems)
             let sortedLocations = add(location, to: locations)
-            try datastore.store(sortedLocations, withKey: .savedLocations)
+            try datastore.store(sortedLocations, withKey: .savedItems)
         } catch DatastoreError.notFound {
             logger.error("Saved locations may be unavailable or not used yet.")
             let newLocations = add(location, to: [])
-            try datastore.store(newLocations, withKey: .savedLocations)
+            try datastore.store(newLocations, withKey: .savedItems)
         } catch {
             throw error
         }
@@ -49,13 +49,13 @@ struct MainSavedLocationsProvider: SavedLocationsProvider {
     
     func delete(_ location: Location) async throws {
         do {
-            var locations: [Location] = try datastore.fetch(forKey: .savedLocations)
+            var locations: [Location] = try datastore.fetch(forKey: .savedItems)
             guard let index = locations.firstIndex(where: { $0.fullName == location.fullName }) else {
                 throw LocationError.notFound
             }
             locations.remove(at: index)
             locations = adjustPositions(of: locations)
-            try datastore.store(locations, withKey: .savedLocations)
+            try datastore.store(locations, withKey: .savedItems)
         } catch {
             throw error
         }
@@ -63,10 +63,10 @@ struct MainSavedLocationsProvider: SavedLocationsProvider {
     
     func move(from offsets: IndexSet, to offset: Int) async throws {
         do {
-            var locations: [Location] = try datastore.fetch(forKey: .savedLocations)
+            var locations: [Location] = try datastore.fetch(forKey: .savedItems)
             locations.move(fromOffsets: offsets, toOffset: offset)
             locations = adjustPositions(of: locations)
-            try datastore.store(locations, withKey: .savedLocations)
+            try datastore.store(locations, withKey: .savedItems)
         } catch {
             throw error
         }
@@ -74,9 +74,9 @@ struct MainSavedLocationsProvider: SavedLocationsProvider {
     
     func changeNickname(ofLocationAt index: Int, to nickname: String) async throws {
         do {
-            var locations: [Location] = try datastore.fetch(forKey: .savedLocations)
+            var locations: [Location] = try datastore.fetch(forKey: .savedItems)
             locations[index].nickname = nickname
-            try datastore.store(locations, withKey: .savedLocations)
+            try datastore.store(locations, withKey: .savedItems)
         } catch {
             throw error
         }
@@ -84,7 +84,7 @@ struct MainSavedLocationsProvider: SavedLocationsProvider {
     
     func setLocations(to locations: [Location]) async throws {
         do {
-            try datastore.store(locations, withKey: .savedLocations)
+            try datastore.store(locations, withKey: .savedItems)
         } catch {
             throw error
         }

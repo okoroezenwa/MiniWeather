@@ -20,6 +20,7 @@ final class LocationsViewModel {
     private let timeZoneRepositoryFactory: () -> TimeZoneRepository
     private let currentLocationRepositoryFactory: () -> CurrentLocationRepository
     private let savedLocationsRepositoryFactory: () -> SavedLocationsRepository
+    private let syncEngineOperationsRepositoryFactory: () -> SyncEngineOperationsRepository
     private let logger: Logger
     var status: CLAuthorizationStatus
     var currentLocation: Location?
@@ -48,6 +49,7 @@ final class LocationsViewModel {
         timeZoneRepositoryFactory: @escaping () -> TimeZoneRepository,
         currentLocationRepositoryFactory: @escaping () -> CurrentLocationRepository,
         savedLocationsRepositoryFactory: @escaping () -> SavedLocationsRepository,
+        syncEngineOperationsRepositoryFactory: @escaping () -> SyncEngineOperationsRepository,
         logger: Logger = Logger()
     ) {
         self.userLocationAuthorisationRepositoryFactory = userLocationAuthorisationRepositoryFactory
@@ -57,12 +59,13 @@ final class LocationsViewModel {
         self.timeZoneRepositoryFactory = timeZoneRepositoryFactory
         self.currentLocationRepositoryFactory = currentLocationRepositoryFactory
         self.savedLocationsRepositoryFactory = savedLocationsRepositoryFactory
+        self.syncEngineOperationsRepositoryFactory = syncEngineOperationsRepositoryFactory
         
         self.status = userLocationAuthorisationRepositoryFactory().getAuthorisationStatus()
         self.logger = logger
         
         kvsCancellable = NotificationCenter.default
-            .publisher(for: .cloudStoreUpdated, object: NSUbiquitousKeyValueStore.default)
+            .publisher(for: .cloudKitRecordsUpdated, object: nil)
             .sink { [weak self] _ in
                 Task(priority: .background) {
                     do {
@@ -299,6 +302,7 @@ final class LocationsViewModel {
         let savedLocationsRepository = savedLocationsRepositoryFactory()
         let weatherRepository = weatherRepositoryFactory()
         let timeZoneRepository = timeZoneRepositoryFactory()
+        let syncEngineOperationsRepository = syncEngineOperationsRepositoryFactory()
         var variableLocation = location
         
         Task(priority: .utility) {
@@ -316,6 +320,7 @@ final class LocationsViewModel {
                 }
                 
                 try await savedLocationsRepository.add(variableLocation)
+                try await syncEngineOperationsRepository.saveRecord(of: variableLocation)
                 
                 await MainActor.run {
                     // TODO: - replace once actor implementation is done
@@ -381,10 +386,12 @@ final class LocationsViewModel {
     
     func delete(_ location: Location, oldLocations: [Location]) {
         let savedLocationsRepository = savedLocationsRepositoryFactory()
+        let syncEngineOperationsRepository = syncEngineOperationsRepositoryFactory()
         
         Task(priority: .userInitiated) {
             do {
                 try await savedLocationsRepository.delete(location)
+                try await syncEngineOperationsRepository.deleteRecord(of: location)
             } catch {
                 logger.log("Deleting saved location failed: \(error)")
                 self.locations = oldLocations
@@ -420,11 +427,24 @@ final class LocationsViewModel {
     }
     
     func move(from offsets: IndexSet, to offset: Int) {
+        withAnimation {
+            locations.move(fromOffsets: offsets, toOffset: offset)
+        }
+        adjustPositions()
+    }
+    
+    private func adjustPositions() {
+        locations = zip(0..<locations.count, locations).map { $1.atPosition($0) }
+    }
+    
+    func onMoveCompletion() {
         let savedLocationsRepository = savedLocationsRepositoryFactory()
+        let syncEngineOperationsRepository = syncEngineOperationsRepositoryFactory()
         
         Task(priority: .userInitiated) {
             do {
-                try await savedLocationsRepository.move(from: offsets, to: offset)
+                try await savedLocationsRepository.setLocations(to: locations)
+                try await syncEngineOperationsRepository.saveRecords(of: locations)
             } catch {
                 logger.log("Deleting saved location failed: \(error)")
                 #warning("Need to undo changes here")
@@ -435,10 +455,12 @@ final class LocationsViewModel {
     func editNickname(ofLocationAt index: Int, to nickname: String) {
         locations[index].nickname = nickname
         let savedLocationsRepository = savedLocationsRepositoryFactory()
+        let syncEngineOperationsRepository = syncEngineOperationsRepositoryFactory()
         
         Task(priority: .userInitiated) {
             do {
                 try await savedLocationsRepository.changeNickname(ofLocationAt: index, to: nickname)
+                try await syncEngineOperationsRepository.saveRecord(of: locations[index])
             } catch {
                 logger.log("Deleting saved location failed: \(error)")
                 #warning("Need to undo changes here")
@@ -448,13 +470,16 @@ final class LocationsViewModel {
     
     func updateMaxNumberOfDisplayedLocations(to maxLocations: MaxLocations) {
         let savedLocationsRepository = savedLocationsRepositoryFactory()
+        let syncEngineOperationsRepository = syncEngineOperationsRepositoryFactory()
         let maxLocations = maxLocations.amount
         
         if locations.count > maxLocations {
             let numberToRemove = locations.count - maxLocations
+            let locationsToRemove = Array(locations[(locations.count - numberToRemove)...(locations.count - 1)])
             locations.removeLast(numberToRemove)
             Task {
                 try await savedLocationsRepository.setLocations(to: locations)
+                try await syncEngineOperationsRepository.deleteRecords(of: locationsToRemove)
             }
         }
     }

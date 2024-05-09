@@ -27,7 +27,7 @@ final class CloudKeyValueDatastoreUpdateHandler {
                 guard
                     let userInfo = notification.userInfo,
                     let keys = userInfo[NSUbiquitousKeyValueStoreChangedKeysKey] as? [String],
-                    let key = keys.first(where: { $0 == DatastoreKey.savedLocations.rawValue }),
+                    let key = keys.first(where: { $0 == DatastoreKey.savedItems.rawValue }),
                     let reason = userInfo[NSUbiquitousKeyValueStoreChangeReasonKey] as? Int,
                     reason == NSUbiquitousKeyValueStoreServerChange,
                     let data = cloudStore.data(forKey: key)
