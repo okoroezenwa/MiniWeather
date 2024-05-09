@@ -295,7 +295,7 @@ final class DependencyFactory {
     
     private func makeSyncEngineOperationsProvider() -> SyncEngineOperationsProvider {
         MainSyncEngineOperationsProvider(
-            syncEngineDelegate: makeSyncEngineDelegate(),
+            syncEngineDelegate: syncEngineDelegate,
             recordProvider: makeCloudKitRecordsProvider(),
             userAccountStatusProvider: makeCloudKitUserAccountStatusProvider()
         )

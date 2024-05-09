@@ -38,7 +38,7 @@ final class MainCloudKitRecordsProvider: CloudKitRecordsProvider {
     func setRecords(to newRecords: [CKRecord]) async throws {
         var records = [CKRecord]()
         for record in newRecords {
-            try await updateRecord(withRecordName: record.recordID.recordName, to: record)
+            _ = try await updateRecord(withRecordName: record.recordID.recordName, to: record)
         }
     }
     

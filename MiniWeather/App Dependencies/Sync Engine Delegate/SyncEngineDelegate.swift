@@ -13,7 +13,7 @@ protocol SyncEngineDelegate: CKSyncEngineDelegate {
     func start()
 }
 
-final class MainSyncEngineDelegate: SyncEngineDelegate {
+final class MainSyncEngineDelegate: SyncEngineDelegate, Loggable {
     private var syncEngine: CKSyncEngine {
         if _syncEngine == nil {
             self.makeSyncEngine()
@@ -24,24 +24,25 @@ final class MainSyncEngineDelegate: SyncEngineDelegate {
     let database: CKDatabase
     let recordProvider: CloudKitRecordsProvider
     let savedLocationsProvider: SavedLocationsProvider
-    let serialisationProvider: SyncEngineStateSerialisationProvider
+        let serialisationProvider: SyncEngineStateSerialisationProvider
     
     init(database: CKDatabase, recordProvider: CloudKitRecordsProvider, savedLocationsProvider: SavedLocationsProvider, serialisationProvider: SyncEngineStateSerialisationProvider) {
         self.database = database
         self.recordProvider = recordProvider
         self.savedLocationsProvider = savedLocationsProvider
         self.serialisationProvider = serialisationProvider
+        logger.info("Sync Delegate started")
     }
     
     private func makeSyncEngine() {
-        var configuration = CKSyncEngine.Configuration(
+        let configuration = CKSyncEngine.Configuration(
             database: database,
             stateSerialization: try? serialisationProvider.getLastKnowSyncEngineStateSerialisation(),
             delegate: self
         )
         let syncEngine = CKSyncEngine(configuration)
         _syncEngine = syncEngine
-        // Logger.database.log("Initialized sync engine: \(syncEngine)")
+         logger.log("Initialized sync engine: \(syncEngine)")
     }
     
     #warning("Rewrite all functions to prevent unnecessary writes to disk due to for loops")
@@ -52,8 +53,9 @@ final class MainSyncEngineDelegate: SyncEngineDelegate {
             case .stateUpdate(let event):
                 do {
                     try serialisationProvider.store(event.stateSerialization)
+                    logger.notice("State update handled. Event: \(event)")
                 } catch {
-                    #warning("Handle error later")
+                    logger.error("State update failed with error: \(error). Event: \(event)")
                 }
                 
             case .accountChange(let event):
@@ -83,7 +85,6 @@ final class MainSyncEngineDelegate: SyncEngineDelegate {
     }
     
     func nextRecordZoneChangeBatch(_ context: CKSyncEngine.SendChangesContext, syncEngine: CKSyncEngine) async -> CKSyncEngine.RecordZoneChangeBatch? {
-        //        Logger.database.info("Returning next record change batch for context: \(context)")
         do {
             let scope = context.options.scope
             let changes = syncEngine.state.pendingRecordZoneChanges.filter { scope.contains($0) }
@@ -100,9 +101,10 @@ final class MainSyncEngineDelegate: SyncEngineDelegate {
                     return nil
                 }
             }
+            logger.info("Returning next record change batch for context: \(context)")
             return batch
         } catch {
-            #warning("Handle error later")
+            logger.error("Failed to return next record change batch for context: \(context). Error: \(error)")
             return nil
         }
     }
@@ -138,7 +140,7 @@ final class MainSyncEngineDelegate: SyncEngineDelegate {
                 shouldReUploadLocalData = false
                 
             @unknown default:
-                //                Logger.database.log("Unknown account change type: \(event)")
+                logger.log("Unknown account change type: \(event)")
                 shouldDeleteLocalData = false
                 shouldReUploadLocalData = false
         }
@@ -148,9 +150,10 @@ final class MainSyncEngineDelegate: SyncEngineDelegate {
                 do {
                     try await savedLocationsProvider.setLocations(to: [])
                     NotificationCenter.default.post(name: .cloudKitRecordsUpdated, object: nil)
+                    logger.notice("Deleted local data")
                 } catch {
                     // Dunno how to handle this in time...
-                    #warning("Handle later")
+                    logger.error("Failed to delete local data. \(error)")
                 }
             }
         }
@@ -167,8 +170,9 @@ final class MainSyncEngineDelegate: SyncEngineDelegate {
                     }
                     self.syncEngine.state.add(pendingDatabaseChanges: [.saveZone(CKRecordZone(zoneName: Location.zoneName))])
                     self.syncEngine.state.add(pendingRecordZoneChanges: recordZoneChanges)
+                    logger.notice("Reuploaded local data")
                 } catch {
-                    #warning("Handle later")
+                    logger.error("Failed to reupload local data. \(error)")
                 }
             }
         }
@@ -181,10 +185,11 @@ final class MainSyncEngineDelegate: SyncEngineDelegate {
                 case Location.zoneName:
                     Task {
                         try? await savedLocationsProvider.setLocations(to: [])
+                        logger.notice("Deleted zone named \(Location.zoneName)")
                         NotificationCenter.default.post(name: .cloudKitRecordsUpdated, object: nil)
                     }
-                default: break
-                    //                    Logger.database.info("Received deletion for unknown zone: \(deletion.zoneID)")
+                default:
+                    logger.info("Received deletion for unknown zone: \(deletion.zoneID)")
             }
         }
     }
@@ -202,7 +207,6 @@ final class MainSyncEngineDelegate: SyncEngineDelegate {
                 // Otherwise, let's create a new local object.
                 let record = modification.record
                 let id = record.recordID.recordName
-                //            Logger.database.log("Received contact modification: \(record.recordID)")
                 do {
                     let records = try await recordProvider.getRecords()
                     guard let itemRecord = records.first(where: { $0.recordID.recordName == id }) else {
@@ -213,11 +217,11 @@ final class MainSyncEngineDelegate: SyncEngineDelegate {
                         continue
                     }
                     recordProvider.mergeFields(of: &item, with: itemRecord)
-                    //                    item.mergeFromServerRecord(itemRecord)
                     itemToUpdate.append(item)
                     recordsToUpdate.append(itemRecord)
+                    logger.log("Received contact modification: \(record.recordID)")
                 } catch {
-                    #warning("probably should log something")
+                    logger.error("Failed to update recordsToUpdate: \(error)")
                     continue
                 }
             }
@@ -225,7 +229,6 @@ final class MainSyncEngineDelegate: SyncEngineDelegate {
             for deletion in event.deletions {
                 
                 // A record was deleted on the server, so let's remove it from our local persistence.
-                //            Logger.database.log("Received contact deletion: \(deletion.recordID)")
                 let id = deletion.recordID.recordName
                 recordsToDelete.append(id)
                 do {
@@ -233,7 +236,9 @@ final class MainSyncEngineDelegate: SyncEngineDelegate {
                     if let location = locations.first(where: { $0.id == id }) {
                         itemsToDelete.append(location)
                     }
+                    logger.log("Received contact deletion: \(deletion.recordID)")
                 } catch {
+                    logger.error("Failed to update recordsToUpdate: \(error)")
                     continue
                 }
             }
@@ -269,8 +274,9 @@ final class MainSyncEngineDelegate: SyncEngineDelegate {
                 try await savedLocationsProvider.setLocations(to: items)
                 try await recordProvider.setRecords(to: records)
                 NotificationCenter.default.post(name: .cloudKitRecordsUpdated, object: nil)
+                logger.log("Set locations and records to \(items.map(\.city).joined(separator: ", "))")
             } catch {
-                #warning("handle later")
+                logger.error("Failed to set locations and records: \(error)")
             }
         }
     }
@@ -285,9 +291,10 @@ final class MainSyncEngineDelegate: SyncEngineDelegate {
             Task {
                 do {
                     let id = savedRecord.recordID.recordName
-                    try await recordProvider.updateRecord(withRecordName: id, to: savedRecord)
+                    _ = try await recordProvider.updateRecord(withRecordName: id, to: savedRecord)
+                    logger.log("Updated record with ID: \(savedRecord.recordID.recordName)")
                 } catch {
-#warning("handle later")
+                    logger.error("Failed to update record with ID: \(savedRecord.recordID.recordName). \(error)")
                 }
             }
         }
@@ -295,7 +302,7 @@ final class MainSyncEngineDelegate: SyncEngineDelegate {
         // Handle any failed record saves.
         for failedRecordSave in event.failedRecordSaves {
             let failedRecord = failedRecordSave.record
-            let ids = failedRecord.recordID.recordName
+            let id = failedRecord.recordID.recordName
             var shouldClearServerRecord = false
             
             switch failedRecordSave.error.code {
@@ -303,7 +310,7 @@ final class MainSyncEngineDelegate: SyncEngineDelegate {
                     // Let's merge the record from the server into our own local copy.
                     // The `mergeFromServerRecord` function takes care of the conflict resolution.
                     guard let serverRecord = failedRecordSave.error.serverRecord else {
-                        //                        Logger.database.error("No server record for conflict \(failedRecordSave.error)")
+                        logger.error("No server record for conflict \(failedRecordSave.error)")
                         continue
                     }
                     
@@ -311,9 +318,8 @@ final class MainSyncEngineDelegate: SyncEngineDelegate {
                         let locations = try await self.savedLocationsProvider.getSavedLocations()
                         if var location = locations.first(where: { failedRecord.recordID.recordName == $0.id }) {
                             recordProvider.mergeFields(of: &location, with: failedRecord)
-                            //                            location.mergeFromServerRecord(failedRecord)
                         }
-                        try await recordProvider.updateRecord(withRecordName: failedRecord.recordID.recordName, to: failedRecord)
+                        _ = try await recordProvider.updateRecord(withRecordName: failedRecord.recordID.recordName, to: failedRecord)
                     }
                     newPendingRecordZoneChanges.append(.saveRecord(failedRecord.recordID))
                     
@@ -334,22 +340,23 @@ final class MainSyncEngineDelegate: SyncEngineDelegate {
                     newPendingRecordZoneChanges.append(.saveRecord(failedRecord.recordID))
                     shouldClearServerRecord = true
                     
-                case .networkFailure, .networkUnavailable, .zoneBusy, .serviceUnavailable, .notAuthenticated, .operationCancelled: break
+                case .networkFailure, .networkUnavailable, .zoneBusy, .serviceUnavailable, .notAuthenticated, .operationCancelled:
                     // There are several errors that the sync engine will automatically retry, let's just log and move on.
-                    //                    Logger.database.debug("Retryable error saving \(failedRecord.recordID): \(failedRecordSave.error)")
+                    logger.debug("Retryable error saving \(failedRecord.recordID): \(failedRecordSave.error)")
                     
-                default: break
+                default:
                     // We got an error, but we don't know what it is or how to handle it.
                     // If you have any sort of telemetry system, you should consider tracking this scenario so you can understand which errors you see in the wild.
-                    //                    Logger.database.fault("Unknown error saving record \(failedRecord.recordID): \(failedRecordSave.error)")
+                    logger.fault("Unknown error saving record \(failedRecord.recordID): \(failedRecordSave.error)")
             }
             
             if shouldClearServerRecord {
                 Task {
                     do {
-                        try await recordProvider.deleteRecord(withRecordName: ids)
+                        try await recordProvider.deleteRecord(withRecordName: id)
+                        logger.log("Cleared records with ids: \(id)")
                     } catch {
-#warning("Handle later")
+                        logger.error("Failed to clear records with ids: \(id). \(error)")
                     }
                 }
             }
@@ -357,6 +364,7 @@ final class MainSyncEngineDelegate: SyncEngineDelegate {
         
         self.syncEngine.state.add(pendingDatabaseChanges: newPendingDatabaseChanges)
         self.syncEngine.state.add(pendingRecordZoneChanges: newPendingRecordZoneChanges)
+        logger.log("Added pending DB and record zone changes")
     }
     
     func add(pendingRecordZoneChanges changes: [CKSyncEngine.PendingRecordZoneChange]) {
