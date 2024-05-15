@@ -11,10 +11,10 @@ import CoreLocation
 struct APINinjasTimeZoneService: TimeZoneService {
     private let parser: DataParser
     private let networkService: NetworkService
-    private let apiKeysProvider: StringPreferenceProvider
+    private let apiKeysProvider: PreferencesProvider
     private let timeZoneRequest: Request?
     
-    init(parser: DataParser, networkService: NetworkService, apiKeysProvider: StringPreferenceProvider, timeZoneRequest: Request? = nil) {
+    init(parser: DataParser, networkService: NetworkService, apiKeysProvider: PreferencesProvider, timeZoneRequest: Request? = nil) {
         self.parser = parser
         self.networkService = networkService
         self.apiKeysProvider = apiKeysProvider

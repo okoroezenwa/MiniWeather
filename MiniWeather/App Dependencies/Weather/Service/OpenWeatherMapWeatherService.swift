@@ -12,10 +12,10 @@ struct OpenWeatherMapWeatherService<T: TimeZoneWeatherProtocol & Decodable>: Wea
     private let parser: DataParser
     private let timeZoneDatastore: Datastore
     private let networkService: NetworkService
-    private let apiKeysProvider: StringPreferenceProvider
+    private let apiKeysProvider: PreferencesProvider
     private let weatherRequest: Request?
     
-    init(parser: DataParser, timeZoneDatastore: Datastore, networkService: NetworkService, apiKeysProvider: StringPreferenceProvider, weatherRequest: Request? = nil) {
+    init(parser: DataParser, timeZoneDatastore: Datastore, networkService: NetworkService, apiKeysProvider: PreferencesProvider, weatherRequest: Request? = nil) {
         self.parser = parser
         self.timeZoneDatastore = timeZoneDatastore
         self.networkService = networkService

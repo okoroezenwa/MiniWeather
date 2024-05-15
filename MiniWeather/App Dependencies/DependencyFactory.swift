@@ -5,11 +5,11 @@
 //  Created by Ezenwa Okoro on 28/10/2023.
 //
 
-import Foundation
 import CoreLocation
 import OSLog
 import WeatherKit
 import DiskCache
+import CloudKit
 
 /// The singleton object through which all app dependencies are retrieved.
 final class DependencyFactory {
@@ -26,9 +26,12 @@ final class DependencyFactory {
                 logger: Logger()
             )
     )
+    private static let cloudKitIdentifier = "iCloud.okoroezenwa.MiniWeather"
+    
     private let locationManagerDelegate: LocationManagerDelegate
     private let temporaryStore: TemporaryStore
     private let cloudDatastoreUpdateHandler: CloudKeyValueDatastoreUpdateHandler
+    private lazy var syncEngineDelegate = makeSyncEngineDelegate()
     
     private init(
         locationManagerDelegate: LocationManagerDelegate,
@@ -38,6 +41,10 @@ final class DependencyFactory {
         self.locationManagerDelegate = locationManagerDelegate
         self.temporaryStore = temporaryStore
         self.cloudDatastoreUpdateHandler = cloudDatastoreUpdateHandler
+    }
+    
+    func startSyncEngine() {
+        syncEngineDelegate.start()
     }
     
     // MARK: - Standard Repositories
@@ -81,6 +88,18 @@ final class DependencyFactory {
     public func makeSavedLocationsRepository() -> SavedLocationsRepository {
         MainSavedLocationsRepository(
             provider: makeSavedLocationsProvider()
+        )
+    }
+    
+    public func makePreferencesRepository() -> PreferencesRepository {
+        MainPreferencesRepository(
+            provider: makeMainPreferencesProvider()
+        )
+    }
+    
+    public func makeSyncEngineOperationsRepository() -> SyncEngineOperationsRepository {
+        MainSyncEngineOperationsRepository(
+            provider: makeSyncEngineOperationsProvider()
         )
     }
     
@@ -140,7 +159,7 @@ final class DependencyFactory {
         APINinjasGeocoderService<APINinjasLocation, APINinjasTemporaryLocation>(
             parser: makeStandardDataParser(),
             networkService: makeStandardNetworkService(), 
-            apiKeysProvider: makeMainStringPreferenceProvider()
+            apiKeysProvider: makeMainPreferencesProvider()
         )
     }
     
@@ -148,7 +167,7 @@ final class DependencyFactory {
         OpenWeatherMapGeocoderService<OpenWeatherMapLocation>(
             parser: makeStandardDataParser(),
             networkService: makeStandardNetworkService(),
-            apiKeysProvider: makeMainStringPreferenceProvider()
+            apiKeysProvider: makeMainPreferencesProvider()
         )
     }
     
@@ -169,7 +188,7 @@ final class DependencyFactory {
         APINinjasTimeZoneService(
             parser: makeStandardDataParser(), 
             networkService: makeStandardNetworkService(),
-            apiKeysProvider: makeMainStringPreferenceProvider()
+            apiKeysProvider: makeMainPreferencesProvider()
         )
     }
     
@@ -196,7 +215,7 @@ final class DependencyFactory {
         APINinjasWeatherService<APINinjasWeather>(
             parser: makeStandardDataParser(),
             networkService: makeStandardNetworkService(),
-            apiKeysProvider: makeMainStringPreferenceProvider()
+            apiKeysProvider: makeMainPreferencesProvider()
         )
     }
     
@@ -205,7 +224,7 @@ final class DependencyFactory {
             parser: makeStandardDataParser(),
             timeZoneDatastore: makeMemoryDatastore(),
             networkService: makeStandardNetworkService(),
-            apiKeysProvider: makeMainStringPreferenceProvider()
+            apiKeysProvider: makeMainPreferencesProvider()
         )
     }
     
@@ -249,8 +268,57 @@ final class DependencyFactory {
     private func makeSavedLocationsProvider() -> SavedLocationsProvider {
         MainSavedLocationsProvider(
             datastore: makePermanentFileDatastore(),
-            logger: Logger()
+            logger: Logger(), 
+            intPreferenceProvider: makeMainPreferencesProvider()
         )
+    }
+    
+    private func makeCloudKitRecordsProvider() -> CloudKitRecordsProvider {
+        MainCloudKitRecordsProvider(
+            datastore: makePermanentFileDatastore(),
+            encoder: makeJSONDataEncoder(),
+            decoder: makeJSONDataDecoder()
+        )
+    }
+    
+    private func makeSyncEngineStateSerialisationProvider() -> SyncEngineStateSerialisationProvider {
+        MainSyncEngineStateSerialisationProvider(
+            datastore: makePermanentFileDatastore()
+        )
+    }
+    
+    private func makeCloudKitUserAccountStatusProvider() -> CloudKitUserAccountStatusProvider {
+        MainCloudKitUserAccountStatusProvider(
+            container: makeCloudKitContainer()
+        )
+    }
+    
+    private func makeSyncEngineOperationsProvider() -> SyncEngineOperationsProvider {
+        MainSyncEngineOperationsProvider(
+            syncEngineDelegate: syncEngineDelegate,
+            recordProvider: makeCloudKitRecordsProvider(),
+            userAccountStatusProvider: makeCloudKitUserAccountStatusProvider()
+        )
+    }
+    
+    // MARK: - CloudKit Container
+    
+    private func makeCloudKitContainer() -> CKContainer {
+        CKContainer(identifier: Self.cloudKitIdentifier)
+    }
+    
+    // MARK: - CloudKit Databases
+    
+    private func makePublicCloudKitDatabase() -> CKDatabase {
+        makeCloudKitContainer().publicCloudDatabase
+    }
+    
+    private func makePrivateCloudKitDatabase() -> CKDatabase {
+        makeCloudKitContainer().privateCloudDatabase
+    }
+    
+    private func makeSharedCloudKitDatabase() -> CKDatabase {
+        makeCloudKitContainer().sharedCloudDatabase
     }
     
     // MARK: - Key-Value Stores
@@ -261,6 +329,17 @@ final class DependencyFactory {
     
     private func makeCloudKeyValueStore() -> KeyValueStore {
         NSUbiquitousKeyValueStore.default
+    }
+    
+    // MARK: - Sync Engine
+    
+    private func makeSyncEngineDelegate() -> SyncEngineDelegate {
+        MainSyncEngineDelegate(
+            database: makePrivateCloudKitDatabase(),
+            recordProvider: makeCloudKitRecordsProvider(),
+            savedLocationsProvider: makeSavedLocationsProvider(),
+            serialisationProvider: makeSyncEngineStateSerialisationProvider()
+        )
     }
     
     // MARK: - Caches
@@ -309,7 +388,7 @@ final class DependencyFactory {
     
     // MARK: - Preferences
     
-    private func makeMainStringPreferenceProvider() -> StringPreferenceProvider {
+    private func makeMainPreferencesProvider() -> PreferencesProvider {
         UserDefaults.standard
     }
 }

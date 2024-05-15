@@ -8,7 +8,7 @@
 import Foundation
 
 /// An object that provides a temporary storage for a datastore.
-protocol TemporaryStore {
+protocol TemporaryStore: Sendable {
     /**
      Retrieves a stored object from internal storage.
      

@@ -51,4 +51,6 @@ protocol SavedLocationsRepository {
      - Throws: An error.
      */
     func changeNickname(ofLocationAt index: Int, to nickname: String) async throws
+    
+    func setLocations(to locations: [Location]) async throws
 }

@@ -26,7 +26,7 @@ final class StandardTemporaryStoreTests: XCTestCase {
     func test_setValueForKey_SavesValueCorrectly() {
         // Given
         let item = [UniversalConstants.location]
-        let key = DatastoreKey.savedLocations
+        let key = DatastoreKey.savedItems
         
         // When
         let sut = StandardTemporaryStore()

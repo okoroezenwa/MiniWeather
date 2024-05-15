@@ -33,4 +33,8 @@ struct MainSavedLocationsRepository: SavedLocationsRepository {
     func changeNickname(ofLocationAt index: Int, to nickname: String) async throws {
         try await provider.changeNickname(ofLocationAt: index, to: nickname)
     }
+    #warning("Consider making this the only mutating function?")
+    func setLocations(to locations: [Location]) async throws {
+        try await provider.setLocations(to: locations)
+    }
 }

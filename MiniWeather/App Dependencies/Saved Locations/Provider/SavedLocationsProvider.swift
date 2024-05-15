@@ -52,4 +52,6 @@ protocol SavedLocationsProvider {
      - Throws: An error.
      */
     func changeNickname(ofLocationAt index: Int, to nickname: String) async throws
+    #warning("Documentation needed")
+    func setLocations(to locations: [Location]) async throws
 }

@@ -27,7 +27,7 @@ final class CloudKeyValueDatastoreUpdateHandler {
                 guard
                     let userInfo = notification.userInfo,
                     let keys = userInfo[NSUbiquitousKeyValueStoreChangedKeysKey] as? [String],
-                    let key = keys.first(where: { $0 == DatastoreKey.savedLocations.rawValue }),
+                    let key = keys.first(where: { $0 == DatastoreKey.savedItems.rawValue }),
                     let reason = userInfo[NSUbiquitousKeyValueStoreChangeReasonKey] as? Int,
                     reason == NSUbiquitousKeyValueStoreServerChange,
                     let data = cloudStore.data(forKey: key)
@@ -38,7 +38,6 @@ final class CloudKeyValueDatastoreUpdateHandler {
                 // updates local store with new data and notifies any observers
                 localStore.set(data, forKey: key)
                 NotificationCenter.default.post(name: .cloudStoreUpdated, object: NSUbiquitousKeyValueStore.default)
-                print("updated items")
             }
     }
 }

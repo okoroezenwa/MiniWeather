@@ -15,9 +15,14 @@ struct SettingsView: View {
     @AppStorage(Settings.apiNinjasKey) private var apiNinjasKey = ""
     @AppStorage(Settings.openWeatherMapKey) private var openWeatherMapKey = ""
     @AppStorage(Settings.showLocationsUnits) private var showLocationsUnits = false
-    @AppStorage(Settings.showWeatherViewMap) private var showWeatherViewMap = true
+    @AppStorage(Settings.showWeatherViewMap) private var showWeatherViewMap = false
     @AppStorage(Settings.showWeatherViewUnits) private var showWeatherViewUnits = false
+    @AppStorage(Settings.swipeStyle) private var swipeStyle = SwipeStyle.default
+    @AppStorage(Settings.maxLocations) private var maxLocations = MaxLocations.default
+    @AppStorage(Settings.toastStyle) private var toastStyle = ToastStyle.default
+    
     private var dismiss: () -> ()
+    
     private let unitsFooter = """
     Metric: °C • m/s • mm • m • deg • hPa
     Imperial: °F • mph • in • ft • deg • psi
@@ -31,12 +36,10 @@ struct SettingsView: View {
     var body: some View {
         NavigationStack {
             Form {
-                Section {
+                Section("Appearance") {
                     SettingsPicker(title: "Theme", selection: $theme.animation())
-                } header: {
-                    Text("Appearance")
-                } footer: {
-                    Text("\'Default\' will follow the current system theme.")
+                    
+                    SettingsPicker(title: "Toast Style", selection: $toastStyle)
                 }
                 
                 Section {
@@ -51,6 +54,10 @@ struct SettingsView: View {
                 Section("Locations View") {
                     Toggle("Show Units", isOn: $showLocationsUnits)
                         .tint(nil)
+                    
+                    SettingsPicker(title: "Swipe Style", selection: $swipeStyle)
+                    
+                    SettingsPicker(title: "Max Item Count", selection: $maxLocations)
                 }
                 
                 Section("Weather View") {
@@ -100,68 +107,6 @@ struct SettingsView: View {
                 }
             }
             #endif
-        }
-    }
-}
-
-typealias SelectionEnum = Hashable & CaseIterable & Identifiable & RawRepresentable<String>
-
-struct SettingsPicker<Selection: SelectionEnum>: View where Selection.AllCases == Array<Selection> {
-    let title: String
-    @Binding var selection: Selection
-    
-    var body: some View {
-        Picker(title, selection: $selection) {
-            ForEach(Selection.allCases, id: \.self) { selection in
-                Text(selection.rawValue)
-            }
-        }
-        .tint(.secondary)
-    }
-}
-
-struct SettingsLink: View {
-    private let name: String
-    private let imageName: String
-    private let urlString: String
-    
-    init(name: String, imageName: String = "arrow.up.right", urlString: String) {
-        self.name = name
-        self.imageName = imageName
-        self.urlString = urlString
-    }
-    
-    var body: some View {
-        Link(destination: .init(string: urlString)!) {
-            HStack() {
-                Text(name)
-                
-                Spacer()
-                
-                Image(systemName: imageName)
-            }
-        }
-    }
-}
-
-struct LabeledTextField: View {
-    private let title: String
-    private let description: String
-    private let prompt: String
-    private var text: Binding<String>
-    
-    init(title: String, description: String, prompt: String, text: Binding<String>) {
-        self.title = title
-        self.description = description
-        self.prompt = prompt
-        self.text = text
-    }
-    
-    var body: some View {
-        LabeledContent(title) {
-            TextField(description, text: text, prompt: Text(prompt))
-                .multilineTextAlignment(.trailing)
-                .foregroundStyle(.secondary)
         }
     }
 }

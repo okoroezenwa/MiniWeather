@@ -8,10 +8,9 @@
 import SwiftUI
 import ScrollUI
 
-struct ScrollSwipeActionsView<Content: View, Style: SwipeActionStyle>: View {
+struct ScrollSwipeActionsView<Content: View>: View {
     let constants = SwipeActionsConstants()
     let direction: SwipeDirection
-    let style: Style
     let index: Int
     var actionButtonsWidth: CGFloat {
         CGFloat(filteredActions.count) * constants.width
@@ -27,13 +26,13 @@ struct ScrollSwipeActionsView<Content: View, Style: SwipeActionStyle>: View {
     @ActionBuilder let actions: [SwipeAction]
     @ViewBuilder let content: Content
     @ScrollState var scrollState
+    @AppStorage(Settings.swipeStyle) private var swipeStyle = SwipeStyle.default
     
-    init(direction: SwipeDirection, style: Style, index: Int, isEditing: Binding<Bool>, swipedIndex: Binding<Int?>, @ActionBuilder actions: () -> [SwipeAction], @ViewBuilder content: () -> Content) {
+    init(direction: SwipeDirection, index: Int, isEditing: Binding<Bool>, swipedIndex: Binding<Int?>, @ActionBuilder actions: () -> [SwipeAction], @ViewBuilder content: () -> Content) {
         self.direction = direction
         self._isEditing = isEditing
         self.actions = actions()
         self.content = content()
-        self.style = style
         self.index = index
         self._swipedIndex = swipedIndex
     }
@@ -57,7 +56,7 @@ struct ScrollSwipeActionsView<Content: View, Style: SwipeActionStyle>: View {
                             .disabled(scrollOffset.isEqual(to: 0))
                         }
                     
-                    SwipeActionButtonsView(direction: direction, filteredActions: filteredActions, style: style, isEditing: isEditing, hasCrossedThreshold: $hasCrossedThreshold, allowUserInteraction: $allowUserInteraction, currentActionButtonWidth: getActionButtonWidth, currentOpacity: getOpacity, currentScale: getScale) { animated in
+                    SwipeActionButtonsView(direction: direction, filteredActions: filteredActions, isEditing: isEditing, hasCrossedThreshold: $hasCrossedThreshold, allowUserInteraction: $allowUserInteraction, currentActionButtonWidth: getActionButtonWidth, currentOpacity: getOpacity, currentScale: getScale) { animated in
                         resetPosition(with: proxy, shouldAnimate: animated)
                     }
                     .id(SwipeActionsConstants.swipeActionsViewID)
@@ -73,7 +72,7 @@ struct ScrollSwipeActionsView<Content: View, Style: SwipeActionStyle>: View {
             .scrollTargetBehavior(.viewAligned)
             .scrollDisabled(isEditing)
             .background(alignment: .trailing) {
-                if style is FilledSwipeActionStyle, let lastAction = filteredActions.last {
+                if /*style is FilledSwipeActionStyle*/swipeStyle == .filled, let lastAction = filteredActions.last {
                     Rectangle()
                         .fill(lastAction.tint)
                         .frame(width: scrollOffset)
@@ -207,7 +206,7 @@ struct ColorList: View {
             ScrollView(.vertical) {
                 LazyVStack(spacing: 16) {
                     ForEach(array, id: \.1) { index, color in
-                        ScrollSwipeActionsView(direction: .trailing, style: .rounded, index: index, isEditing: $isEditing, swipedIndex: .constant(0)) {
+                        ScrollSwipeActionsView(direction: .trailing, index: index, isEditing: $isEditing, swipedIndex: .constant(0)) {
                             SwipeAction(tint: .blue, name: "Edit Item", icon: "star.fill") {
                                 print("Bookmarked")
                             }

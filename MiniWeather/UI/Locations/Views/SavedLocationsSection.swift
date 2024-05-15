@@ -11,7 +11,8 @@ struct SavedLocationsSectionViewModel {
     let weather: (Location) -> Binding<WeatherProtocol?>
     let onDelete: (Location) -> Void
     let onMove: (IndexSet, Int) -> Void
-    let onNicknameChange: (String, Int) -> Void
+    let onMoveCompleted: () -> Void
+    let onNicknameChange: (Int, String) -> Void
 }
 
 struct SavedLocationsSection: View {
@@ -26,6 +27,7 @@ struct SavedLocationsSection: View {
     @State private var showConfirmation = false
     @Environment(\.editMode) private var editMode
     @Environment(\.colorScheme) private var colorScheme
+    @AppStorage(Settings.swipeStyle) private var swipeStyle = SwipeStyle.default
     
     init(locations: Binding<[Location]>, selection: Binding<Location?>, viewModel: SavedLocationsSectionViewModel) {
         self.viewModel = viewModel
@@ -38,7 +40,6 @@ struct SavedLocationsSection: View {
             NavigationLink(value: location) {
                 ScrollSwipeActionsView(
                     direction: .trailing,
-                    style: .translucentRounded,
                     index: index,
                     isEditing: $isEditing,
                     swipedIndex: $swipedIndex
@@ -73,6 +74,7 @@ struct SavedLocationsSection: View {
                             shouldDisplayAsLoading: false
                         )
                     }
+                    .padding(.horizontal, swipeStyle != .filled ? 0 : 16)
                 }
                 .contentShape(.dragPreview, RoundedRectangle(cornerRadius: 16))
             }
@@ -92,9 +94,9 @@ struct SavedLocationsSection: View {
                     .fill(.white)
                     .opacity(0.1)
             }
-            .onDrop(of: [.location], delegate: DropViewDelegate(destinationItem: location, locations: $locations, draggedItem: $draggedItem, onMove: viewModel.onMove))
+            .onDrop(of: [.location], delegate: DropViewDelegate(destinationItem: location, items: $locations, draggedItem: $draggedItem, onMove: viewModel.onMove, onMoveCompleted: viewModel.onMoveCompleted))
         }
-        .padding(.horizontal, 16)
+        .padding(.horizontal, swipeStyle == .filled ? 0 : 16)
         .onChange(of: editMode?.wrappedValue.isEditing) {
             isEditing = editMode?.wrappedValue.isEditing == true
         }
@@ -134,7 +136,7 @@ struct SavedLocationsSection: View {
 }
 
 #Preview {
-    SavedLocationsSection(locations: .constant([UniversalConstants.location]), selection: .constant(UniversalConstants.location), viewModel: .init(weather: { _ in .constant(UniversalConstants.weather) }, onDelete: { _ in }, onMove: { _, _ in }, onNicknameChange: { _, _ in }))
+    SavedLocationsSection(locations: .constant([UniversalConstants.location]), selection: .constant(UniversalConstants.location), viewModel: .init(weather: { _ in .constant(UniversalConstants.weather) }, onDelete: { _ in }, onMove: { _, _ in }, onMoveCompleted: { }, onNicknameChange: { _, _ in }))
 }
 
 extension SavedLocationsSection {
@@ -142,6 +144,6 @@ extension SavedLocationsSection {
         let index: Int
         let location: Location
         
-        var id: UUID { location.id }
+        var id: String { location.id }
     }
 }

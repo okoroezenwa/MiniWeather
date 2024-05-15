@@ -57,16 +57,22 @@ final class MainLocationManagerDelegate: NSObject, LocationManagerDelegate {
     
     // MARK: - CLLocationManagerDelegate
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
-        let status = manager.authorizationStatus
-        switch status {
-            case .notDetermined:
-                return
-            case .authorizedAlways, .authorizedWhenInUse, .restricted, .denied:
-                locationAuthorisationCheckedContinuation?.resume(returning: status)
-                locationAuthorisationCheckedContinuation = nil
-            @unknown default:
-                locationAuthorisationCheckedContinuation?.resume(returning: status)
-                locationAuthorisationCheckedContinuation = nil
+        Task.detached { [weak self] in
+            guard let self else { return }
+            let status = manager.authorizationStatus
+            
+            await MainActor.run {
+                switch status {
+                    case .notDetermined:
+                        return
+                    case .authorizedAlways, .authorizedWhenInUse, .restricted, .denied:
+                        self.locationAuthorisationCheckedContinuation?.resume(returning: status)
+                        self.locationAuthorisationCheckedContinuation = nil
+                    @unknown default:
+                        self.locationAuthorisationCheckedContinuation?.resume(returning: status)
+                        self.locationAuthorisationCheckedContinuation = nil
+                }
+            }
         }
     }
     

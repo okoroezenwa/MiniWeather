@@ -7,10 +7,9 @@
 
 import SwiftUI
 
-struct SwipeActionButtonsView<S: SwipeActionStyle>: View {
+struct SwipeActionButtonsView: View {
     let direction: SwipeDirection
     let filteredActions: [SwipeAction]
-    let style: S
     let isEditing: Bool
     @Binding var hasCrossedThreshold: Bool
     @Binding var allowUserInteraction: Bool
@@ -19,6 +18,7 @@ struct SwipeActionButtonsView<S: SwipeActionStyle>: View {
     let currentOpacity: (Bool) -> CGFloat
     let currentScale: (Bool) -> CGSize
     let resetPosition: @MainActor (Bool) -> Void
+    @AppStorage(Settings.swipeStyle) private var swipeStyle = SwipeStyle.default
     
     let constants = SwipeActionsConstants()
     var actionButtonsWidth: CGFloat {
@@ -69,7 +69,7 @@ struct SwipeActionButtonsView<S: SwipeActionStyle>: View {
                             Label(swipeAction.name, systemImage: swipeAction.icon)
                                 .labelStyle(.iconOnly)
                         }
-                        .swipeActionStyle(style)
+                        .swipeActionStyle(/*style*/swipeStyle.current)
                         .rotationEffect(.init(degrees: direction == .leading ? -180 : 0))
                         .sensoryFeedback(.impact(weight: .medium), trigger: hasCrossedThreshold)
                         .sensoryFeedback(.impact(weight: .medium), trigger: feedbackAction)
