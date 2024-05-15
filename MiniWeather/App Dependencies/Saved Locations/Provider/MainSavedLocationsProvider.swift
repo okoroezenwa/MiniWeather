@@ -23,7 +23,7 @@ struct MainSavedLocationsProvider: SavedLocationsProvider {
         do {
             let locations: [Location] = try datastore.fetch(forKey: .savedItems)
             logger.trace("Fetched saved locations")
-            return locations
+            return locations.sorted { $0.position < $1.position }
         } catch DatastoreError.notFound {
             logger.error("Saved locations may be unavailable or not used yet. Returning nil...")
             return []

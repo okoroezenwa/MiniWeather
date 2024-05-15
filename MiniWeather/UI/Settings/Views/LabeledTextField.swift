@@ -31,6 +31,6 @@ struct LabeledTextField: View {
 
 #Preview {
     Form {
-        LabeledTextField(title: "Test", description: "Tring out LabeledTextField preview", prompt: "Hello", text: .constant("Nothing"))
+        LabeledTextField(title: "Test", description: "Trying out LabeledTextField preview", prompt: "Hello", text: .constant("Nothing"))
     }
 }

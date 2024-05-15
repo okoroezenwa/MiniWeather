@@ -69,7 +69,7 @@ final class LocationsViewModel {
             .sink { [weak self] _ in
                 Task(priority: .background) {
                     do {
-                        try await self?.getSavedLocations()
+                        try await self?.getSavedLocations(true)
                         try await self?.getWeatherForSavedLocations()
                     } catch {
                         // TODO: - Replace with proper error-handling
@@ -93,12 +93,18 @@ final class LocationsViewModel {
         }
     }
     
-    func getSavedLocations() async throws {
+    func getSavedLocations(_ animated: Bool = false) async throws {
         let savedLocationsRepository = savedLocationsRepositoryFactory()
         let locations = try await savedLocationsRepository.getSavedLocations()
         
         await MainActor.run {
-            self.locations = locations
+            if animated {
+                withAnimation {
+                    self.locations = locations
+                }
+            } else {
+                self.locations = locations
+            }
         }
     }
     
@@ -304,8 +310,9 @@ final class LocationsViewModel {
         let timeZoneRepository = timeZoneRepositoryFactory()
         let syncEngineOperationsRepository = syncEngineOperationsRepositoryFactory()
         var variableLocation = location
+        var locations = locations
         
-        Task(priority: .utility) {
+        Task(priority: .utility) { [ weak self] in
             do {
                 let weather = try await weatherRepository.getWeather(for: variableLocation)
                 let timeZoneIdentifier: TimeZoneIdentifier? = try await {
@@ -319,8 +326,16 @@ final class LocationsViewModel {
                     variableLocation.timeZoneIdentifier = timeZoneIdentifier
                 }
                 
-                try await savedLocationsRepository.add(variableLocation)
-                try await syncEngineOperationsRepository.saveRecord(of: variableLocation)
+//                variableLocation.lastModified = .now
+                if let index = locations.firstIndex(where: { $0.id == variableLocation.id }) {
+                    locations[index] = variableLocation
+                }
+                locations = self?.adjustedPositions(of: locations) ?? []
+                for var location in locations {
+                    location.lastModified = .now
+                }
+                try await savedLocationsRepository.setLocations(to: locations)
+                try await syncEngineOperationsRepository.saveRecords(of: locations)
                 
                 await MainActor.run {
                     // TODO: - replace once actor implementation is done
@@ -332,11 +347,11 @@ final class LocationsViewModel {
                     
                     var tempWeather = weatherCache
                     tempWeather[variableLocation.fullName] = weather
-                    self.weatherCache = tempWeather
+                    self?.weatherCache = tempWeather
                 }
             } catch {
                 logger.log("Adding saved location failed: \(error)")
-                self.locations = oldLocations
+                self?.locations = oldLocations
             }
         }
     }
@@ -388,13 +403,24 @@ final class LocationsViewModel {
         let savedLocationsRepository = savedLocationsRepositoryFactory()
         let syncEngineOperationsRepository = syncEngineOperationsRepositoryFactory()
         
-        Task(priority: .userInitiated) {
+        Task(priority: .userInitiated) { [weak self] in
             do {
+                var location = location
+                location.lastModified = .now
+                var locations = self?.locations ?? []
+                if let index = locations.firstIndex(where: { $0.id == location.id }) {
+                    locations.remove(at: index)
+                }
+                locations = self?.adjustedPositions(of: locations) ?? []
+                for var location in locations {
+                    location.lastModified = .now
+                }
                 try await savedLocationsRepository.delete(location)
                 try await syncEngineOperationsRepository.deleteRecord(of: location)
+                try await syncEngineOperationsRepository.saveRecords(of: locations)
             } catch {
                 logger.log("Deleting saved location failed: \(error)")
-                self.locations = oldLocations
+                self?.locations = oldLocations
             }
         }
     }
@@ -430,19 +456,23 @@ final class LocationsViewModel {
         withAnimation {
             locations.move(fromOffsets: offsets, toOffset: offset)
         }
-        adjustPositions()
     }
     
-    private func adjustPositions() {
-        locations = zip(0..<locations.count, locations).map { $1.atPosition($0) }
+    private func adjustedPositions(of locations: [Location]) -> [Location] {
+        zip(0..<locations.count, locations).map { $1.atPosition($0) }
     }
     
     func onMoveCompletion() {
+        locations = adjustedPositions(of: locations)
         let savedLocationsRepository = savedLocationsRepositoryFactory()
         let syncEngineOperationsRepository = syncEngineOperationsRepositoryFactory()
         
-        Task(priority: .userInitiated) {
+        Task(priority: .userInitiated) { [weak self] in
             do {
+                var locations = self?.locations ?? []
+                for var location in locations {
+                    location.lastModified = .now
+                }
                 try await savedLocationsRepository.setLocations(to: locations)
                 try await syncEngineOperationsRepository.saveRecords(of: locations)
             } catch {
@@ -459,8 +489,10 @@ final class LocationsViewModel {
         
         Task(priority: .userInitiated) {
             do {
+                var location = self.locations[index]
+                location.lastModified = .now
                 try await savedLocationsRepository.changeNickname(ofLocationAt: index, to: nickname)
-                try await syncEngineOperationsRepository.saveRecord(of: locations[index])
+                try await syncEngineOperationsRepository.saveRecord(of: location)
             } catch {
                 logger.log("Deleting saved location failed: \(error)")
                 #warning("Need to undo changes here")

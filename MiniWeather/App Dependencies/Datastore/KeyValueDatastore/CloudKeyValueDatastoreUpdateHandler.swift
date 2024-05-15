@@ -38,7 +38,6 @@ final class CloudKeyValueDatastoreUpdateHandler {
                 // updates local store with new data and notifies any observers
                 localStore.set(data, forKey: key)
                 NotificationCenter.default.post(name: .cloudStoreUpdated, object: NSUbiquitousKeyValueStore.default)
-                print("updated items")
             }
     }
 }

@@ -15,7 +15,7 @@ struct WeatherView: View {
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.timeFormatter) var timeFormatter
     @AppStorage(Settings.showWeatherViewUnits) var showWeatherViewUnits = false
-    @AppStorage(Settings.showWeatherViewMap) var showWeatherViewMap = true
+    @AppStorage(Settings.showWeatherViewMap) var showWeatherViewMap = false
     @State private var selectedAlert: WeatherAlert?
     
     var body: some View {

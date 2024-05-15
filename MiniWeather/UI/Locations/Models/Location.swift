@@ -117,6 +117,27 @@ extension Location: CloudKitModel {
             (.unencrypted(.lastModified), lastModified)
         ]
     }
+    
+    init?(record: CKRecord) {
+        let city = record[.city] as? String ?? "Unknown City"
+        self.city = city
+        self.nickname = record[.nickname] as? String ?? city
+        self.state = record[.state] as? String
+        self.country = record[.country] as? String ?? "Unknown Country"
+        self.latitude = record[.latitude] as? Double ?? 0
+        self.longitude = record[.longitude] as? Double ?? 0
+        
+        if let timeZoneIdentifier = record[.timeZoneIdentifier] as? String, let timeZone = TimeZone(identifier: timeZoneIdentifier) {
+            self.timeZoneIdentifier = TimeZoneIdentifier(timeZone: timeZone)
+        } else if let timeZoneOffset = record[.timeZoneOffset] as? Int, let timeZone = TimeZone(secondsFromGMT: timeZoneOffset) {
+            self.timeZoneIdentifier = TimeZoneIdentifier(timeZone: timeZone)
+        }
+        
+        self.id = record.recordID.recordName
+        self.timestamp = record[.timestamp] as? Date ?? .now
+        self.position = record[.position] as? Int ?? 0
+        self.lastModified = record[.lastModified] as? Date ?? .distantPast
+    }
 }
 
 // Convenience functions for Location

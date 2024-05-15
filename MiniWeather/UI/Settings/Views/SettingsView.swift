@@ -15,10 +15,11 @@ struct SettingsView: View {
     @AppStorage(Settings.apiNinjasKey) private var apiNinjasKey = ""
     @AppStorage(Settings.openWeatherMapKey) private var openWeatherMapKey = ""
     @AppStorage(Settings.showLocationsUnits) private var showLocationsUnits = false
-    @AppStorage(Settings.showWeatherViewMap) private var showWeatherViewMap = true
+    @AppStorage(Settings.showWeatherViewMap) private var showWeatherViewMap = false
     @AppStorage(Settings.showWeatherViewUnits) private var showWeatherViewUnits = false
     @AppStorage(Settings.swipeStyle) private var swipeStyle = SwipeStyle.default
     @AppStorage(Settings.maxLocations) private var maxLocations = MaxLocations.default
+    @AppStorage(Settings.toastStyle) private var toastStyle = ToastStyle.default
     
     private var dismiss: () -> ()
     
@@ -35,12 +36,10 @@ struct SettingsView: View {
     var body: some View {
         NavigationStack {
             Form {
-                Section {
+                Section("Appearance") {
                     SettingsPicker(title: "Theme", selection: $theme.animation())
-                } header: {
-                    Text("Appearance")
-                } footer: {
-                    Text("\'Default\' will follow the current system theme.")
+                    
+                    SettingsPicker(title: "Toast Style", selection: $toastStyle)
                 }
                 
                 Section {
